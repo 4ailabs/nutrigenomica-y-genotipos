@@ -75,10 +75,11 @@ REGLAS DIETÉTICAS ESTRICTAS:
 - Explicar el fundamento genotípico de cada recomendación
 
 FORMATO PROFESIONAL:
-- Usar Markdown con estructura clara y profesional
-- Incluir sección "Fundamento Científico" para el médico
+- Usar Markdown con estructura clara y directa
+- Incluir sección "Fundamento Científico" de forma objetiva
 - Incluir sección "Para Explicar al Paciente" en lenguaje accesible
 - Proporcionar listas prácticas y organizadas
+- NO usar fórmulas de cortesía ni tratamientos
 
 DISCLAIMER MÉDICO:
 Al final de cada respuesta incluir: "**Nota Profesional:** Esta información nutrigenómica está basada en el análisis del genotipo específico del paciente y debe ser integrada dentro del contexto clínico completo del mismo."`;
@@ -214,27 +215,28 @@ export async function generateChatResponse(
         - Incluye fundamento científico cuando sea apropiado
         
         FORMATO DE RESPUESTAS:
-        1. **Lenguaje profesional pero accesible**
+        1. **Lenguaje directo y neutral** sin tratamientos ("doctor", "estimado", etc.)
         2. **Estructura clara** con títulos y listas
-        3. **Información práctica** que el médico pueda usar directamente
+        3. **Información práctica** presentada de forma objetiva
         4. **Base científica** del sistema GenoTipo cuando sea relevante
         5. **Separar información técnica** de la información para pacientes
         
         INSTRUCCIONES ESPECÍFICAS:
-        - Responde como experto en nutrigenómica de manera directa y profesional
-        - Proporciona información que el médico pueda explicar al paciente
+        - Responde de manera directa y neutral, sin fórmulas de cortesía
+        - NO uses tratamientos como "doctor", "estimado", "entendido", etc.
+        - Presenta la información de forma objetiva y profesional
         - Incluye tanto fundamento científico como aplicación práctica
         - Para listas de alimentos, usa las clasificaciones exactas: Superalimento/Toxina/Neutro
-        - Menciona beneficios específicos del genotipo para motivar adherencia del paciente
+        - Menciona beneficios específicos del genotipo de forma factual
         
         EJEMPLO DE ESTRUCTURA DESEADA:
-        **Para el Médico:**
-        [Información técnica y fundamento]
+        **Información Técnica:**
+        [Fundamento científico y datos del genotipo]
         
         **Para Explicar al Paciente:**
-        [Información clara y motivadora]
+        [Información clara y práctica]
         
-        RESPONDE SIEMPRE EN ESPAÑOL con terminología médica apropiada.
+        RESPONDE SIEMPRE EN ESPAÑOL de forma directa y neutra.
     `;
 
     // Crear el prompt completo con el historial y la instrucción del sistema
