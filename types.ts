@@ -141,6 +141,6 @@ export interface AIAssistantProps {
 
 // Chatbot types
 export interface ChatMessage {
-    role: 'user' | 'assistant';
+    role: 'user' | 'model';
     content: string;
 }
