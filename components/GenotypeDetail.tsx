@@ -112,10 +112,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                             {data.tagline}
                         </p>
 
-                        {/* Indicador visual sutil */}
-                        <div className="mt-8 flex justify-center">
-                            <div className="w-1 h-12 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
-                        </div>
+
                     </div>
                 </div>
             </header>

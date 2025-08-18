@@ -64,20 +64,44 @@ const FoodGuide: React.FC<FoodGuideProps> = ({ data }) => {
 
     return (
         <div className="max-w-6xl mx-auto">
-            {/* Legend Section Simplificada */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                <h3 className="text-sm font-medium text-gray-800 mb-3">Leyenda de Símbolos</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            {/* Legend Section Mejorada */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 mb-8 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Leyenda de Símbolos Nutricionales</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {Object.entries(data.genotipo_info.simbolos).map(([key, symbol]) => (
-                        <div key={key} className="flex items-center gap-2">
-                            {key.includes('◊') && <Diamond className="h-3 w-3 text-blue-500" />}
-                            {key.includes('•') && <CircleDot className="h-3 w-3 text-orange-500" />}
-                            <span className="text-gray-700">{symbol.etiqueta}: {symbol.descripcion}</span>
+                        <div key={key} className="bg-white rounded-lg p-4 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0">
+                                    {key.includes('◊') && (
+                                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <Diamond className="h-5 w-5 text-blue-600" />
+                                        </div>
+                                    )}
+                                    {key.includes('•') && (
+                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                                            <CircleDot className="h-5 w-5 text-orange-600" />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="font-semibold text-gray-800 text-sm mb-1">{symbol.etiqueta}</h4>
+                                    <p className="text-gray-600 text-xs leading-relaxed">{symbol.descripcion}</p>
+                                </div>
+                            </div>
                         </div>
                     ))}
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-                        <span className="text-gray-700">Neutros: {data.genotipo_info.regla_neutros}</span>
+                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0">
+                                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
+                                </div>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-gray-800 text-sm mb-1">Alimentos Neutros</h4>
+                                <p className="text-gray-600 text-xs leading-relaxed">{data.genotipo_info.regla_neutros}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
