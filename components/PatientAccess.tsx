@@ -173,11 +173,11 @@ const PatientAccess: React.FC<PatientAccessProps> = ({
                                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                                     <Apple className="w-5 h-5 text-green-600" />
                                 </div>
-                                <h2 className="text-xl font-bold text-gray-900">Tu Lista de Alimentos</h2>
+                                <h2 className="text-xl font-bold text-gray-900">Tu Lista Completa de Alimentos</h2>
                             </div>
                             
                             {foodGuide && (
-                                <div className="space-y-4">
+                                <div className="space-y-6">
                                     {/* Superalimentos */}
                                     <div className="bg-emerald-50 rounded-lg p-4">
                                         <h3 className="font-semibold text-emerald-900 mb-3 flex items-center gap-2">
@@ -188,13 +188,16 @@ const PatientAccess: React.FC<PatientAccessProps> = ({
                                             {Object.values(foodGuide.categorias_alimentos)
                                                 .flat()
                                                 .filter(food => 
-                                                    food.estado === "Superalimento" && 
-                                                    food.marcador_especial?.includes('◊')
+                                                    food.estado === "Superalimento"
                                                 )
-                                                .slice(0, 8)
                                                 .map((food, index) => (
                                                     <div key={index} className="text-sm text-emerald-800 bg-white rounded px-2 py-1 border border-emerald-200">
                                                         {food.nombre}
+                                                        {food.marcador_especial && (
+                                                            <span className="ml-2 text-xs bg-emerald-200 text-emerald-700 px-1 py-0.5 rounded">
+                                                                {food.marcador_especial}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 ))}
                                         </div>
@@ -210,13 +213,16 @@ const PatientAccess: React.FC<PatientAccessProps> = ({
                                             {Object.values(foodGuide.categorias_alimentos)
                                                 .flat()
                                                 .filter(food => 
-                                                    food.estado === "Toxina" && 
-                                                    food.marcador_especial?.includes('•')
+                                                    food.estado === "Toxina"
                                                 )
-                                                .slice(0, 8)
                                                 .map((food, index) => (
                                                     <div key={index} className="text-sm text-red-800 bg-white rounded px-2 py-1 border border-red-200">
                                                         {food.nombre}
+                                                        {food.marcador_especial && (
+                                                            <span className="ml-2 text-xs bg-red-200 text-red-700 px-1 py-0.5 rounded">
+                                                                {food.marcador_especial}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 ))}
                                         </div>
@@ -234,6 +240,65 @@ const PatientAccess: React.FC<PatientAccessProps> = ({
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Lista Detallada por Categorías */}
+                    <div className="mt-8">
+                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                    <Apple className="w-5 h-5 text-indigo-600" />
+                                </div>
+                                <h2 className="text-xl font-bold text-gray-900">Lista Detallada por Categorías</h2>
+                            </div>
+                            
+                            <div className="space-y-6">
+                                {Object.entries(foodGuide.categorias_alimentos).map(([categoryName, foods]) => (
+                                    <div key={categoryName} className="border border-gray-200 rounded-lg p-4">
+                                        <h3 className="font-semibold text-gray-900 mb-3 text-lg">
+                                            {categoryName}
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                                            {foods.map((food, index) => (
+                                                <div 
+                                                    key={index} 
+                                                    className={`text-sm rounded px-3 py-2 border ${
+                                                        food.estado === "Superalimento" 
+                                                            ? "bg-emerald-50 text-emerald-800 border-emerald-200" 
+                                                            : food.estado === "Toxina"
+                                                            ? "bg-red-50 text-red-800 border-red-200"
+                                                            : "bg-gray-50 text-gray-800 border-gray-200"
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="font-medium">{food.nombre}</span>
+                                                        <span className={`text-xs px-2 py-1 rounded-full ${
+                                                            food.estado === "Superalimento" 
+                                                                ? "bg-emerald-200 text-emerald-700" 
+                                                                : food.estado === "Toxina"
+                                                                ? "bg-red-200 text-red-700"
+                                                                : "bg-gray-200 text-gray-700"
+                                                        }`}>
+                                                            {food.estado}
+                                                        </span>
+                                                    </div>
+                                                    {food.marcador_especial && (
+                                                        <div className="mt-1 text-xs text-gray-600">
+                                                            {food.marcador_especial}
+                                                        </div>
+                                                    )}
+                                                    {food.notas && (
+                                                        <div className="mt-1 text-xs text-blue-600">
+                                                            {food.notas}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
