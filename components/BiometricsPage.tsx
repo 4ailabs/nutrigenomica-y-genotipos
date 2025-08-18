@@ -363,11 +363,11 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                             Sistema de Evaluación Biomédica
                         </div>
                         
-                        <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4 leading-tight">
                             Biomediciones <span className="text-blue-600">Nutrigenómicas</span>
                         </h1>
                         
-                        <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
+                        <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
                             Guía completa para realizar las 8 mediciones biomédicas que determinarán tu genotipo nutricional personalizado.
                         </p>
                         
@@ -400,12 +400,12 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
 
                 {/* Instrucciones Mejoradas */}
                 <section id="instructions" className="mb-20">
-                     <div className="text-center mb-8">
-                         <h2 className="text-3xl font-bold text-slate-800 mb-3 flex items-center justify-center">
-                             <ClipboardList className="w-8 h-8 mr-3 text-blue-600" />
+                     <div className="text-center mb-6">
+                         <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center justify-center">
+                             <ClipboardList className="w-6 h-6 mr-3 text-blue-600" />
                              Instrucciones de Medición
                          </h2>
-                         <p className="text-slate-600 text-lg">Sigue paso a paso cada medición para obtener resultados precisos</p>
+                         <p className="text-slate-600 text-base">Sigue paso a paso cada medición para obtener resultados precisos</p>
                      </div>
                      
                      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-white/20">
@@ -419,12 +419,12 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                  
                  {/* Formulario Mejorado */}
                  <section id="results-form">
-                     <div className="text-center mb-8">
-                         <h2 className="text-3xl font-bold text-slate-800 mb-3 flex items-center justify-center">
-                             <BarChart3 className="w-8 h-8 mr-3 text-blue-600" />
+                     <div className="text-center mb-6">
+                         <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center justify-center">
+                             <BarChart3 className="w-6 h-6 mr-3 text-blue-600" />
                              Hoja de Resultados
                          </h2>
-                         <p className="text-slate-600 text-lg">Registra tus mediciones para calcular tu genotipo nutricional</p>
+                         <p className="text-slate-600 text-base">Registra tus mediciones para calcular tu genotipo nutricional</p>
                      </div>
                      
                      <form className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 sm:p-10 space-y-14 border border-white/20">
