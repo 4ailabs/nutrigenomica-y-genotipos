@@ -70,14 +70,31 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
         const { name, value, type } = e.target;
         
         if (name.includes('.')) {
-            const [parent, child] = name.split('.');
-            setFormData((prev: any) => ({
-                ...prev,
-                [parent]: {
-                    ...prev[parent],
-                    [child]: value
-                }
-            }));
+            const parts = name.split('.');
+            if (parts.length === 3) {
+                // Para campos como fingerprints.right.thumb
+                const [parent, side, finger] = parts;
+                setFormData((prev: any) => ({
+                    ...prev,
+                    [parent]: {
+                        ...prev[parent],
+                        [side]: {
+                            ...prev[parent][side],
+                            [finger]: value
+                        }
+                    }
+                }));
+            } else if (parts.length === 2) {
+                // Para campos como fingerprints.right
+                const [parent, child] = parts;
+                setFormData((prev: any) => ({
+                    ...prev,
+                    [parent]: {
+                        ...prev[parent],
+                        [child]: value
+                    }
+                }));
+            }
         } else {
             const isCheckbox = type === 'checkbox';
             const val = isCheckbox ? (e.target as HTMLInputElement).checked : value;
