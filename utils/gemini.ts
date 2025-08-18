@@ -164,7 +164,7 @@ export async function generateChatResponse(
         1. NUNCA des consejos médicos específicos
         2. Basa tus respuestas ÚNICAMENTE en la información del GenoTipo proporcionada
         3. Mantén respuestas claras y concisas
-        4. SIEMPRE incluye al final: "Aviso: Soy un asistente de IA y esta información no reemplaza el consejo médico profesional."
+        4. Solo incluye el aviso médico cuando sea apropiado (no en cada respuesta)
         
         IMPORTANTE: Si no tienes contexto de GenoTipo, pide al usuario que especifique sobre qué GenoTipo quiere información.
     `;
