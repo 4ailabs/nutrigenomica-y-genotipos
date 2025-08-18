@@ -48,7 +48,7 @@ function extractText(resp: any): string {
 }
 
 export async function generateAiResponse(
-    requestType: 'menu' | 'recipes' | 'supplements',
+    requestType: 'menu' | 'recipes' | 'supplements' | 'breakfast' | 'lunch' | 'dinner' | 'snacks' | 'salads' | 'smoothies' | 'mealPrep',
     foodData: FoodGuideData,
     personalData: AIPersonalData
 ): Promise<string> {
@@ -107,6 +107,27 @@ Al final de cada respuesta incluir: "**Nota Profesional:** Esta información nut
             break;
         case 'supplements':
             userRequest = "Basado en el genotipo y los objetivos del usuario, recomienda 3 a 5 suplementos clave. Explica brevemente por qué cada uno es beneficioso para este perfil específico.";
+            break;
+        case 'breakfast':
+            userRequest = "Crea 5 opciones de desayunos nutritivos y energéticos para este perfil genotípico. Incluye ingredientes, preparación y beneficios específicos.";
+            break;
+        case 'lunch':
+            userRequest = "Genera 5 opciones de almuerzos equilibrados y nutritivos para este perfil. Incluye platos principales, guarniciones y bebidas recomendadas.";
+            break;
+        case 'dinner':
+            userRequest = "Crea 5 opciones de cenas ligeras pero nutritivas para este perfil. Enfócate en proteínas magras y vegetales de fácil digestión.";
+            break;
+        case 'snacks':
+            userRequest = "Genera 8 opciones de snacks saludables entre comidas para este perfil. Incluye opciones dulces y saladas, con horarios recomendados.";
+            break;
+        case 'salads':
+            userRequest = "Crea 6 ensaladas nutritivas y variadas para este perfil genotípico. Incluye diferentes tipos de hojas, proteínas y aderezos saludables.";
+            break;
+        case 'smoothies':
+            userRequest = "Genera 5 recetas de smoothies y batidos nutritivos para este perfil. Incluye opciones para diferentes momentos del día y objetivos.";
+            break;
+        case 'mealPrep':
+            userRequest = "Crea un plan de preparación de comidas para 5 días que sea eficiente y nutritivo para este perfil. Incluye lista de compras y planificación semanal.";
             break;
     }
 

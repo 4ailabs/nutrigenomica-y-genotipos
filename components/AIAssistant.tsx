@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { AIAssistantProps, AIPersonalData } from '../types';
 import { generateAiResponse } from '../utils/gemini';
-import { WandSparkles, LoaderCircle, Brain, Sparkles, Target, Heart, Zap } from 'lucide-react';
+import { WandSparkles, LoaderCircle, Brain, Sparkles, Target, Heart, Zap, Apple, Coffee, Salad, Utensils, Clock, BookOpen, Leaf, Droplets } from 'lucide-react';
 import Disclaimer from './Disclaimer';
 import '../styles/aiResponse.css';
 
@@ -23,7 +23,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
         setPersonalData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = useCallback(async (requestType: 'menu' | 'recipes' | 'supplements') => {
+    const handleSubmit = useCallback(async (requestType: 'menu' | 'recipes' | 'supplements' | 'breakfast' | 'lunch' | 'dinner' | 'snacks' | 'salads' | 'smoothies' | 'mealPrep') => {
         if (!personalData.age || !personalData.goals) {
             setError('Por favor, ingresa al menos tu edad y tus objetivos.');
             return;
@@ -49,18 +49,29 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Formulario Principal */}
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-                {/* Header del Formulario */}
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-6">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <Target className="w-6 h-6 text-white" />
+                {/* Header del Formulario Mejorado */}
+                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-8 py-8 relative overflow-hidden">
+                    {/* Elementos decorativos de fondo */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
+                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white"></div>
+                    </div>
+                    
+                    <div className="relative flex items-center gap-6">
+                        <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+                            <Brain className="w-8 h-8 text-white" />
                         </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-white">
-                                Tu Perfil Nutricional
+                        <div className="flex-1">
+                            <h2 className="text-3xl font-bold text-white mb-2">
+                                Asistente IA Nutrigenómico
+                            </h2>
+                            <h3 className="text-xl font-semibold text-blue-100 mb-2">
+                                Tu Perfil Nutricional Personalizado
                             </h3>
-                            <p className="text-blue-100 text-sm mt-1">
-                                Completa tus datos para recibir recomendaciones de la IA basadas en tu GenoTipo.
+                            <p className="text-blue-200 text-base leading-relaxed max-w-2xl">
+                                Completa tus datos para recibir recomendaciones inteligentes de la IA basadas en tu GenoTipo específico. 
+                                Genera menús, recetas, snacks y más, todo personalizado para tu perfil genético.
                             </p>
                         </div>
                     </div>
@@ -140,43 +151,156 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         </div>
                     )}
 
-                    {/* Botones de Acción Mejorados */}
-                    <div className="grid sm:grid-cols-3 gap-4 mb-8">
-                        <button 
-                            onClick={() => handleSubmit('menu')} 
-                            disabled={!isFormValid || isLoading} 
-                            className="group relative w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <span className="relative flex items-center justify-center">
-                                <Heart className="w-5 h-5 mr-2" />
-                                Generar Menú Semanal
-                            </span>
-                        </button>
+                    {/* Opciones Nutricionales Organizadas */}
+                    <div className="mb-8">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Selecciona tu Solicitud Nutricional</h3>
                         
-                        <button 
-                            onClick={() => handleSubmit('recipes')} 
-                            disabled={!isFormValid || isLoading} 
-                            className="group relative w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <span className="relative flex items-center justify-center">
-                                <Zap className="w-5 h-5 mr-2" />
-                                Generar Recetas
-                            </span>
-                        </button>
-                        
-                        <button 
-                            onClick={() => handleSubmit('supplements')} 
-                            disabled={!isFormValid || isLoading} 
-                            className="group relative w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <span className="relative flex items-center justify-center">
-                                <WandSparkles className="w-5 h-5 mr-2" />
-                                Sugerir Suplementos
-                            </span>
-                        </button>
+                        {/* Categoría: Planes Principales */}
+                        <div className="mb-6">
+                            <h4 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
+                                <Clock className="w-4 h-4" />
+                                Planes Principales
+                            </h4>
+                            <div className="grid sm:grid-cols-3 gap-3">
+                                <button 
+                                    onClick={() => handleSubmit('menu')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Heart className="w-4 h-4 mr-2" />
+                                        Menú Semanal
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('mealPrep')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Utensils className="w-4 h-4 mr-2" />
+                                        Preparación Semanal
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('recipes')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <BookOpen className="w-4 h-4 mr-2" />
+                                        Recetas Creativas
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Categoría: Comidas por Tiempo */}
+                        <div className="mb-6">
+                            <h4 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
+                                <Utensils className="w-4 h-4" />
+                                Comidas por Tiempo
+                            </h4>
+                            <div className="grid sm:grid-cols-3 gap-3">
+                                <button 
+                                    onClick={() => handleSubmit('breakfast')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Coffee className="w-4 h-4 mr-2" />
+                                        Desayunos
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('lunch')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Utensils className="w-4 h-4 mr-2" />
+                                        Almuerzos
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('dinner')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-red-500 to-red-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Utensils className="w-4 h-4 mr-2" />
+                                        Cenas
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Categoría: Opciones Especiales */}
+                        <div className="mb-6">
+                            <h4 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
+                                <Leaf className="w-4 h-4" />
+                                Opciones Especiales
+                            </h4>
+                            <div className="grid sm:grid-cols-4 gap-3">
+                                <button 
+                                    onClick={() => handleSubmit('snacks')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-green-500 to-green-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Apple className="w-4 h-4 mr-2" />
+                                        Snacks
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('salads')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-teal-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Salad className="w-4 h-4 mr-2" />
+                                        Ensaladas
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('smoothies')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-cyan-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <Droplets className="w-4 h-4 mr-2" />
+                                        Smoothies
+                                    </span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => handleSubmit('supplements')} 
+                                    disabled={!isFormValid || isLoading} 
+                                    className="group relative bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative flex items-center justify-center text-sm">
+                                        <WandSparkles className="w-4 h-4 mr-2" />
+                                        Suplementos
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     
                     {/* Área de Respuesta de IA */}
