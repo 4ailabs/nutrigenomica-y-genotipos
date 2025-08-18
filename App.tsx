@@ -4,8 +4,9 @@ import AdvancedCalculator from './components/AdvancedCalculator';
 import GenotypeDetail from './components/GenotypeDetail';
 import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
+import ChatPage from './components/ChatPage';
 
-type Page = 'landing' | 'portal' | 'calculator' | 'biometrics';
+type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat';
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -38,6 +39,7 @@ const App: React.FC = () => {
                             onNavigateToGenotype={handleViewGenotype} 
                             onNavigateToBiometrics={() => navigateTo('biometrics')} 
                             onNavigateToMain={() => navigateTo('landing')}
+                            onNavigateToChat={() => navigateTo('chat')}
                         />;
             case 'calculator':
                 return <AdvancedCalculator 
@@ -48,6 +50,12 @@ const App: React.FC = () => {
                 return <BiometricsPage 
                             onBackToPortal={() => navigateTo('portal')} 
                             onNavigateToMain={() => navigateTo('landing')}
+                        />;
+            case 'chat':
+                return <ChatPage 
+                            onBackToPortal={() => navigateTo('portal')} 
+                            onNavigateToMain={() => navigateTo('landing')}
+                            contextGenotypeId={viewingGenotype}
                         />;
             default:
                 return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} />;

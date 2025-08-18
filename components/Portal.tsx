@@ -10,44 +10,72 @@ import {
     GenotypeCard,
     MedicalAlertCard
 } from './MedicalComponents';
-import { Target, Calculator, Users, Award, Clock, ArrowRight, CheckCircle, Home, ArrowLeft } from 'lucide-react';
-import Chatbot from './Chatbot';
+import { Target, Calculator, Users, Award, Clock, ArrowRight, CheckCircle, Home, ArrowLeft, Bot } from 'lucide-react';
 
 interface PortalProps {
     onNavigateToCalculator: () => void;
     onNavigateToGenotype: (id: number) => void;
     onNavigateToBiometrics: () => void;
-    onNavigateToMain?: () => void; // Nueva prop para navegar al inicio
+    onNavigateToMain?: () => void;
+    onNavigateToChat?: () => void;
 }
 
-interface CalculatorCardProps {
+interface ToolCardProps {
     type: string;
     title: string;
     description: string;
     features: string[];
     onClick: () => void;
     style?: React.CSSProperties;
-    step: number;
+    category: 'evaluation' | 'consultation';
 }
 
-const CalculatorCard: React.FC<CalculatorCardProps> = ({ type, title, description, features, onClick, style, step }) => {
-    // Colores diferenciados para cada paso
-    const stepColors = {
-        1: {
-            header: "bg-blue-50 border-blue-200",
-            badge: "bg-blue-100 text-blue-700",
-            icon: "bg-blue-100 text-blue-600",
-            number: "bg-blue-100 text-blue-600"
-        },
-        2: {
-            header: "bg-green-50 border-green-200",
-            badge: "bg-green-100 text-green-700",
-            icon: "bg-green-100 text-green-600",
-            number: "bg-green-100 text-green-600"
+const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features, onClick, style, category }) => {
+    // Colores diferenciados por herramienta específica
+    const getToolColors = () => {
+        switch(type) {
+            case 'biometrics':
+                return {
+                    header: "bg-emerald-50 border-emerald-200",
+                    badge: "bg-emerald-100 text-emerald-700",
+                    icon: "bg-emerald-100 text-emerald-600",
+                    button: "bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white"
+                };
+            case 'calculator':
+                return {
+                    header: "bg-cyan-50 border-cyan-200",
+                    badge: "bg-cyan-100 text-cyan-700",
+                    icon: "bg-cyan-100 text-cyan-600",
+                    button: "bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white"
+                };
+            case 'chat':
+                return {
+                    header: "bg-violet-50 border-violet-200", 
+                    badge: "bg-violet-100 text-violet-700",
+                    icon: "bg-violet-100 text-violet-600",
+                    button: "bg-violet-500 hover:bg-violet-600 active:bg-violet-700 text-white"
+                };
+            default:
+                return {
+                    header: "bg-slate-50 border-slate-200",
+                    badge: "bg-slate-100 text-slate-700",
+                    icon: "bg-slate-100 text-slate-600",
+                    button: "bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white"
+                };
         }
     };
 
-    const colors = stepColors[step as keyof typeof stepColors];
+    const colors = getToolColors();
+
+    // Iconos por tipo de herramienta
+    const getIcon = () => {
+        switch(type) {
+            case 'biometrics': return <Target className="w-8 h-8" />;
+            case 'calculator': return <Calculator className="w-8 h-8" />;
+            case 'chat': return <Bot className="w-8 h-8" />;
+            default: return <Target className="w-8 h-8" />;
+        }
+    };
 
     return (
         <MedicalCard 
@@ -57,33 +85,21 @@ const CalculatorCard: React.FC<CalculatorCardProps> = ({ type, title, descriptio
             onClick={onClick}
         >
             <div className={`h-32 relative overflow-hidden ${colors.header} border-b`}>
-                {/* Número del paso con estilo médico */}
-                <MedicalBadge 
-                    variant={step === 1 ? "info" : "success"}
-                    className="absolute top-4 right-4"
-                >
-                    Paso {step}
-                </MedicalBadge>
+                {/* Badge de categoría */}
+                <div className={`absolute top-4 right-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.badge}`}>
+                    {category === 'evaluation' ? 'Evaluación' : 'Consulta'}
+                </div>
                 
-                {/* Icono médico centrado */}
+                {/* Icono centrado */}
                 <div className="absolute inset-0 flex items-center justify-center">
                     <div className={`w-16 h-16 ${colors.icon} rounded-full flex items-center justify-center shadow-md`}>
-                        {step === 1 ? (
-                            <Target className="w-8 h-8" />
-                        ) : (
-                            <Calculator className="w-8 h-8" />
-                        )}
+                        {getIcon()}
                     </div>
                 </div>
             </div>
             
             <div className="p-6 flex flex-col flex-grow">
-                <div className="flex items-center mb-3">
-                    <div className={`w-8 h-8 rounded-full font-bold text-sm flex items-center justify-center mr-3 ${colors.number} shadow-sm`}>
-                        {step}
-                    </div>
-                    <MedicalHeading level={4} variant="default" className="mb-0">{title}</MedicalHeading>
-                </div>
+                <MedicalHeading level={4} variant="default" className="mb-3">{title}</MedicalHeading>
                 
                 <MedicalText variant="body" size="sm" className="mb-4 flex-grow">{description}</MedicalText>
                 
@@ -98,22 +114,20 @@ const CalculatorCard: React.FC<CalculatorCardProps> = ({ type, title, descriptio
                     </ul>
                 )}
                 
-                <MedicalButton
-                    variant="primary"
+                <button
                     onClick={onClick}
-                    className="mt-auto w-full group"
+                    className={`mt-auto w-full group px-4 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center ${colors.button} focus:outline-none focus:ring-2 focus:ring-offset-2`}
                 >
-                    <span>Continuar</span>
+                    <span>{category === 'evaluation' ? 'Comenzar' : 'Abrir'}</span>
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                </MedicalButton>
+                </button>
             </div>
         </MedicalCard>
     );
 };
 
-const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain }) => {
+const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain, onNavigateToChat }) => {
     const genotypes = [1, 2, 3, 4, 5, 6];
-    const [isChatOpen, setIsChatOpen] = useState(true); // Chat siempre abierto en modo integrado
     
     // Colores médicos para cada genotipo
     const genotypeColors = [
@@ -125,34 +139,49 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
         "from-indigo-500 to-indigo-600"    // Genotipo 6
     ];
     
-    const calculatorCards = [
+    // Herramientas de evaluación (proceso secuencial)
+    const evaluationTools = [
         {
             type: "biometrics",
             title: "Biomediciones",
-            description: "Mediciones corporales precisas para determinar proporciones físicas y características metabólicas.",
+            description: "Captura medidas corporales precisas",
             features: [
-                "8 mediciones biométricas clave",
-                "Análisis de proporciones corporales",
-                "Evaluación de características físicas",
-                "Datos para cálculo preciso"
+                "Mediciones rápidas",
+                "Interfaz simple"
             ],
             onClick: onNavigateToBiometrics,
-            step: 1
+            category: 'evaluation' as const
         },
         {
             type: "calculator",
             title: "Calculadora Avanzada",
-            description: "Algoritmo científico para determinar tu GenoTipo basado en biomediciones y factores genéticos.",
+            description: "Calcula el GenoTipo del paciente",
             features: [
-                "Algoritmo basado en evidencia científica",
-                "Análisis de múltiples factores",
-                "Resultado preciso del GenoTipo",
-                "Recomendaciones personalizadas"
+                "Resultado inmediato",
+                "Algoritmo validado"
             ],
             onClick: onNavigateToCalculator,
-            step: 2
+            category: 'evaluation' as const
         }
     ];
+
+    // Herramientas de consulta (independientes)
+    const consultationTools = onNavigateToChat ? [
+        {
+            type: "chat",
+            title: "Asistente IA Nutrigenómico",
+            description: "Consultas rápidas sobre genotipos y nutrición",
+            features: [
+                "Respuestas inmediatas",
+                "Disponible 24/7"
+            ],
+            onClick: onNavigateToChat,
+            category: 'consultation' as const
+        }
+    ] : [];
+
+    // Combinar todas las herramientas
+    const allTools = [...evaluationTools, ...consultationTools];
 
     return (
         <div className="min-h-screen bg-white text-gray-800">
@@ -184,13 +213,13 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                     </MedicalHeading>
                     
                     <MedicalText variant="body" size="base" className="max-w-2xl mx-auto mb-6 text-gray-700">
-                        Sistema de evaluación nutrigenómica basado en evidencia científica para determinar tu perfil genotípico nutricional.
+                        Sistema profesional para evaluación nutrigenómica.
                     </MedicalText>
                     
                     {/* Información médica */}
                     <MedicalAlertCard type="info" className="max-w-xl mx-auto p-4">
                         <MedicalText variant="caption" size="sm">
-                            <strong>Proceso médico profesional:</strong> Sigue los pasos en secuencia para obtener un análisis nutrigenómico completo y preciso.
+                            <strong>Uso profesional:</strong> Herramientas para evaluación rápida y consultas nutrigenómicas.
                         </MedicalText>
                     </MedicalAlertCard>
                 </header>
@@ -202,8 +231,7 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                             Exploración de GenoTipos
                         </MedicalHeading>
                         <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
-                            Haz clic en cada GenoTipo para aprender sobre sus características únicas, constitución física y metabólica, 
-                            y recomendaciones de alimentación para optimizar tu salud.
+                            Consulta información detallada de cada GenoTipo.
                         </MedicalText>
                     </div>
                     
@@ -221,61 +249,60 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                     </div>
                 </section>
                 
-                {/* Sección de Evaluación - Reorganizada */}
+                {/* Sección de Herramientas - Reorganizada */}
                 <section className="mb-16">
                     <div className="text-center mb-8">
                         <MedicalBadge variant="success" size="md" className="mb-3">
-                            <Calculator className="w-4 h-4 mr-2" />
-                            Proceso de Evaluación
+                            <Users className="w-4 h-4 mr-2" />
+                            Herramientas Profesionales
                         </MedicalBadge>
                         
                         <MedicalHeading level={4} variant="secondary" align="center" className="mb-3">
-                            Calcula tu GenoTipo
+                            Evaluación y Consulta
                         </MedicalHeading>
                         
                         <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
-                            Utiliza nuestras herramientas científicas para descubrir qué GenoTipo te corresponde. 
-                            Comienza con las Biomediciones para obtener los datos necesarios.
+                            Evaluación de genotipos y consultas con IA.
                         </MedicalText>
                     </div>
                     
-                    {/* Cards de Calculadoras en Grid */}
-                    <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                        {calculatorCards.map((card, index) => (
-                             <CalculatorCard 
-                                key={card.title} 
-                                {...card}
-                            />
-                        ))}
-                    </div>
+                    {/* Herramientas de Evaluación */}
+                    {evaluationTools.length > 0 && (
+                        <div className="mb-8">
+                            <MedicalHeading level={5} variant="muted" align="center" className="mb-4">
+                                Proceso de Evaluación
+                            </MedicalHeading>
+                            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                                {evaluationTools.map((tool) => (
+                                    <ToolCard 
+                                        key={tool.title} 
+                                        {...tool}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {/* Herramientas de Consulta */}
+                    {consultationTools.length > 0 && (
+                        <div>
+                            <MedicalHeading level={5} variant="muted" align="center" className="mb-4">
+                                Herramientas de Consulta
+                            </MedicalHeading>
+                            <div className="flex justify-center">
+                                <div className="w-full max-w-md">
+                                    {consultationTools.map((tool) => (
+                                        <ToolCard 
+                                            key={tool.title} 
+                                            {...tool}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </section>
 
-                {/* Chat Integrado - Reorganizado */}
-                <section className="mb-8">
-                    <div className="text-center mb-6">
-                        <MedicalBadge variant="info" size="sm" className="mb-3">
-                            <Users className="w-4 h-4 mr-2" />
-                            Asistente IA Integrado
-                        </MedicalBadge>
-                        <MedicalHeading level={4} variant="secondary" align="center" className="mb-2">
-                            Consulta con tu Asistente IA
-                        </MedicalHeading>
-                        <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
-                            Pregunta sobre GenoTipos, nutrición personalizada, planes alimenticios o cualquier duda que tengas.
-                        </MedicalText>
-                    </div>
-                    
-                    <div className="max-w-4xl mx-auto">
-                        <div className="h-80 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                            <Chatbot
-                                isOpen={true}
-                                onClose={() => {}}
-                                contextGenotypeId={null}
-                                isIntegrated={true}
-                            />
-                        </div>
-                    </div>
-                </section>
 
                 {/* Footer Profesional */}
                 <footer className="text-center text-gray-500 text-sm mt-20 py-8 border-t border-gray-200">
