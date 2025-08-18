@@ -129,15 +129,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                 {/* Hero Section Profesional para Médicos */}
                 <section className="relative text-center py-20 md:py-28 lg:py-32 bg-white">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                        {/* Badge de Programa Médico */}
+                        {/* Badge de Programa de Salud */}
                         <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium mb-6">
                             <Shield className="w-4 h-4 mr-2" />
-                            Programa Médico de Nutrigenómica
+                            Programa de salud basado en GenoTipos
                         </div>
                         
                         {/* Título Principal */}
                         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                            Nutrigenómica y <span className="text-blue-600">GenoTipos</span>
+                            Nutrigenomics <span className="text-blue-600">GenoType Algorithm</span>
                         </h1>
                         
                         {/* Descripción Profesional */}
@@ -178,7 +178,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                                 className="bg-green-600 hover:bg-green-700 text-white"
                             >
                                 <Users className="w-5 h-5 mr-2" />
-                                Ver mi Genotipo
+                                Mi Genotipo
                             </MedicalButton>
                              
                              <MedicalButton 

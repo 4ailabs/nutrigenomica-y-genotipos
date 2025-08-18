@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-    ArrowLeft, 
-    Search, 
-    User, 
-    Dna, 
-    Apple, 
-    CheckCircle, 
-    XCircle, 
+import {
+    ArrowLeft,
+    Search,
+    User,
+    Dna,
+    Apple,
+    CheckCircle,
+    XCircle,
     Info,
     Heart,
     Target,
@@ -25,7 +25,17 @@ import {
     Star,
     Clock,
     Scale,
-    Activity
+    Activity,
+    // Iconos únicos para cada genotipo
+    Crosshair,
+    Package,
+    Crown,
+    Compass,
+    Sword,
+    Mountain,
+    // Iconos para menús
+    Sun,
+    Moon
 } from 'lucide-react';
 import { GENOTYPE_DATA } from '../genotypeData';
 import { FOOD_GUIDE_DATA } from '../foodData';
@@ -39,7 +49,7 @@ interface PatientViewProps {
 const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(null);
-    const [activeTab, setActiveTab] = useState<'genotype' | 'foods'>('genotype');
+    const [activeTab, setActiveTab] = useState<'genotype' | 'foods' | 'menus'>('genotype');
 
     const handleGenotypeSelect = (genotypeId: number) => {
         setSelectedGenotype(genotypeId);
@@ -62,7 +72,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     const getGenotypeGradient = (genotypeId: number): string => {
         const baseColor = GENOTYPE_COLORS[genotypeId];
         if (!baseColor) return 'from-gray-500 to-gray-600';
-        
+
         // Convertir el color base a un gradiente
         switch(genotypeId) {
             case 1: return 'from-pink-500 to-rose-600'; // Hunter
@@ -119,9 +129,22 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         </div>;
     };
 
+    // Función para obtener el icono único de cada genotipo
+    const getGenotypeIcon = (genotypeId: number) => {
+        switch(genotypeId) {
+            case 1: return <Crosshair className="w-6 h-6 md:w-8 md:h-8 text-white" />; // Hunter
+            case 2: return <Package className="w-6 h-6 md:w-8 md:h-8 text-white" />; // Gatherer
+            case 3: return <Crown className="w-6 h-6 md:w-8 md:h-8 text-white" />; // Master
+            case 4: return <Compass className="w-6 h-6 md:w-8 md:h-8 text-white" />; // Explorer
+            case 5: return <Sword className="w-6 h-6 md:w-8 md:h-8 text-white" />; // Warrior
+            case 6: return <Mountain className="w-6 h-6 md:w-8 md:h-8 text-white" />; // Nomad
+            default: return <Dna className="w-6 h-6 md:w-8 md:h-8 text-white" />;
+        }
+    };
+
     const renderGenotypeInfo = () => {
         if (!selectedGenotype) return null;
-        
+
         const genotype = GENOTYPE_DATA[selectedGenotype];
         if (!genotype) return null;
 
@@ -352,7 +375,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                 {/* Categorías de Alimentos */}
                 <div className="space-y-4 md:space-y-6">
                     <h3 className="text-xl md:text-2xl font-bold text-gray-900">Lista de Alimentos por Categoría</h3>
-                    
+
                     {Object.entries(foodData.categorias_alimentos).map(([categoryName, foods]) => (
                         <div key={categoryName} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
                             {/* Header de la Categoría */}
@@ -367,7 +390,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     </p>
                                 </div>
                             </div>
-                            
+
                             {/* Superalimentos */}
                             {foods.filter(food => food.estado === "Superalimento").length > 0 && (
                                 <div className="mb-4 md:mb-6">
@@ -497,6 +520,161 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         );
     };
 
+    const renderMenus = () => {
+        if (!selectedGenotype) return null;
+
+        const genotypeColor = getGenotypeColor(selectedGenotype);
+        const genotypeGradient = getGenotypeGradient(selectedGenotype);
+
+        return (
+            <div className="space-y-4 md:space-y-6">
+                {/* Header de Menús */}
+                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-2 md:top-4 right-2 md:right-4 w-16 md:w-32 h-16 md:h-32 rounded-full bg-white"></div>
+                        <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 w-12 md:w-24 h-12 md:h-24 rounded-full bg-white"></div>
+                    </div>
+                    <div className="relative">
+                        <h2 className="text-2xl md:text-3xl font-bold mb-2">Menús Personalizados</h2>
+                        <p className="text-lg md:text-xl opacity-90">Planes de comidas adaptados a tu genotipo</p>
+                        <p className="text-base md:text-lg opacity-80 mt-2">Descubre qué comer en cada momento del día</p>
+                    </div>
+                </div>
+
+                {/* Categorías de Menús */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    {/* Desayunos */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                                <Sun className="w-5 h-5 text-yellow-600" />
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">Desayunos</h3>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+                                <h4 className="font-semibold text-yellow-800 mb-2">Opción 1: Energético</h4>
+                                <p className="text-sm text-yellow-700">Avena con frutas y frutos secos</p>
+                            </div>
+                            <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+                                <h4 className="font-semibold text-yellow-800 mb-2">Opción 2: Proteico</h4>
+                                <p className="text-sm text-yellow-700">Huevos con aguacate y pan integral</p>
+                            </div>
+                            <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+                                <h4 className="font-semibold text-yellow-800 mb-2">Opción 3: Lácteo</h4>
+                                <p className="text-sm text-yellow-700">Yogur griego con granola casera</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Almuerzos */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+                                <Utensils className="w-5 h-5 text-orange-600" />
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">Almuerzos</h3>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                                <h4 className="font-semibold text-orange-800 mb-2">Opción 1: Mediterráneo</h4>
+                                <p className="text-sm text-orange-700">Pescado con ensalada y quinoa</p>
+                            </div>
+                            <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                                <h4 className="font-semibold text-orange-800 mb-2">Opción 2: Vegetariano</h4>
+                                <p className="text-sm text-orange-700">Lentejas con arroz y verduras</p>
+                            </div>
+                            <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                                <h4 className="font-semibold text-orange-800 mb-2">Opción 3: Proteico</h4>
+                                <p className="text-sm text-orange-700">Pollo con batata y brócoli</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Cenas */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <Moon className="w-5 h-5 text-purple-600" />
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">Cenas</h3>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                                <h4 className="font-semibold text-purple-800 mb-2">Opción 1: Ligera</h4>
+                                <p className="text-sm text-purple-700">Sopa de verduras con proteína</p>
+                            </div>
+                            <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                                <h4 className="font-semibold text-purple-800 mb-2">Opción 2: Ensalada</h4>
+                                <p className="text-sm text-purple-700">Ensalada completa con atún</p>
+                            </div>
+                            <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                                <h4 className="font-semibold text-purple-800 mb-2">Opción 3: Proteica</h4>
+                                <p className="text-sm text-purple-700">Tofu con verduras salteadas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Snacks */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                                <Leaf className="w-5 h-5 text-green-600" />
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">Snacks</h3>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                                <h4 className="font-semibold text-green-800 mb-2">Opción 1: Frutas</h4>
+                                <p className="text-sm text-green-700">Manzana con almendras</p>
+                            </div>
+                            <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                                <h4 className="font-semibold text-green-800 mb-2">Opción 2: Lácteos</h4>
+                                <p className="text-sm text-green-700">Yogur con frutos rojos</p>
+                            </div>
+                            <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                                <h4 className="font-semibold text-green-800 mb-2">Opción 3: Semillas</h4>
+                                <p className="text-sm text-green-700">Mix de semillas y frutos secos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Información Adicional */}
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
+                    <div className="flex items-center space-x-3 mb-4">
+                        <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <Info className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-bold text-gray-900">Recomendaciones</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Horarios Sugeridos</h4>
+                            <ul className="space-y-2 text-sm text-gray-600">
+                                <li>• Desayuno: 7:00 - 9:00 AM</li>
+                                <li>• Snack: 10:30 - 11:00 AM</li>
+                                <li>• Almuerzo: 1:00 - 2:00 PM</li>
+                                <li>• Merienda: 4:00 - 5:00 PM</li>
+                                <li>• Cena: 7:00 - 8:00 PM</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Tips Importantes</h4>
+                            <ul className="space-y-2 text-sm text-gray-600">
+                                <li>• Bebe agua antes de cada comida</li>
+                                <li>• Mastica lentamente para mejor digestión</li>
+                                <li>• Evita comer 2 horas antes de dormir</li>
+                                <li>• Varía los menús para mayor variedad</li>
+                                <li>• Escucha las señales de tu cuerpo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
             {/* Header */}
@@ -515,10 +693,10 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-green-600 to-emerald-700 rounded-xl flex items-center justify-center">
                                 <User className="w-4 h-4 md:w-6 md:h-6 text-white" />
                             </div>
-                            <div>
-                                <h1 className="text-lg md:text-2xl font-bold text-gray-900">Vista del Paciente</h1>
-                                <p className="text-xs md:text-sm text-gray-600 hidden sm:block">Consulta tu genotipo y guía alimentaria</p>
-                            </div>
+                                                                    <div>
+                                            <h1 className="text-lg md:text-2xl font-bold text-gray-900">Mi Genotipo</h1>
+                                            <p className="text-xs md:text-sm text-gray-600 hidden sm:block">Consulta tu genotipo y guía alimentaria</p>
+                                        </div>
                         </div>
                     </div>
                 </div>
@@ -530,7 +708,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     <div className="text-center mb-6 md:mb-8">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">Selecciona tu Genotipo</h2>
                         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
-                            Para ver tu información personalizada, selecciona tu genotipo nutricional. 
+                            Para ver tu información personalizada, selecciona tu genotipo nutricional.
                             Si no conoces tu genotipo, consulta con tu médico o nutricionista.
                         </p>
                     </div>
@@ -550,30 +728,49 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     </div>
 
                     {/* Grid de Genotipos */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-4">
-                        {Object.values(GENOTYPE_DATA)
-                            .filter(genotype => 
-                                genotype.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                genotype.title.toLowerCase().includes(searchTerm.toLowerCase())
-                            )
-                            .map((genotype) => (
-                                <div
-                                    key={genotype.id}
-                                    onClick={() => handleGenotypeSelect(genotype.id)}
-                                    className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                                >
-                                    <div className={`w-12 h-12 md:w-16 md:h-16 ${getGenotypeColor(genotype.id)} rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                                        <Dna className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                                    </div>
-                                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 text-center">{genotype.name}</h3>
-                                    <p className="text-gray-600 text-center mb-3 md:mb-4 text-sm md:text-base">{genotype.title}</p>
-                                    <div className="flex items-center justify-center text-green-600 font-semibold group-hover:text-green-700 transition-colors duration-200 text-sm md:text-base">
-                                        <span>Ver Detalles</span>
-                                        <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 ml-2 transform rotate-180 group-hover:translate-x-1 transition-transform duration-200" />
-                                    </div>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4">
+                                    {Object.values(GENOTYPE_DATA)
+                                        .filter(genotype =>
+                                            genotype.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                            genotype.title.toLowerCase().includes(searchTerm.toLowerCase())
+                                        )
+                                        .map((genotype) => (
+                                            <div
+                                                key={genotype.id}
+                                                onClick={() => handleGenotypeSelect(genotype.id)}
+                                                className="bg-white rounded-3xl shadow-xl border-0 p-6 md:p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden"
+                                            >
+                                                {/* Fondo con gradiente sutil */}
+                                                <div className={`absolute inset-0 bg-gradient-to-br ${getGenotypeGradient(genotype.id)} opacity-5 group-hover:opacity-10 transition-opacity duration-500`}></div>
+                                                
+                                                {/* Icono principal con efecto 3D */}
+                                                <div className={`relative w-20 h-20 md:w-24 md:h-24 ${getGenotypeColor(genotype.id)} rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}>
+                                                    {getGenotypeIcon(genotype.id)}
+                                                    {/* Efecto de brillo */}
+                                                    <div className="absolute inset-0 bg-white opacity-20 rounded-3xl transform rotate-45 translate-x-1/2 -translate-y-1/2"></div>
+                                                </div>
+                                                
+                                                {/* Contenido */}
+                                                <div className="relative text-center">
+                                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors duration-300">
+                                                        {genotype.name}
+                                                    </h3>
+                                                    <p className="text-gray-600 mb-6 text-sm md:text-base leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                                                        {genotype.title}
+                                                    </p>
+                                                    
+                                                    {/* Botón de acción sutil */}
+                                                    <div className="inline-flex items-center justify-center text-gray-600 group-hover:text-green-600 font-medium text-sm transition-all duration-300">
+                                                        <span className="mr-2">Ver Detalles</span>
+                                                        <ArrowLeft className="w-3 h-3 transform rotate-180 group-hover:translate-x-1 transition-transform duration-300" />
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Indicador de selección */}
+                                                <div className={`absolute top-4 right-4 w-3 h-3 ${getGenotypeColor(genotype.id)} rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                                            </div>
+                                        ))}
                                 </div>
-                            ))}
-                    </div>
                 </div>
             )}
 
@@ -604,15 +801,28 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                 }`}
                             >
                                 <Apple className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
-                                <span className="hidden sm:inline">Guía Alimentaria</span>
+                                <span className="hidden sm:inline">Alimentos</span>
                                 <span className="sm:hidden">Alimentos</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('menus')}
+                                className={`flex-1 py-2 md:py-3 px-3 md:px-4 text-xs md:text-sm font-semibold transition-colors duration-300 rounded-xl ${
+                                    activeTab === 'menus'
+                                        ? 'bg-orange-600 text-white shadow'
+                                        : 'text-gray-500 hover:bg-gray-100'
+                                }`}
+                            >
+                                <Utensils className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
+                                <span className="hidden sm:inline">Menús</span>
+                                <span className="sm:hidden">Menús</span>
                             </button>
                         </div>
                     </div>
 
-                    {/* Contenido de las Pestañas */}
-                    {activeTab === 'genotype' && renderGenotypeInfo()}
-                    {activeTab === 'foods' && renderFoodGuide()}
+                                    {/* Contenido de las Pestañas */}
+                {activeTab === 'genotype' && renderGenotypeInfo()}
+                {activeTab === 'foods' && renderFoodGuide()}
+                {activeTab === 'menus' && renderMenus()}
                 </div>
             )}
         </div>
