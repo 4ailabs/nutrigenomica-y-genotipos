@@ -406,17 +406,27 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                         {activeTab === 'results' && renderResults()}
                     </div>
                 </div>
-                 <div className="text-center mt-6">
-                    <div className="flex items-center space-x-4">
-                    <button onClick={onBackToPortal} className="text-sm text-gray-500 hover:text-[#2D31FA] transition-colors">
-                        ← Volver al portal
-                    </button>
-                    {onNavigateToMain && (
-                        <button onClick={onNavigateToMain} className="text-sm text-gray-500 hover:text-[#2D31FA] transition-colors">
-                            🏠 Ir al inicio
-                        </button>
-                    )}
-                </div>
+                 <div className="text-center mt-8">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <MedicalButton
+                            variant="secondary"
+                            size="sm"
+                            onClick={onBackToPortal}
+                            className="w-full sm:w-auto px-6"
+                        >
+                            ← Volver al Portal
+                        </MedicalButton>
+                        {onNavigateToMain && (
+                            <MedicalButton
+                                variant="outline"
+                                size="sm"
+                                onClick={onNavigateToMain}
+                                className="w-full sm:w-auto px-6"
+                            >
+                                🏠 Ir al Inicio
+                            </MedicalButton>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
