@@ -5,10 +5,9 @@ import GenotypeDetail from './components/GenotypeDetail';
 import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
 import ChatPage from './components/ChatPage';
-import PatientPortal from './components/PatientPortal';
-import PatientAccess from './components/PatientAccess';
+import PatientView from './components/PatientView';
 
-type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patients' | 'patientAccess';
+type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView';
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -16,16 +15,6 @@ const App: React.FC = () => {
 
     const navigateTo = (page: Page) => {
         setCurrentPage(page);
-        setViewingGenotype(null);
-    };
-    
-    const navigateToPatients = () => {
-        setCurrentPage('patients');
-        setViewingGenotype(null);
-    };
-    
-    const navigateToPatientAccess = () => {
-        setCurrentPage('patientAccess');
         setViewingGenotype(null);
     };
     
@@ -44,46 +33,37 @@ const App: React.FC = () => {
 
         switch(currentPage) {
             case 'landing':
-                return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} />;
+                return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} onNavigateToPatientView={() => navigateTo('patientView')} />;
             case 'portal':
-                                        return <Portal 
-                            onNavigateToCalculator={() => navigateTo('calculator')} 
-                            onNavigateToGenotype={handleViewGenotype} 
-                            onNavigateToBiometrics={() => navigateTo('biometrics')} 
-                            onNavigateToMain={() => navigateTo('landing')}
-                            onNavigateToChat={() => navigateTo('chat')}
-                            onNavigateToPatients={navigateToPatients}
-                            onNavigateToPatientAccess={navigateToPatientAccess}
-                        />;
+                return <Portal 
+                    onNavigateToCalculator={() => navigateTo('calculator')} 
+                    onNavigateToGenotype={handleViewGenotype} 
+                    onNavigateToBiometrics={() => navigateTo('biometrics')} 
+                    onNavigateToMain={() => navigateTo('landing')}
+                    onNavigateToChat={() => navigateTo('chat')}
+                />;
             case 'calculator':
                 return <AdvancedCalculator 
-                            onBackToPortal={() => navigateTo('portal')} 
-                            onNavigateToMain={() => navigateTo('landing')}
-                        />;
+                    onBackToPortal={() => navigateTo('portal')} 
+                    onNavigateToMain={() => navigateTo('landing')}
+                />;
             case 'biometrics':
                 return <BiometricsPage 
-                            onBackToPortal={() => navigateTo('portal')} 
-                            onNavigateToMain={() => navigateTo('landing')}
-                        />;
+                    onBackToPortal={() => navigateTo('portal')} 
+                    onNavigateToMain={() => navigateTo('landing')}
+                />;
             case 'chat':
                 return <ChatPage 
-                            onBackToPortal={() => navigateTo('portal')} 
-                            onNavigateToMain={() => navigateTo('landing')}
-                            contextGenotypeId={viewingGenotype}
-                        />;
-            case 'patients':
-                return <PatientPortal 
-                            onNavigateToPortal={() => navigateTo('portal')} 
-                            onNavigateToMain={() => navigateTo('landing')}
-                            onViewGenotype={handleViewGenotype}
-                        />;
-            case 'patientAccess':
-                return <PatientAccess 
-                            onNavigateToPortal={() => navigateTo('portal')} 
-                            onNavigateToMain={() => navigateTo('landing')}
-                        />;
+                    onBackToPortal={() => navigateTo('portal')} 
+                    onNavigateToMain={() => navigateTo('landing')}
+                    contextGenotypeId={viewingGenotype}
+                />;
+            case 'patientView':
+                return <PatientView 
+                    onBackToMain={() => navigateTo('landing')}
+                />;
             default:
-                return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} />;
+                return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} onNavigateToPatientView={() => navigateTo('patientView')} />;
         }
     }
 
