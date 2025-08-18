@@ -227,9 +227,11 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                             <button
                                 key={num}
                                 onClick={() => onNavigateToGenotype(num)}
-                                className="bg-white border border-gray-200 rounded-lg p-4 hover:border-gray-300 hover:shadow-md transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                className="group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl"
                             >
-                                <GenotypeBox number={num} />
+                                <div className="transform transition-all duration-200 group-hover:scale-105">
+                                    <GenotypeBox number={num} />
+                                </div>
                             </button>
                         ))}
                     </div>

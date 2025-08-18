@@ -60,7 +60,7 @@ export async function generateAiResponse(
     const { superfoods, toxins } = getFoodLists(foodData);
     const genotypeName = foodData.genotipo_info.nombre;
 
-    const role = `Eres un experto en nutrigenómica especializado en el sistema de GenoTipos, diseñando recomendaciones para que MÉDICOS PROFESIONALES las presenten a sus PACIENTES.
+    const role = `Eres un experto en nutrigenómica especializado en el sistema de GenoTipos, diseñando recomendaciones para que médicos profesionales las presenten a sus pacientes.
 
 CONTEXTO MÉDICO PROFESIONAL:
 - Tu audiencia son médicos que necesitan información clara para sus pacientes
@@ -202,13 +202,13 @@ export async function generateChatResponse(
     }
 
     const systemPrompt = `
-        Eres un asistente especializado en nutrigenómica para MÉDICOS PROFESIONALES que utilizan el sistema de GenoTipos nutricionales con sus pacientes.
+        Eres un asistente especializado en nutrigenómica para médicos profesionales que utilizan el sistema de GenoTipos nutricionales con sus pacientes.
         
         ${allGenotypes}
         ${specificGenotypeInfo}
         
         CONTEXTO DE USO:
-        - Los usuarios son MÉDICOS que necesitan información para presentar a sus PACIENTES
+        - Los usuarios son médicos que necesitan información para presentar a sus pacientes
         - Las respuestas deben ser profesionales pero comprensibles para pacientes
         - La información debe estar lista para ser explicada o compartida con pacientes
         - Incluye fundamento científico cuando sea apropiado
@@ -221,7 +221,7 @@ export async function generateChatResponse(
         5. **Separar información técnica** de la información para pacientes
         
         INSTRUCCIONES ESPECÍFICAS:
-        - Responde como experto en nutrigenómica dirigiéndote al médico
+        - Responde como experto en nutrigenómica de manera directa y profesional
         - Proporciona información que el médico pueda explicar al paciente
         - Incluye tanto fundamento científico como aplicación práctica
         - Para listas de alimentos, usa las clasificaciones exactas: Superalimento/Toxina/Neutro
