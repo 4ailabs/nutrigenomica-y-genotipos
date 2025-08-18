@@ -164,18 +164,18 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 w-12 md:w-24 h-12 md:h-24 rounded-full bg-white"></div>
                     </div>
                     <div className="relative">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-2">{genotype.title}</h2>
-                        <p className="text-lg md:text-xl opacity-90">{genotype.tagline}</p>
+                        <h2 className="text-3xl md:text-3xl font-bold mb-2">{genotype.title}</h2>
+                        <p className="text-xl md:text-xl opacity-90">{genotype.tagline}</p>
                     </div>
                 </div>
 
                 {/* Esencia del Genotipo */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">{genotype.essence.title}</h3>
-                    <blockquote className="text-base md:text-lg italic text-gray-700 mb-4 border-l-4 border-blue-500 pl-4">
+                    <h3 className="text-2xl md:text-2xl font-bold text-gray-900 mb-4">{genotype.essence.title}</h3>
+                    <blockquote className="text-lg md:text-lg italic text-gray-700 mb-4 border-l-4 border-blue-500 pl-4">
                         "{genotype.essence.quote}"
                     </blockquote>
-                    <p className="text-gray-600 text-sm md:text-base">{genotype.essence.description}</p>
+                    <p className="text-gray-600 text-base md:text-base">{genotype.essence.description}</p>
                 </div>
 
                                             {/* Características */}
@@ -186,7 +186,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                         <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
                                             <Target className="w-4 h-4 text-blue-600" />
                                         </div>
-                                        <h4 className="text-lg md:text-xl font-bold text-gray-900">Características Principales</h4>
+                                        <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Principales</h4>
                                     </div>
                                     <div className="space-y-4">
                                         {genotype.characteristics1.map((char, index) => (
@@ -211,7 +211,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                         <div className="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
                                             <Leaf className="w-4 h-4 text-purple-600" />
                                         </div>
-                                        <h4 className="text-lg md:text-xl font-bold text-gray-900">Características Secundarias</h4>
+                                        <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Secundarias</h4>
                                     </div>
                                     <div className="space-y-4">
                                         {genotype.characteristics2.map((char, index) => (
@@ -237,7 +237,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
                                         <Activity className="w-4 h-4 text-green-600" />
                                     </div>
-                                    <h4 className="text-lg md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
+                                                                            <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
                                 </div>
                                 <div className="space-y-4">
                                     {genotype.physicalAndMetabolic.map((section, index) => (
@@ -265,9 +265,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center">
                                         <Apple className="w-4 h-4 text-emerald-600" />
                                     </div>
-                                    <h4 className="text-lg md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
+                                                                            <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
                                 </div>
-                                <p className="text-gray-600 mb-4 text-sm md:text-base leading-relaxed bg-emerald-50 p-3 rounded-lg border border-emerald-200">{genotype.foodPlan.description}</p>
+                                <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-emerald-50 p-3 rounded-lg border border-emerald-200">{genotype.foodPlan.description}</p>
                                 <div className="space-y-4">
                                     {genotype.foodPlan.sections.map((section, index) => (
                                         <div key={index} className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
@@ -294,9 +294,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center">
                                         <XCircle className="w-4 h-4 text-red-600" />
                                     </div>
-                                    <h4 className="text-lg md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
+                                                                            <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
                                 </div>
-                                <p className="text-gray-600 mb-4 text-sm md:text-base leading-relaxed bg-red-50 p-3 rounded-lg border border-red-200">{genotype.foodsToAvoid.description}</p>
+                                <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-red-50 p-3 rounded-lg border border-red-200">{genotype.foodsToAvoid.description}</p>
                                 <div className="space-y-4">
                                     {genotype.foodsToAvoid.sections.map((section, index) => (
                                         <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-4 border border-red-200">
@@ -562,7 +562,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     <div className="flex flex-col sm:flex-row justify-between items-center py-3 sm:py-4 space-y-2 sm:space-y-0">
                         <button
                             onClick={onBackToMain}
-                            className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-sm md:text-base"
+                            className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-base md:text-base"
                         >
                             <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
                             <span className="hidden sm:inline">Volver al Inicio</span>
@@ -573,8 +573,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                 <User className="w-4 h-4 md:w-6 md:h-6 text-white" />
                             </div>
                             <div>
-                                <h1 className="text-lg md:text-2xl font-bold text-gray-900">Mi Genotipo</h1>
-                                <p className="text-xs md:text-sm text-gray-600 hidden sm:block">Consulta tu genotipo y guía alimentaria</p>
+                                <h1 className="text-xl md:text-2xl font-bold text-gray-900">Mi Genotipo</h1>
+                                <p className="text-sm md:text-sm text-gray-600 hidden sm:block">Consulta tu genotipo y guía alimentaria</p>
                             </div>
                         </div>
                     </div>
@@ -585,8 +585,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
             {!selectedGenotype && (
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 md:py-8">
                     <div className="text-center mb-6 md:mb-8">
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">Selecciona tu Genotipo</h2>
-                        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
+                        <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">Selecciona tu Genotipo</h2>
+                        <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-base px-4">
                             Para ver tu información personalizada, selecciona tu genotipo nutricional.
                             Si no conoces tu genotipo, consulta con tu médico o nutricionista.
                         </p>
@@ -601,7 +601,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                 placeholder="Buscar genotipo..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200 text-sm md:text-base"
+                                className="w-full pl-10 pr-4 py-3 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200 text-base md:text-base"
                             />
                         </div>
                     </div>
@@ -628,14 +628,14 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                             <div className="flex items-center space-x-3">
                                                 {getGenotypeIcon(id)}
                                                 <div>
-                                                    <h3 className="text-lg md:text-xl font-bold">{genotypeData.name}</h3>
-                                                    <p className="text-xs md:text-sm opacity-90">Genotipo {id}</p>
+                                                    <h3 className="text-xl md:text-xl font-bold">{genotypeData.name}</h3>
+                                                    <p className="text-sm md:text-sm opacity-90">Genotipo {id}</p>
                                                 </div>
                                             </div>
                                             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 opacity-70" />
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
+                                    <p className="text-gray-600 text-sm md:text-sm leading-relaxed">
                                         {genotypeData.essence.description.substring(0, 120)}...
                                     </p>
                                 </div>
@@ -656,15 +656,15 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     {getGenotypeIcon(selectedGenotype)}
                                 </div>
                                 <div>
-                                    <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                                    <h2 className="text-2xl md:text-2xl font-bold text-gray-900">
                                         {GENOTYPE_DATA[selectedGenotype]?.name || `Genotipo ${selectedGenotype}`}
                                     </h2>
-                                    <p className="text-sm md:text-base text-gray-600">Tu información personalizada</p>
+                                    <p className="text-base md:text-base text-gray-600">Tu información personalizada</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setSelectedGenotype(null)}
-                                className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-sm md:text-base"
+                                className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-base md:text-base"
                             >
                                 Cambiar Genotipo
                             </button>
@@ -676,7 +676,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                             <button
                                 onClick={() => setActiveTab('genotype')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm md:text-base ${
+                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
                                     activeTab === 'genotype'
                                         ? 'bg-green-100 text-green-700 shadow-md'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -688,7 +688,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </button>
                             <button
                                 onClick={() => setActiveTab('foods')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm md:text-base ${
+                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
                                     activeTab === 'foods'
                                         ? 'bg-green-100 text-green-700 shadow-md'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -700,7 +700,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </button>
                             <button
                                 onClick={() => setActiveTab('menus')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm md:text-base ${
+                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
                                     activeTab === 'menus'
                                         ? 'bg-green-100 text-green-700 shadow-md'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -712,7 +712,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </button>
                             <button
                                 onClick={() => setActiveTab('recipes')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm md:text-base ${
+                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
                                     activeTab === 'recipes'
                                         ? 'bg-green-100 text-green-700 shadow-md'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
