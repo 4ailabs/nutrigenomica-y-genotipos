@@ -409,25 +409,25 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
 
             </main>
             
-            {/* Footer Mejorado */}
-            <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-400 text-center py-12">
+            {/* Footer Limpio y Coherente */}
+            <footer className="bg-gray-50 border-t border-gray-200 text-gray-600 py-16">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-3 gap-8 mb-8">
                         <div className="text-left">
-                            <h3 className="text-white font-semibold mb-4">Dr. Miguel Ojeda Rios</h3>
-                            <p className="text-sm leading-relaxed">Especialista en nutrigenómica y medicina personalizada</p>
+                            <h3 className="text-gray-900 font-semibold mb-4">Dr. Miguel Ojeda Rios</h3>
+                            <p className="text-sm leading-relaxed text-gray-600">Especialista en nutrigenómica y medicina personalizada</p>
                         </div>
                         <div className="text-center">
-                            <h3 className="text-white font-semibold mb-4">Programa GenoTipo</h3>
-                            <p className="text-sm leading-relaxed">Nutrición basada en tu perfil genético único</p>
+                            <h3 className="text-gray-900 font-semibold mb-4">Programa GenoTipo</h3>
+                            <p className="text-sm leading-relaxed text-gray-600">Nutrición basada en tu perfil genético único</p>
                         </div>
                         <div className="text-right">
-                            <h3 className="text-white font-semibold mb-4">Contacto</h3>
-                            <p className="text-sm leading-relaxed">Consulta personalizada disponible</p>
+                            <h3 className="text-gray-900 font-semibold mb-4">Contacto</h3>
+                            <p className="text-sm leading-relaxed text-gray-600">Consulta personalizada disponible</p>
                         </div>
                     </div>
-                    <div className="border-t border-gray-700 pt-8">
-                        <p>© {new Date().getFullYear()} Dr. Miguel Ojeda Rios. Todos los derechos reservados.</p>
+                    <div className="border-t border-gray-200 pt-8">
+                        <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Dr. Miguel Ojeda Rios. Todos los derechos reservados.</p>
                     </div>
                 </div>
             </footer>
