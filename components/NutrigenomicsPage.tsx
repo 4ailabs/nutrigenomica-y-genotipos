@@ -299,20 +299,22 @@ const NutrigenomicsPage: React.FC<NutrigenomicsPageProps> = ({ onBackToPortal, o
           />
         </div>
 
-        {/* Call to Action */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl p-8 text-white text-center">
-          <Users className="w-16 h-16 mx-auto mb-6" />
-          <h3 className="text-3xl font-bold mb-4">¿Listo para tu Análisis Personalizado?</h3>
-          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Descubre tu genotipo específico y recibe recomendaciones nutricionales basadas en tu perfil genético único.
-          </p>
-          <button
-            onClick={onBackToPortal}
-            className="bg-white text-purple-700 font-bold py-4 px-8 rounded-lg hover:bg-purple-50 transition-colors inline-flex items-center gap-2"
-          >
-            Explorar Genotipos <ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
+        {/* Footer Profesional */}
+        <footer className="bg-gray-50 border-t border-gray-200 mt-16 py-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-sm text-gray-500 text-center md:text-left">
+                © {new Date().getFullYear()} Dr. Miguel Ojeda Rios
+              </p>
+              <div className="flex items-center gap-4 mt-4 md:mt-0">
+                <span className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium">
+                  Ciencia Basada en Evidencia
+                </span>
+              </div>
+            </div>
+          </div>
+        </footer>
+
       </div>
     </div>
   );
