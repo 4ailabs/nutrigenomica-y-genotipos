@@ -50,7 +50,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
             {/* Formulario Principal */}
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
                 {/* Header del Formulario Mejorado */}
-                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-8 py-8 relative overflow-hidden">
+                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-6 py-6 relative overflow-hidden">
                     {/* Elementos decorativos de fondo */}
                     <div className="absolute inset-0 opacity-10">
                         <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
@@ -58,18 +58,18 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white"></div>
                     </div>
                     
-                    <div className="relative flex items-center gap-6">
-                        <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-                            <Brain className="w-8 h-8 text-white" />
+                    <div className="relative flex items-center gap-4">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
+                            <Brain className="w-6 h-6 text-white" />
                         </div>
                         <div className="flex-1">
-                            <h2 className="text-3xl font-bold text-white mb-2">
+                            <h2 className="text-2xl font-bold text-white mb-2">
                                 Asistente IA Nutrigenómico
                             </h2>
-                            <h3 className="text-xl font-semibold text-blue-100 mb-2">
+                            <h3 className="text-lg font-semibold text-blue-100 mb-2">
                                 Tu Perfil Nutricional Personalizado
                             </h3>
-                            <p className="text-blue-200 text-base leading-relaxed max-w-2xl">
+                            <p className="text-blue-200 text-sm leading-relaxed max-w-2xl">
                                 Completa tus datos para recibir recomendaciones inteligentes de la IA basadas en tu GenoTipo específico. 
                                 Genera menús, recetas, snacks y más, todo personalizado para tu perfil genético.
                             </p>
