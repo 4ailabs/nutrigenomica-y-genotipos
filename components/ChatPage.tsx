@@ -8,7 +8,7 @@ import {
     MedicalCard,
     MedicalSection 
 } from './MedicalComponents';
-import { Bot, ArrowLeft, Home, MessageSquare, Brain, Lightbulb } from 'lucide-react';
+import { Bot, ArrowLeft, Home, MessageSquare, Brain, Lightbulb, Dna, Target, Wheat, Scale, Microscope, Sword, Mountain } from 'lucide-react';
 
 interface ChatPageProps {
     onBackToPortal: () => void;
@@ -24,13 +24,13 @@ const ChatPage: React.FC<ChatPageProps> = ({
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(contextGenotypeId);
 
     const genotypeOptions = [
-        { id: null, name: "Consulta General", description: "Información sobre todos los genotipos", icon: "🧬" },
-        { id: 1, name: "Hunter (Cazador)", description: "Genotipo 1 - Perfil ancestral de cazadores", icon: "🏹" },
-        { id: 2, name: "Gatherer (Recolector)", description: "Genotipo 2 - Perfil ancestral de recolectores", icon: "🌾" },
-        { id: 3, name: "Master (Maestro)", description: "Genotipo 3 - Perfil equilibrado y adaptable", icon: "⚖️" },
-        { id: 4, name: "Explorer (Explorador)", description: "Genotipo 4 - Perfil adaptativo e innovador", icon: "🔬" },
-        { id: 5, name: "Warrior (Guerrero)", description: "Genotipo 5 - Perfil de fortaleza y determinación", icon: "⚔️" },
-        { id: 6, name: "Nomad (Nómada)", description: "Genotipo 6 - Perfil resiliente y sensible", icon: "🏔️" }
+        { id: null, name: "Consulta General", description: "Información sobre todos los genotipos", icon: Dna },
+        { id: 1, name: "Hunter (Cazador)", description: "Genotipo 1 - Perfil ancestral de cazadores", icon: Target },
+        { id: 2, name: "Gatherer (Recolector)", description: "Genotipo 2 - Perfil ancestral de recolectores", icon: Wheat },
+        { id: 3, name: "Master (Maestro)", description: "Genotipo 3 - Perfil equilibrado y adaptable", icon: Scale },
+        { id: 4, name: "Explorer (Explorador)", description: "Genotipo 4 - Perfil adaptativo e innovador", icon: Microscope },
+        { id: 5, name: "Warrior (Guerrero)", description: "Genotipo 5 - Perfil de fortaleza y determinación", icon: Sword },
+        { id: 6, name: "Nomad (Nómada)", description: "Genotipo 6 - Perfil resiliente y sensible", icon: Mountain }
     ];
 
     return (
@@ -110,7 +110,9 @@ const ChatPage: React.FC<ChatPageProps> = ({
                                             }`}
                                         >
                                             <div className="flex items-start gap-3">
-                                                <span className="text-lg">{option.icon}</span>
+                                                <div className="w-6 h-6 text-gray-600 flex items-center justify-center">
+                                                    <option.icon className="w-5 h-5" />
+                                                </div>
                                                 <div className="flex-1 min-w-0">
                                                     <MedicalText 
                                                         variant="label" 
@@ -141,10 +143,24 @@ const ChatPage: React.FC<ChatPageProps> = ({
                                                 Sugerencias de Uso:
                                             </MedicalText>
                                             <MedicalText variant="caption" size="xs" className="text-amber-700">
-                                                • Pregunta sobre alimentos específicos<br />
-                                                • Solicita menús personalizados<br />
-                                                • Compara genotipos<br />
-                                                • Obtén explicaciones científicas
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                                        <span>Pregunta sobre alimentos específicos</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                                        <span>Solicita menús personalizados</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                                        <span>Compara genotipos</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                                        <span>Obtén explicaciones científicas</span>
+                                                    </div>
+                                                </div>
                                             </MedicalText>
                                         </div>
                                     </div>
@@ -176,7 +192,10 @@ const ChatPage: React.FC<ChatPageProps> = ({
                                                     }
                                                 </MedicalBadge>
                                                 <MedicalText variant="caption" size="xs" className="text-gray-500">
-                                                    • Activo
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                                        <span>Activo</span>
+                                                    </div>
                                                 </MedicalText>
                                             </div>
                                         </div>
