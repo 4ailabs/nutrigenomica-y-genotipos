@@ -100,7 +100,18 @@ Al final de cada respuesta incluir: "**Nota Profesional:** Esta información nut
     let userRequest: string = '';
     switch (requestType) {
         case 'menu':
-            userRequest = "Crea un plan de menú semanal (Lunes a Domingo) para desayuno, comida y cena. Asegúrate de que sea variado y equilibrado.";
+            userRequest = `Crea un plan de menú semanal detallado (Lunes a Domingo) para desayuno, comida y cena usando ÚNICAMENTE los superalimentos permitidos para este genotipo. Estructura la respuesta así:
+            
+**MENÚ SEMANAL PERSONALIZADO**
+
+**LUNES**
+- 🌅 Desayuno: [usar superalimentos de la lista]
+- 🍽️ Almuerzo: [usar superalimentos de la lista]
+- 🌙 Cena: [usar superalimentos de la lista]
+
+[Continuar para cada día]
+
+Asegúrate de que cada comida use SOLO alimentos de la lista de superalimentos y que sea nutricionalmente completa y variada.`;
             break;
         case 'recipes':
             userRequest = "Genera 3 recetas creativas y fáciles de preparar (un desayuno, una comida y una cena) que sean adecuadas para este perfil. Incluye ingredientes y pasos de preparación.";

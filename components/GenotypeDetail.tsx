@@ -5,6 +5,8 @@ import { ChevronLeft, Download } from 'lucide-react';
 import { FOOD_GUIDE_DATA } from '../foodData';
 import FoodGuide from './FoodGuide';
 import AIAssistant from './AIAssistant';
+import GenotypeMenus from './GenotypeMenus';
+import GenotypeRecipes from './GenotypeRecipes';
 import { generateGenotypePDF, type GenotypePDFData } from '../utils/pdfGenerator';
 
 interface GenotypeDetailProps {
@@ -283,6 +285,28 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                      </div>
                  </Section>
                 
+                {/* Menús Personalizados */}
+                {foodData && (
+                    <Section title="Menús Personalizados" subtitle="Planes de comidas basados en tus alimentos específicos" subtitleColor={theme.textColor} className="bg-gray-50">
+                        <GenotypeMenus 
+                            genotypeId={genotypeId} 
+                            genotypeColor={theme.mainColor} 
+                            genotypeGradient={`${theme.fromColor} ${theme.viaColor} ${theme.toColor}`} 
+                        />
+                    </Section>
+                )}
+
+                {/* Recetas Especializadas */}
+                {foodData && (
+                    <Section title="Recetas Especializadas" subtitle="Recetas curadas con tus superalimentos" subtitleColor={theme.textColor} className="bg-white">
+                        <GenotypeRecipes 
+                            genotypeId={genotypeId} 
+                            genotypeColor={theme.mainColor} 
+                            genotypeGradient={`${theme.fromColor} ${theme.viaColor} ${theme.toColor}`} 
+                        />
+                    </Section>
+                )}
+
                 {/* Guía de Alimentos Mejorada */}
                 {foodData && (
                      <Section title={foodData.genotipo_info.nombre} subtitle="Guía de Alimentos Detallada" subtitleColor={theme.textColor}>
@@ -302,7 +326,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
                 {/* Asistente IA */}
                 {foodData && (
-                    <Section title="Asistente IA" className="bg-gray-50">
+                    <Section title="Asistente IA" className="bg-white">
                         <AIAssistant foodData={foodData} />
                     </Section>
                 )}
