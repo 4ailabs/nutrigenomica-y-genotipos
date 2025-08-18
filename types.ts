@@ -95,6 +95,36 @@ export interface GenotypeDetailData {
     };
 }
 
+// Types for Genotype Strength Meter System
+export interface BiometricMeasurement {
+    id: string;
+    statement: string;
+    points: number;
+    category: 'fingerprints' | 'taste' | 'physical' | 'dental' | 'family_history' | 'caffeine_sensitivity' | 'body_type' | 'head_shape';
+}
+
+export interface GenotypeStrengthMeter {
+    genotypeId: number;
+    genotypeName: string;
+    measurements: BiometricMeasurement[];
+    maxPoints: number;
+}
+
+export interface BiometricResult {
+    genotypeId: number;
+    selectedMeasurements: string[];
+    totalPoints: number;
+    strengthPercentage: number;
+    timestamp: Date;
+}
+
+export interface GenotypeStrengthData {
+    userId?: string;
+    results: BiometricResult[];
+    calculatedGenotype?: number;
+    lastUpdated: Date;
+}
+
 // New Types for Food Guide
 export interface FoodItem {
   nombre: string;
