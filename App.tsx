@@ -66,12 +66,17 @@ const App: React.FC = () => {
             <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
                  {renderPage()}
             </div>
-             <Chatbot
-                isOpen={isChatOpen}
-                onClose={() => setIsChatOpen(false)}
-                contextGenotypeId={chatContextGenotypeId}
-            />
-            <ChatbotFAB isOpen={isChatOpen} onClick={() => setIsChatOpen(prev => !prev)} />
+             {/* Chat flotante solo cuando NO estemos en el Portal */}
+             {currentPage !== 'portal' && (
+                <>
+                    <Chatbot
+                        isOpen={isChatOpen}
+                        onClose={() => setIsChatOpen(false)}
+                        contextGenotypeId={chatContextGenotypeId}
+                    />
+                    <ChatbotFAB isOpen={isChatOpen} onClick={() => setIsChatOpen(prev => !prev)} />
+                </>
+             )}
         </div>
     );
 };
