@@ -78,51 +78,38 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
     };
 
     return (
-        <MedicalCard 
-            variant="interactive"
-            className="overflow-hidden flex flex-col h-full" 
-            animation="slideUp"
+        <button
             onClick={onClick}
+            className="group bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 p-6 text-left w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-            <div className={`h-32 relative overflow-hidden ${colors.header} border-b`}>
-                {/* Badge de categoría */}
-                <div className={`absolute top-4 right-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.badge}`}>
-                    {category === 'evaluation' ? 'Evaluación' : 'Consulta'}
+            <div className="flex items-center gap-4 mb-3">
+                <div className={`w-12 h-12 ${colors.icon} rounded-lg flex items-center justify-center`}>
+                    {getIcon()}
                 </div>
-                
-                {/* Icono centrado */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`w-16 h-16 ${colors.icon} rounded-full flex items-center justify-center shadow-md`}>
-                        {getIcon()}
+                <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+                        {title}
+                    </h3>
+                    <div className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${colors.badge} mt-1`}>
+                        {category === 'evaluation' ? 'Evaluación' : 'Consulta'}
                     </div>
                 </div>
+                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all duration-200" />
             </div>
             
-            <div className="p-6 flex flex-col flex-grow">
-                <MedicalHeading level={4} variant="default" className="mb-3">{title}</MedicalHeading>
-                
-                <MedicalText variant="body" size="sm" className="mb-4 flex-grow">{description}</MedicalText>
-                
-                {features && (
-                    <ul className="space-y-2 mb-6">
-                        {features.map((feature, index) => (
-                            <li key={index} className="flex items-start">
-                                <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                                <MedicalText variant="caption" size="sm" as="span">{feature}</MedicalText>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                
-                <button
-                    onClick={onClick}
-                    className={`mt-auto w-full group px-4 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center ${colors.button} focus:outline-none focus:ring-2 focus:ring-offset-2`}
-                >
-                    <span>{category === 'evaluation' ? 'Comenzar' : 'Abrir'}</span>
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                </button>
-            </div>
-        </MedicalCard>
+            <p className="text-sm text-gray-600 mb-3">{description}</p>
+            
+            {features && (
+                <div className="flex gap-2 flex-wrap">
+                    {features.map((feature, index) => (
+                        <span key={index} className="inline-flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            {feature}
+                        </span>
+                    ))}
+                </div>
+            )}
+        </button>
     );
 };
 
@@ -217,11 +204,11 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                     </MedicalText>
                     
                     {/* Información médica */}
-                    <MedicalAlertCard type="info" className="max-w-xl mx-auto p-4">
-                        <MedicalText variant="caption" size="sm">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-xl mx-auto">
+                        <p className="text-sm text-blue-800">
                             <strong>Uso profesional:</strong> Herramientas para evaluación rápida y consultas nutrigenómicas.
-                        </MedicalText>
-                    </MedicalAlertCard>
+                        </p>
+                    </div>
                 </header>
 
                 {/* Sección de GenoTipos - Reorganizada */}
@@ -237,14 +224,13 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                     
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
                         {genotypes.map((num, index) => (
-                            <GenotypeCard 
+                            <button
                                 key={num}
                                 onClick={() => onNavigateToGenotype(num)}
-                                genotypeColor={['blue', 'green', 'purple', 'orange', 'red', 'indigo'][index]}
-                                className="transform transition-all duration-300 hover:scale-105"
+                                className="bg-white border border-gray-200 rounded-lg p-4 hover:border-gray-300 hover:shadow-md transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 <GenotypeBox number={num} />
-                            </GenotypeCard>
+                            </button>
                         ))}
                     </div>
                 </section>
