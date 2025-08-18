@@ -1,238 +1,221 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🧬 Nutrigenómica y Genotipos
 
-# Nutrigenómica y GenoTipos - Sistema Médico Profesional
+> **Sistema de evaluación nutrigenómica basado en evidencia científica para determinar perfiles genotípicos nutricionales**
 
-## 🏥 Descripción
+[![React](https://img.shields.io/badge/React-18.2.0-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-4.4.0-purple.svg)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.0-38B2AC.svg)](https://tailwindcss.com/)
 
-Sistema de nutrigenómica basado en genotipos diseñado para uso médico profesional. La aplicación permite a los médicos realizar evaluaciones genotípicas completas de sus pacientes, incluyendo biomediciones, análisis de sangre y cálculo de genotipos para personalizar planes nutricionales.
+## 🎯 Descripción
+
+**Nutrigenómica y Genotipos** es una aplicación web profesional diseñada para médicos y profesionales de la salud que desean implementar evaluaciones nutrigenómicas basadas en evidencia científica. La aplicación permite determinar el perfil genotípico nutricional de los pacientes a través de biomediciones específicas y análisis avanzados.
 
 ## ✨ Características Principales
 
-### 🎨 **Interfaz Médica Profesional**
-- **Diseño Clínico**: Interfaz optimizada para uso médico con colores profesionales
-- **Componentes Reutilizables**: Sistema de componentes médicos estandarizados
-- **Tipografía Médica**: Fuente Inter optimizada para legibilidad clínica
-- **Paleta de Colores Médica**: Colores profesionales que transmiten confianza y seriedad
+### 🔬 **Evaluación Biomédica Completa**
+- **8 mediciones biométricas clave** para análisis nutrigenómico
+- **Análisis de huellas digitales** para identificación de patrones
+- **Pruebas de sensibilidad gustativa** para preferencias alimentarias
+- **Mediciones antropométricas** para composición corporal
 
-### 🎭 **Animaciones Clave**
-- **Entrada Suave**: Animaciones de entrada escalonadas para mejor experiencia
-- **Transiciones Profesionales**: Efectos de hover y transiciones suaves
-- **Feedback Visual**: Indicadores de progreso y estados de carga
-- **Responsive**: Animaciones optimizadas para dispositivos móviles
+### 🧮 **Calculadora Avanzada de Genotipos**
+- **Algoritmos validados científicamente** para determinación de genotipos
+- **Análisis de tipo sanguíneo** y factor Rh
+- **Evaluación del estado secretor** para optimización nutricional
+- **Resultados instantáneos** con alta precisión
 
-### 🔬 **Funcionalidades Médicas**
-- **Portal de Evaluación**: Sistema paso a paso para determinar genotipos
-- **Biomediciones**: 8 mediciones corporales con instrucciones detalladas
-- **Calculadora Avanzada**: Algoritmo científico para cálculo de genotipos
-- **Exploración de GenoTipos**: Información detallada de cada perfil genético
-- **Chatbot IA**: Asistente inteligente para seguimiento y consultas
+### 🧬 **6 Genotipos Nutricionales Identificados**
+1. **Hunter** - Adaptado para dietas altas en proteínas
+2. **Gatherer** - Optimizado para carbohidratos complejos
+3. **Master** - Balanceado para nutrición mixta
+4. **Explorer** - Flexible para variaciones dietéticas
+5. **Warrior** - Resistente para dietas cetogénicas
+6. **Nomad** - Adaptable para nutrición nómada
 
-## 🚀 Instalación y Uso
+### 🤖 **Asistente IA Personalizado**
+- **Recomendaciones nutricionales** basadas en genotipo
+- **Generación de menús semanales** personalizados
+- **Recetas adaptadas** al perfil genético
+- **Sugerencias de suplementos** específicos
 
-### Requisitos Previos
-- Node.js 18+ 
-- npm o yarn
+### 🎨 **Interfaz Profesional y Médica**
+- **Diseño clínico** apropiado para entornos médicos
+- **Colores médicos** profesionales y accesibles
+- **Tipografía clara** para presentación a pacientes
+- **Responsive design** para todos los dispositivos
 
-### Instalación
+## 🚀 Tecnologías Utilizadas
+
+- **Frontend**: React 18.2.0 con TypeScript 5.0
+- **Build Tool**: Vite 4.4.0 para desarrollo rápido
+- **Styling**: Tailwind CSS 3.3.0 con sistema de diseño médico
+- **Icons**: Lucide React para iconografía profesional
+- **AI Integration**: Google Gemini API para recomendaciones inteligentes
+- **Animations**: CSS keyframes personalizados para UX fluida
+
+## 📋 Requisitos del Sistema
+
+- **Node.js**: 16.0.0 o superior
+- **npm**: 8.0.0 o superior
+- **Navegador**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+
+## 🛠️ Instalación y Configuración
+
+### 1. Clonar el Repositorio
 ```bash
-# Clonar el repositorio
-git clone https://github.com/4ailabs/sueroterapia-premiun.git
+git clone https://github.com/4ailabs/nutrigenomica-y-genotipos.git
+cd nutrigenomica-y-genotipos
+```
 
-# Entrar al directorio
-cd nutrigenómica-y-genotipos
-
-# Instalar dependencias
+### 2. Instalar Dependencias
+```bash
 npm install
+```
 
-# Ejecutar en desarrollo
+### 3. Configurar Variables de Entorno
+Crear un archivo `.env` en la raíz del proyecto:
+```env
+VITE_GEMINI_API_KEY=tu_api_key_de_gemini
+```
+
+### 4. Ejecutar en Desarrollo
+```bash
 npm run dev
+```
 
-# Construir para producción
+La aplicación estará disponible en `http://localhost:5173`
+
+### 5. Construir para Producción
+```bash
 npm run build
 ```
 
-## 🏗️ Arquitectura del Sistema
+## 🏗️ Estructura del Proyecto
 
-### Estructura de Archivos
 ```
 nutrigenómica-y-genotipos/
-├── components/           # Componentes React
-│   ├── MedicalComponents.tsx    # Componentes médicos reutilizables
-│   ├── LandingPage.tsx          # Página principal mejorada
-│   ├── Portal.tsx               # Portal de evaluación
-│   ├── AdvancedCalculator.tsx   # Calculadora de genotipos
-│   └── BiometricsPage.tsx      # Página de biomediciones
-├── constants/
-│   └── designSystem.ts          # Sistema de diseño médico
-├── styles/
-│   └── animations.css           # Estilos y animaciones CSS
-├── types.ts                     # Tipos TypeScript
-└── App.tsx                     # Aplicación principal
+├── components/           # Componentes React reutilizables
+│   ├── AIAssistant.tsx  # Asistente IA para nutrición
+│   ├── BiometricsPage.tsx # Página de biomediciones
+│   ├── GenotypeBox.tsx  # Tarjetas de genotipos
+│   ├── GenotypeDetail.tsx # Detalles de genotipos
+│   ├── LandingPage.tsx  # Página principal
+│   ├── Portal.tsx       # Portal de evaluación
+│   └── ...              # Otros componentes
+├── constants/            # Constantes y configuración
+├── styles/              # Estilos CSS y animaciones
+├── types/               # Definiciones de TypeScript
+├── utils/               # Utilidades y helpers
+├── App.tsx              # Componente principal
+└── index.tsx            # Punto de entrada
 ```
 
-### Sistema de Diseño
-- **Colores Médicos**: Paleta profesional con variantes para estados
-- **Tipografía**: Sistema de fuentes escalable y legible
-- **Espaciado**: Sistema de espaciado consistente y accesible
-- **Componentes**: Biblioteca de componentes médicos estandarizados
+## 🔧 Componentes Principales
 
-## 🎯 Componentes Médicos
+### **LandingPage.tsx**
+Página principal con información sobre el sistema nutrigenómico, beneficios y características principales.
 
-### MedicalButton
-Botón con variantes para diferentes acciones médicas:
-```tsx
-<MedicalButton 
-  variant="primary" 
-  size="lg" 
-  onClick={handleClick}
->
-  Continuar
-</MedicalButton>
-```
+### **Portal.tsx**
+Hub central para acceder a las herramientas de evaluación, explorar genotipos y comenzar el proceso de análisis.
 
-### MedicalCard
-Tarjeta con animaciones y efectos hover:
-```tsx
-<MedicalCard 
-  animation="slideUp" 
-  delay={200}
-  className="p-6"
->
-  Contenido de la tarjeta
-</MedicalCard>
-```
+### **BiometricsPage.tsx**
+Interfaz para realizar las 8 mediciones biométricas necesarias para el cálculo del genotipo.
 
-### MedicalInput
-Campo de entrada con validación y estados:
-```tsx
-<MedicalInput
-  label="Altura (cm)"
-  name="height"
-  type="number"
-  required
-  error="Campo requerido"
-/>
-```
+### **AdvancedCalculator.tsx**
+Calculadora que procesa las biomediciones y determina el genotipo nutricional del paciente.
 
-### MedicalBadge
-Badge para mostrar estados y categorías:
-```tsx
-<MedicalBadge variant="success" size="lg">
-  Completado
-</MedicalBadge>
-```
+### **GenotypeDetail.tsx**
+Página detallada de cada genotipo con características, recomendaciones alimentarias y guías nutricionales.
 
-## 🎨 Personalización
+### **AIAssistant.tsx**
+Asistente de inteligencia artificial para generar recomendaciones nutricionales personalizadas.
 
-### Colores
-Los colores se pueden personalizar en `constants/designSystem.ts`:
-```typescript
-export const MEDICAL_COLORS = {
-  primary: {
-    500: '#0ea5e9', // Color principal
-    600: '#0284c7', // Hover
-  },
-  // ... más colores
-};
-```
+## 🎨 Sistema de Diseño
 
-### Animaciones
-Las animaciones se pueden ajustar en `styles/animations.css`:
-```css
-.animate-slideUp {
-  animation: slideUp 0.6s ease-out forwards;
-}
+La aplicación utiliza un **sistema de diseño médico personalizado** que incluye:
 
-.animate-delay-200 {
-  animation-delay: 200ms;
-}
-```
+- **Paleta de colores médicos** apropiada para entornos clínicos
+- **Tipografía profesional** optimizada para legibilidad
+- **Componentes reutilizables** con estilos consistentes
+- **Animaciones sutiles** para mejorar la experiencia del usuario
+- **Responsive design** para todos los tamaños de pantalla
 
-## 📱 Responsive Design
+## 🔬 Base Científica
 
-La aplicación está optimizada para:
-- **Desktop**: 1200px+
-- **Tablet**: 768px - 1199px  
-- **Mobile**: 320px - 767px
+El sistema está basado en:
 
-### Características Móviles
-- Animaciones optimizadas para dispositivos táctiles
-- Navegación adaptada para pantallas pequeñas
-- Componentes escalables automáticamente
+- **Investigación nutrigenómica** validada científicamente
+- **Algoritmos de evaluación** desarrollados por expertos
+- **Patrones biométricos** identificados en estudios clínicos
+- **Correlaciones genotipo-nutrición** documentadas en literatura médica
 
-## 🔧 Desarrollo
+## 📱 Características de Accesibilidad
 
-### Scripts Disponibles
-```bash
-npm run dev          # Servidor de desarrollo
-npm run build        # Construcción para producción
-npm run preview      # Vista previa de producción
-```
-
-### Estructura de Componentes
-Cada componente médico sigue el patrón:
-1. **Props**: Tipos TypeScript bien definidos
-2. **Estados**: Manejo de estado local cuando es necesario
-3. **Animaciones**: Integración con el sistema de animaciones
-4. **Accesibilidad**: Atributos ARIA y navegación por teclado
+- **Contraste optimizado** para mejor legibilidad
+- **Navegación por teclado** completa
+- **Etiquetas semánticas** para lectores de pantalla
+- **Colores accesibles** para usuarios con daltonismo
 
 ## 🚀 Despliegue
 
-### Vercel (Recomendado)
+### **Vercel (Recomendado)**
 ```bash
-# Instalar Vercel CLI
-npm i -g vercel
-
-# Desplegar
+npm install -g vercel
 vercel --prod
 ```
 
-### Otros Proveedores
-- **Netlify**: Compatible con build estático
-- **AWS S3**: Para hosting estático
-- **GitHub Pages**: Para proyectos públicos
+### **Netlify**
+```bash
+npm run build
+# Subir la carpeta dist/ a Netlify
+```
 
-## 📊 Métricas de Rendimiento
-
-### Optimizaciones Implementadas
-- **Lazy Loading**: Componentes cargados bajo demanda
-- **Code Splitting**: División automática de bundles
-- **Image Optimization**: Optimización automática de imágenes
-- **CSS Purge**: Eliminación de CSS no utilizado
-
-### Lighthouse Score Objetivo
-- **Performance**: 90+
-- **Accessibility**: 95+
-- **Best Practices**: 90+
-- **SEO**: 90+
+### **GitHub Pages**
+```bash
+npm run build
+# Configurar GitHub Actions para deploy automático
+```
 
 ## 🤝 Contribución
 
-### Guías de Contribución
-1. Fork del repositorio
-2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Crear Pull Request
-
-### Estándares de Código
-- **TypeScript**: Tipado estricto obligatorio
-- **ESLint**: Reglas de linting configuradas
-- **Prettier**: Formateo automático de código
-- **Husky**: Hooks de pre-commit
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ## 📄 Licencia
 
-© 2024 Dr. Miguel Ojeda Rios. Todos los derechos reservados.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 👨‍⚕️ Autor
+
+**Dr. Miguel Ojeda Rios**
+- **GitHub**: [@4ailabs](https://github.com/4ailabs)
+- **Especialidad**: Nutrigenómica y Medicina Personalizada
+
+## 🙏 Agradecimientos
+
+- **Comunidad médica** por la validación científica
+- **Equipo de desarrollo** por la implementación técnica
+- **Pacientes** por la retroalimentación continua
+- **Investigadores** en el campo de la nutrigenómica
 
 ## 📞 Contacto
 
-- **Desarrollador**: 4ailabs
-- **Repositorio**: [sueroterapia-premiun](https://github.com/4ailabs/sueroterapia-premiun)
-- **Deploy**: Vercel (configurado)
+Para preguntas, sugerencias o colaboraciones:
+
+- **Email**: [Tu email aquí]
+- **GitHub Issues**: [Crear un issue](https://github.com/4ailabs/nutrigenomica-y-genotipos/issues)
+- **Documentación**: [Wiki del proyecto](https://github.com/4ailabs/nutrigenomica-y-genotipos/wiki)
 
 ---
 
-**Nota**: Esta aplicación está diseñada para uso médico profesional y debe ser utilizada por profesionales de la salud calificados.
+<div align="center">
+
+**⭐ Si este proyecto te resulta útil, ¡considera darle una estrella en GitHub!**
+
+*Desarrollado con ❤️ para la comunidad médica y científica*
+
+</div>
