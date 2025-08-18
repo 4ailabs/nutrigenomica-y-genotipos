@@ -6,8 +6,9 @@ import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
 import ChatPage from './components/ChatPage';
 import PatientPortal from './components/PatientPortal';
+import PatientAccess from './components/PatientAccess';
 
-type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patients';
+type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patients' | 'patientAccess';
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -20,6 +21,11 @@ const App: React.FC = () => {
     
     const navigateToPatients = () => {
         setCurrentPage('patients');
+        setViewingGenotype(null);
+    };
+    
+    const navigateToPatientAccess = () => {
+        setCurrentPage('patientAccess');
         setViewingGenotype(null);
     };
     
@@ -47,6 +53,7 @@ const App: React.FC = () => {
                             onNavigateToMain={() => navigateTo('landing')}
                             onNavigateToChat={() => navigateTo('chat')}
                             onNavigateToPatients={navigateToPatients}
+                            onNavigateToPatientAccess={navigateToPatientAccess}
                         />;
             case 'calculator':
                 return <AdvancedCalculator 
@@ -69,6 +76,11 @@ const App: React.FC = () => {
                             onNavigateToPortal={() => navigateTo('portal')} 
                             onNavigateToMain={() => navigateTo('landing')}
                             onViewGenotype={handleViewGenotype}
+                        />;
+            case 'patientAccess':
+                return <PatientAccess 
+                            onNavigateToPortal={() => navigateTo('portal')} 
+                            onNavigateToMain={() => navigateTo('landing')}
                         />;
             default:
                 return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} />;

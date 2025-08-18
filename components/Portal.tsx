@@ -19,6 +19,7 @@ interface PortalProps {
     onNavigateToMain?: () => void;
     onNavigateToChat?: () => void;
     onNavigateToPatients?: () => void;
+    onNavigateToPatientAccess?: () => void;
 }
 
 interface ToolCardProps {
@@ -63,6 +64,13 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
                     icon: "bg-amber-100 text-amber-600",
                     button: "bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white"
                 };
+            case 'patientAccess':
+                return {
+                    header: "bg-teal-50 border-teal-200", 
+                    badge: "bg-teal-100 text-teal-700",
+                    icon: "bg-teal-100 text-teal-600",
+                    button: "bg-teal-500 hover:bg-teal-600 active:bg-teal-700 text-white"
+                };
             default:
                 return {
                     header: "bg-slate-50 border-slate-200",
@@ -82,6 +90,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
             case 'calculator': return <Calculator className="w-8 h-8" />;
             case 'chat': return <Bot className="w-8 h-8" />;
             case 'patients': return <Users className="w-8 h-8" />;
+            case 'patientAccess': return <Users className="w-8 h-8" />;
             default: return <Target className="w-8 h-8" />;
         }
     };
@@ -122,7 +131,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
     );
 };
 
-const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain, onNavigateToChat, onNavigateToPatients }) => {
+const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain, onNavigateToChat, onNavigateToPatients, onNavigateToPatientAccess }) => {
     const genotypes = [1, 2, 3, 4, 5, 6];
     
     // Colores médicos para cada genotipo
@@ -307,6 +316,23 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                                             "Objetivos de salud individuales"
                                         ]}
                                         onClick={onNavigateToPatients}
+                                        category="consultation"
+                                    />
+                                )}
+                                
+                                {/* Tarjeta de Acceso para Pacientes */}
+                                {onNavigateToPatientAccess && (
+                                    <ToolCard 
+                                        type="patientAccess"
+                                        title="Acceso para Pacientes"
+                                        description="Acceso público para que los pacientes puedan ver su lista de alimentos personalizada según su genotipo."
+                                        features={[
+                                            "Acceso público sin autenticación",
+                                            "Lista de alimentos por genotipo",
+                                            "Características nutricionales",
+                                            "Recomendaciones específicas"
+                                        ]}
+                                        onClick={onNavigateToPatientAccess}
                                         category="consultation"
                                     />
                                 )}
