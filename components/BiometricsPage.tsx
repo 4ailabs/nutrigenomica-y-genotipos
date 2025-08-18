@@ -593,24 +593,73 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                                     <ClipboardList className="w-6 h-6 mr-2" />
                                     Resumen de Datos Capturados
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-sm">
                                     <div>
                                         <h4 className="font-semibold text-blue-700 mb-2">Datos Básicos:</h4>
                                         <ul className="space-y-1 text-blue-600">
                                             <li>• Gustador PROP: {formData.propTest || 'No seleccionado'}</li>
+                                            <li>• Ángulo gonial: {formData.gonialAngle || 'No seleccionado'}</li>
                                             <li>• Somatotipo: {formData.somatotype || 'No seleccionado'}</li>
                                             <li>• Forma de cabeza: {formData.headShape || 'No seleccionado'}</li>
-                                            <li>• Abertura de piernas: {formData.legOpening || 'No seleccionado'}</li>
                                         </ul>
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-blue-700 mb-2">Características Específicas:</h4>
+                                        <h4 className="font-semibold text-blue-700 mb-2">Mediciones Corporales:</h4>
                                         <ul className="space-y-1 text-blue-600">
+                                            <li>• Abertura de piernas: {formData.legOpening || 'No seleccionado'}</li>
+                                            <li>• Medición de muñeca: {formData.wrist || 'No seleccionado'}</li>
                                             <li>• Líneas blancas: {formData.whiteLines ? 'Sí' : 'No'}</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-700 mb-2">Características Dentales:</h4>
+                                        <ul className="space-y-1 text-blue-600">
                                             <li>• Incisivos pala: {formData.shovelIncisors ? 'Sí' : 'No'}</li>
                                             <li>• Cúspide Carabelli: {formData.carabelliCusp ? 'Sí' : 'No'}</li>
-                                            <li>• Muñeca: {formData.wrist || 'No seleccionado'}</li>
                                         </ul>
+                                    </div>
+                                </div>
+                                
+                                {/* Huellas Dactilares - Sección Especial */}
+                                <div className="mt-6 bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                                    <h4 className="font-semibold text-indigo-800 mb-3 flex items-center">
+                                        <Fingerprint className="w-5 h-5 mr-2" />
+                                        Huellas Dactilares
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {/* Mano Derecha */}
+                                        <div>
+                                            <h5 className="font-medium text-indigo-700 mb-2">Mano Derecha:</h5>
+                                            <div className="grid grid-cols-5 gap-1 text-xs">
+                                                <div className="text-center font-medium text-indigo-600">Pulgar</div>
+                                                <div className="text-center font-medium text-indigo-600">Índice</div>
+                                                <div className="text-center font-medium text-indigo-600">Medio</div>
+                                                <div className="text-center font-medium text-indigo-600">Anular</div>
+                                                <div className="text-center font-medium text-indigo-600">Meñique</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.right?.thumb || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.right?.index || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.right?.middle || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.right?.ring || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.right?.pinky || '-'}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Mano Izquierda */}
+                                        <div>
+                                            <h5 className="font-medium text-indigo-700 mb-2">Mano Izquierda:</h5>
+                                            <div className="grid grid-cols-5 gap-1 text-xs">
+                                                <div className="text-center font-medium text-indigo-600">Pulgar</div>
+                                                <div className="text-center font-medium text-indigo-600">Índice</div>
+                                                <div className="text-center font-medium text-indigo-600">Medio</div>
+                                                <div className="text-center font-medium text-indigo-600">Anular</div>
+                                                <div className="text-center font-medium text-indigo-600">Meñique</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.left?.thumb || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.left?.index || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.left?.middle || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.left?.ring || '-'}</div>
+                                                <div className="text-center text-indigo-500">{formData.fingerprints?.left?.pinky || '-'}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
