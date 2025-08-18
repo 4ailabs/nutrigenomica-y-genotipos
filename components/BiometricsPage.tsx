@@ -81,6 +81,50 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
             setFormData((prev: any) => ({ ...prev, [name]: val }));
         }
     };
+
+    // Función para exportar a PDF
+    const exportToPDF = () => {
+        const dataStr = JSON.stringify(formData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'biomediciones_paciente.json';
+        link.click();
+        URL.revokeObjectURL(url);
+        alert('Datos exportados como JSON (simulando PDF)');
+    };
+
+    // Función para exportar a JSON
+    const exportToJSON = () => {
+        const dataStr = JSON.stringify(formData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'biomediciones_paciente.json';
+        link.click();
+        URL.revokeObjectURL(url);
+        alert('Datos exportados como JSON exitosamente');
+    };
+
+    // Función para copiar al portapapeles
+    const copyToClipboard = async () => {
+        try {
+            const dataStr = JSON.stringify(formData, null, 2);
+            await navigator.clipboard.writeText(dataStr);
+            alert('Datos copiados al portapapeles exitosamente');
+        } catch (err) {
+            // Fallback para navegadores que no soportan clipboard API
+            const textArea = document.createElement('textarea');
+            textArea.value = JSON.stringify(formData, null, 2);
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('Datos copiados al portapapeles exitosamente');
+        }
+    };
     
     const biometricsData = [
         {
@@ -545,14 +589,67 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                             </div>
                         </fieldset>
 
+                        {/* Resumen de Datos Capturados */}
                         <div className="pt-8 border-t border-slate-200">
-                            <div className="text-center">
-                                <button type="button" onClick={() => alert('Resultados guardados (función no implementada)')} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 px-8 rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-500/30 text-lg">
-                                    <Zap className="w-5 h-5 inline mr-2" />
-                                    Guardar Resultados y Calcular Genotipo
-                                </button>
-                                <p className="text-slate-500 text-sm mt-3">Tus mediciones se procesarán para determinar tu perfil nutrigenómico</p>
+                            <div className="bg-blue-50 p-6 rounded-xl mb-6">
+                                <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+                                    <ClipboardList className="w-6 h-6 mr-2" />
+                                    Resumen de Datos Capturados
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <h4 className="font-semibold text-blue-700 mb-2">Datos Básicos:</h4>
+                                        <ul className="space-y-1 text-blue-600">
+                                            <li>• Gustador PROP: {formData.propTest || 'No seleccionado'}</li>
+                                            <li>• Somatotipo: {formData.somatotype || 'No seleccionado'}</li>
+                                            <li>• Forma de cabeza: {formData.headShape || 'No seleccionado'}</li>
+                                            <li>• Abertura de piernas: {formData.legOpening || 'No seleccionado'}</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-700 mb-2">Características Específicas:</h4>
+                                        <ul className="space-y-1 text-blue-600">
+                                            <li>• Líneas blancas: {formData.whiteLines ? 'Sí' : 'No'}</li>
+                                            <li>• Incisivos pala: {formData.shovelIncisors ? 'Sí' : 'No'}</li>
+                                            <li>• Cúspide Carabelli: {formData.carabelliCusp ? 'Sí' : 'No'}</li>
+                                            <li>• Muñeca: {formData.wrist || 'No seleccionado'}</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button 
+                                    type="button" 
+                                    onClick={() => exportToPDF()} 
+                                    className="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-green-500/30"
+                                >
+                                    <BarChart3 className="w-5 h-5 inline mr-2" />
+                                    Exportar a PDF
+                                </button>
+                                
+                                <button 
+                                    type="button" 
+                                    onClick={() => exportToJSON()} 
+                                    className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-purple-500/30"
+                                >
+                                    <TestTube className="w-5 h-5 inline mr-2" />
+                                    Exportar a JSON
+                                </button>
+                                
+                                <button 
+                                    type="button" 
+                                    onClick={() => copyToClipboard()} 
+                                    className="bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 px-6 rounded-xl hover:from-orange-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-orange-500/30"
+                                >
+                                    <ClipboardList className="w-5 h-5 inline mr-2" />
+                                    Copiar Datos
+                                </button>
+                            </div>
+                            
+                            <p className="text-slate-500 text-sm mt-4 text-center">
+                                Los datos capturados están listos para ser exportados o copiados al portapapeles
+                            </p>
                         </div>
                     </form>
                 </section>

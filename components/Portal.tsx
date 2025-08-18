@@ -151,10 +151,10 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
         {
             type: "biometrics",
             title: "Biomediciones",
-            description: "Captura medidas corporales precisas",
+            description: "Captura y exporta medidas corporales precisas",
             features: [
-                "Mediciones rápidas",
-                "Interfaz simple"
+                "Captura de datos",
+                "Exportación a PDF/JSON"
             ],
             onClick: onNavigateToBiometrics,
             category: 'evaluation' as const
