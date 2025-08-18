@@ -156,7 +156,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         const genotypeGradient = getGenotypeGradient(selectedGenotype);
 
         return (
-            <div className="space-y-6">
+            <div className="space-y-8">
                 {/* Header del Genotipo */}
                 <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
                     <div className="absolute inset-0 opacity-10">
@@ -179,18 +179,18 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                 </div>
 
                                             {/* Características */}
-                            <div className="space-y-4 md:space-y-6">
+                            <div className="space-y-6 md:space-y-6">
                                 {/* Características Principales */}
-                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                                    <div className="flex items-center space-x-3 mb-4">
+                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
+                                    <div className="flex items-center space-x-3 mb-5">
                                         <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
                                             <Target className="w-4 h-4 text-blue-600" />
                                         </div>
                                         <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Principales</h4>
                                     </div>
-                                    <div className="space-y-4">
+                                    <div className="space-y-5">
                                         {genotype.characteristics1.map((char, index) => (
-                                            <div key={index} className="bg-gray-50 rounded-xl p-3 md:p-4 hover:bg-gray-100 transition-colors duration-200">
+                                            <div key={index} className="bg-gray-50 rounded-xl p-4 md:p-4 hover:bg-gray-100 transition-colors duration-200">
                                                 <div className="flex items-start space-x-3">
                                                     <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
                                                         <char.icon className="w-5 h-5 text-white" />
@@ -206,16 +206,16 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                 </div>
 
                                 {/* Características Secundarias */}
-                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                                    <div className="flex items-center space-x-3 mb-4">
+                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
+                                    <div className="flex items-center space-x-3 mb-5">
                                         <div className="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
                                             <Leaf className="w-4 h-4 text-purple-600" />
                                         </div>
                                         <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Secundarias</h4>
                                     </div>
-                                    <div className="space-y-4">
+                                    <div className="space-y-5">
                                         {genotype.characteristics2.map((char, index) => (
-                                            <div key={index} className="bg-gray-50 rounded-xl p-3 md:p-4 hover:bg-gray-100 transition-colors duration-200">
+                                            <div key={index} className="bg-gray-50 rounded-xl p-4 md:p-4 hover:bg-gray-100 transition-colors duration-200">
                                                 <div className="flex items-start space-x-3">
                                                     <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
                                                         <char.icon className="w-5 h-5 text-white" />
@@ -232,16 +232,16 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </div>
 
                                             {/* Características Físicas y Metabólicas */}
-                            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                                <div className="flex items-center space-x-3 mb-4">
+                                                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
+                                <div className="flex items-center space-x-3 mb-5">
                                     <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
                                         <Activity className="w-4 h-4 text-green-600" />
                                     </div>
-                                                                            <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
+                                    <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
                                 </div>
-                                <div className="space-y-4">
+                                <div className="space-y-5">
                                     {genotype.physicalAndMetabolic.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
+                                        <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-5 border border-gray-200">
                                             <h5 className="font-bold text-gray-900 mb-3 text-base md:text-lg flex items-center space-x-2">
                                                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                 <span>{section.title}</span>
@@ -260,17 +260,17 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </div>
 
                                             {/* Plan Alimentario */}
-                            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                                <div className="flex items-center space-x-3 mb-4">
+                                                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
+                                <div className="flex items-center space-x-3 mb-5">
                                     <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center">
                                         <Apple className="w-4 h-4 text-emerald-600" />
                                     </div>
-                                                                            <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
+                                    <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
                                 </div>
                                 <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-emerald-50 p-3 rounded-lg border border-emerald-200">{genotype.foodPlan.description}</p>
-                                <div className="space-y-4">
+                                <div className="space-y-5">
                                     {genotype.foodPlan.sections.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
+                                        <div key={index} className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-5 border border-emerald-200">
                                             <h5 className="font-bold text-emerald-800 mb-3 text-base md:text-lg flex items-center space-x-2">
                                                 <CheckCircle className="w-4 h-4 text-emerald-600" />
                                                 <span>{section.title}</span>
@@ -289,17 +289,17 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </div>
 
                                             {/* Alimentos a Evitar */}
-                            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                                <div className="flex items-center space-x-3 mb-4">
+                                                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
+                                <div className="flex items-center space-x-3 mb-5">
                                     <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center">
                                         <XCircle className="w-4 h-4 text-red-600" />
                                     </div>
-                                                                            <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
+                                    <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
                                 </div>
                                 <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-red-50 p-3 rounded-lg border border-red-200">{genotype.foodsToAvoid.description}</p>
-                                <div className="space-y-4">
+                                <div className="space-y-5">
                                     {genotype.foodsToAvoid.sections.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-4 border border-red-200">
+                                        <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-5 border border-red-200">
                                             <h5 className="font-bold text-red-800 mb-3 text-base md:text-lg flex items-center space-x-2">
                                                 <XCircle className="w-4 h-4 text-red-600" />
                                                 <span>{section.title}</span>
