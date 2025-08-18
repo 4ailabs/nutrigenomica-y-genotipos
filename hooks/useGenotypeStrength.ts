@@ -120,6 +120,47 @@ export const useGenotypeStrength = () => {
         return null;
     }, []);
 
+    // Cargar resultado específico del historial
+    const loadResultFromHistory = useCallback((result: BiometricResult) => {
+        setCurrentGenotypeId(result.genotypeId);
+        setSelectedMeasurements(new Set(result.selectedMeasurements));
+    }, []);
+
+    // Eliminar resultado del historial
+    const deleteResult = useCallback((genotypeId: number): boolean => {
+        try {
+            const existingData = localStorage.getItem('genotypeStrengthData');
+            if (!existingData) return false;
+
+            const parsedData: GenotypeStrengthData = JSON.parse(existingData);
+            const updatedResults = parsedData.results.filter(r => r.genotypeId !== genotypeId);
+            
+            const updatedData: GenotypeStrengthData = {
+                ...parsedData,
+                results: updatedResults,
+                lastUpdated: new Date()
+            };
+
+            localStorage.setItem('genotypeStrengthData', JSON.stringify(updatedData));
+            return true;
+        } catch (error) {
+            console.error('Error al eliminar resultado:', error);
+            return false;
+        }
+    }, []);
+
+    // Obtener todos los resultados del historial
+    const getAllResults = useCallback((): GenotypeStrengthData | null => {
+        try {
+            const existingData = localStorage.getItem('genotypeStrengthData');
+            if (!existingData) return null;
+            return JSON.parse(existingData);
+        } catch (error) {
+            console.error('Error al obtener historial:', error);
+            return null;
+        }
+    }, []);
+
     return {
         // Estado
         selectedMeasurements,
@@ -137,6 +178,9 @@ export const useGenotypeStrength = () => {
         getCurrentResult,
         saveResult,
         loadSavedResult,
+        loadResultFromHistory,
+        deleteResult,
+        getAllResults,
         
         // Utilidades
         hasSelections: selectedMeasurements.size > 0,

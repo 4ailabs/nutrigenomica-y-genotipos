@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
-import { CheckCircle, Circle, Target, TrendingUp, Zap, Award } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { CheckCircle, Circle, Target, TrendingUp, Zap, Award, History, BarChart3 } from 'lucide-react';
 import { useGenotypeStrength } from '../hooks/useGenotypeStrength';
 import { getAllGenotypeStrengthMeters } from '../genotypeStrengthData';
-import type { GenotypeStrengthMeter as GenotypeStrengthMeterType } from '../types';
+import GenotypeStrengthHistory from './GenotypeStrengthHistory';
+import type { BiometricResult } from '../types';
 
 interface GenotypeStrengthMeterProps {
     onResultChange?: (result: any) => void;
 }
 
 const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultChange }) => {
+    const [activeTab, setActiveTab] = useState<'meter' | 'history'>('meter');
+    
     const {
         selectedMeasurements,
         currentGenotypeId,
@@ -20,6 +23,8 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
         clearSelections,
         saveResult,
         loadSavedResult,
+        loadResultFromHistory,
+        deleteResult,
         hasSelections
     } = useGenotypeStrength();
 
@@ -85,8 +90,25 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
         const success = await saveResult();
         if (success) {
             alert('Resultado guardado exitosamente');
+            setActiveTab('history');
         } else {
             alert('Error al guardar el resultado');
+        }
+    };
+
+    // Función para cargar resultado del historial
+    const handleLoadFromHistory = (result: BiometricResult) => {
+        loadResultFromHistory(result);
+        setActiveTab('meter');
+    };
+
+    // Función para eliminar resultado del historial
+    const handleDeleteFromHistory = (genotypeId: number) => {
+        const success = deleteResult(genotypeId);
+        if (success) {
+            alert('Resultado eliminado exitosamente');
+        } else {
+            alert('Error al eliminar el resultado');
         }
     };
 
@@ -102,188 +124,233 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
                 </p>
             </div>
 
-            {/* Selector de Genotipo */}
-            <div className="mb-8">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">
-                    Selecciona tu Genotipo:
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {allMeters.map((meter) => (
-                        <button
-                            key={meter.genotypeId}
-                            onClick={() => handleGenotypeSelect(meter.genotypeId)}
-                            className={`p-4 rounded-lg border-2 transition-all duration-200 hover:scale-105 ${
-                                currentGenotypeId === meter.genotypeId
-                                    ? `border-2 bg-gradient-to-r ${getGenotypeColor(meter.genotypeId)} text-white shadow-lg`
-                                    : 'border-gray-200 bg-gray-50 hover:border-gray-300 text-gray-700'
-                            }`}
-                        >
-                            <div className="text-center">
-                                <div className="text-lg font-bold mb-1">
-                                    {meter.genotypeName}
-                                </div>
-                                <div className="text-sm opacity-90">
-                                    Máx: {meter.maxPoints} pts
-                                </div>
-                            </div>
-                        </button>
-                    ))}
+            {/* Pestañas de Navegación */}
+            <div className="flex justify-center mb-6">
+                <div className="bg-gray-100 rounded-lg p-1">
+                    <button
+                        onClick={() => setActiveTab('meter')}
+                        className={`px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
+                            activeTab === 'meter'
+                                ? 'bg-white text-blue-600 shadow-sm'
+                                : 'text-gray-600 hover:text-gray-800'
+                        }`}
+                    >
+                        <div className="flex items-center space-x-2">
+                            <BarChart3 className="w-4 h-4" />
+                            <span>Medidor</span>
+                        </div>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('history')}
+                        className={`px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
+                            activeTab === 'history'
+                                ? 'bg-white text-blue-600 shadow-sm'
+                                : 'text-gray-600 hover:text-gray-800'
+                        }`}
+                    >
+                        <div className="flex items-center space-x-2">
+                            <History className="w-4 h-4" />
+                            <span>Historial</span>
+                        </div>
+                    </button>
                 </div>
             </div>
 
-            {/* Medidor de Fuerza */}
-            {currentMeter && (
-                <div className="space-y-6">
-                    {/* Información del Genotipo */}
-                    <div className="bg-gradient-to-r p-6 rounded-lg text-white shadow-lg"
-                         style={{ background: `linear-gradient(135deg, ${getGenotypeColor(currentMeter.genotypeId).split(' ')[1]}, ${getGenotypeColor(currentMeter.genotypeId).split(' ')[3]})` }}>
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h3 className="text-2xl font-bold mb-2">
-                                    {currentMeter.genotypeName}
-                                </h3>
-                                <p className="text-lg opacity-90">
-                                    Puntuación actual: {totalPoints} / {currentMeter.maxPoints} puntos
-                                </p>
-                            </div>
-                            <div className="text-right">
-                                <div className="text-4xl font-bold mb-1">
-                                    {strengthPercentage}%
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    {getStrengthIcon(strengthPercentage)}
-                                    <span className="text-lg font-semibold">
-                                        {getStrengthText(strengthPercentage)}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Barra de Progreso */}
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-sm text-gray-600">
-                            <span>Fuerza del Genotipo</span>
-                            <span>{strengthPercentage}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div
-                                className={`h-3 rounded-full transition-all duration-500 ${getProgressColor(strengthPercentage)}`}
-                                style={{ width: `${strengthPercentage}%` }}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Lista de Biomediciones */}
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <h4 className="text-lg font-semibold text-gray-700">
-                                Características Biométricas
-                            </h4>
-                            <div className="flex gap-2">
+            {/* Contenido de las Pestañas */}
+            {activeTab === 'meter' && (
+                <>
+                    {/* Selector de Genotipo */}
+                    <div className="mb-8">
+                        <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                            Selecciona tu Genotipo:
+                        </h3>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {allMeters.map((meter) => (
                                 <button
-                                    onClick={clearSelections}
-                                    className="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-                                >
-                                    Limpiar
-                                </button>
-                                <button
-                                    onClick={handleSaveResult}
-                                    disabled={!hasSelections}
-                                    className={`px-3 py-1 text-sm rounded transition-colors ${
-                                        hasSelections
-                                            ? 'bg-blue-500 text-white hover:bg-blue-600'
-                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    key={meter.genotypeId}
+                                    onClick={() => handleGenotypeSelect(meter.genotypeId)}
+                                    className={`p-4 rounded-lg border-2 transition-all duration-200 hover:scale-105 ${
+                                        currentGenotypeId === meter.genotypeId
+                                            ? `border-2 bg-gradient-to-r ${getGenotypeColor(meter.genotypeId)} text-white shadow-lg`
+                                            : 'border-gray-200 bg-gray-50 hover:border-gray-300 text-gray-700'
                                     }`}
                                 >
-                                    Guardar
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="grid gap-3">
-                            {currentMeter.measurements.map((measurement) => (
-                                <div
-                                    key={measurement.id}
-                                    className={`p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:border-blue-300 ${
-                                        selectedMeasurements.has(measurement.id)
-                                            ? 'border-blue-500 bg-blue-50'
-                                            : 'border-gray-200 bg-white hover:bg-gray-50'
-                                    }`}
-                                    onClick={() => toggleMeasurement(measurement.id)}
-                                >
-                                    <div className="flex items-start gap-3">
-                                        <div className="flex-shrink-0 mt-1">
-                                            {selectedMeasurements.has(measurement.id) ? (
-                                                <CheckCircle className="w-5 h-5 text-blue-600" />
-                                            ) : (
-                                                <Circle className="w-5 h-5 text-gray-400" />
-                                            )}
+                                    <div className="text-center">
+                                        <div className="text-lg font-bold mb-1">
+                                            {meter.genotypeName}
                                         </div>
-                                        <div className="flex-1">
-                                            <p className="text-gray-800 font-medium">
-                                                {measurement.statement}
-                                            </p>
-                                            <div className="flex items-center gap-2 mt-2">
-                                                <span className="text-sm text-gray-500">
-                                                    Categoría: {measurement.category.replace('_', ' ')}
-                                                </span>
-                                                <span className="text-sm font-semibold text-blue-600">
-                                                    +{measurement.points} puntos
-                                                </span>
-                                            </div>
+                                        <div className="text-sm opacity-90">
+                                            Máx: {meter.maxPoints} pts
                                         </div>
                                     </div>
-                                </div>
+                                </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Resumen de Resultados */}
-                    {hasSelections && (
-                        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                            <h4 className="text-lg font-semibold text-gray-700 mb-4">
-                                Resumen de la Evaluación
-                            </h4>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="text-center">
-                                    <div className="text-2xl font-bold text-blue-600">
-                                        {selectedMeasurements.size}
+                    {/* Medidor de Fuerza */}
+                    {currentMeter && (
+                        <div className="space-y-6">
+                            {/* Información del Genotipo */}
+                            <div className="bg-gradient-to-r p-6 rounded-lg text-white shadow-lg"
+                                 style={{ background: `linear-gradient(135deg, ${getGenotypeColor(currentMeter.genotypeId).split(' ')[1]}, ${getGenotypeColor(currentMeter.genotypeId).split(' ')[3]})` }}>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h3 className="text-2xl font-bold mb-2">
+                                            {currentMeter.genotypeName}
+                                        </h3>
+                                        <p className="text-lg opacity-90">
+                                            Puntuación actual: {totalPoints} / {currentMeter.maxPoints} puntos
+                                        </p>
                                     </div>
-                                    <div className="text-sm text-gray-600">
-                                        Características seleccionadas
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-2xl font-bold text-green-600">
-                                        {totalPoints}
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                        Puntos totales
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-2xl font-bold text-purple-600">
-                                        {strengthPercentage}%
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                        Fuerza del genotipo
+                                    <div className="text-right">
+                                        <div className="text-4xl font-bold mb-1">
+                                            {strengthPercentage}%
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {getStrengthIcon(strengthPercentage)}
+                                            <span className="text-lg font-semibold">
+                                                {getStrengthText(strengthPercentage)}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Barra de Progreso */}
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm text-gray-600">
+                                    <span>Fuerza del Genotipo</span>
+                                    <span>{strengthPercentage}%</span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-3">
+                                    <div
+                                        className={`h-3 rounded-full transition-all duration-500 ${getProgressColor(strengthPercentage)}`}
+                                        style={{ width: `${strengthPercentage}%` }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Lista de Biomediciones */}
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h4 className="text-lg font-semibold text-gray-700">
+                                        Características Biométricas
+                                    </h4>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={clearSelections}
+                                            className="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                                        >
+                                            Limpiar
+                                        </button>
+                                        <button
+                                            onClick={handleSaveResult}
+                                            disabled={!hasSelections}
+                                            className={`px-3 py-1 text-sm rounded transition-colors ${
+                                                hasSelections
+                                                    ? 'bg-blue-500 text-white hover:bg-blue-600'
+                                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                            }`}
+                                        >
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-3">
+                                    {currentMeter.measurements.map((measurement) => (
+                                        <div
+                                            key={measurement.id}
+                                            className={`p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:border-blue-300 ${
+                                                selectedMeasurements.has(measurement.id)
+                                                    ? 'border-blue-500 bg-blue-50'
+                                                    : 'border-gray-200 bg-white hover:bg-gray-50'
+                                            }`}
+                                            onClick={() => toggleMeasurement(measurement.id)}
+                                        >
+                                            <div className="flex items-start gap-3">
+                                                <div className="flex-shrink-0 mt-1">
+                                                    {selectedMeasurements.has(measurement.id) ? (
+                                                        <CheckCircle className="w-5 h-5 text-blue-600" />
+                                                    ) : (
+                                                        <Circle className="w-5 h-5 text-gray-400" />
+                                                    )}
+                                                </div>
+                                                <div className="flex-1">
+                                                    <p className="text-gray-800 font-medium">
+                                                        {measurement.statement}
+                                                    </p>
+                                                    <div className="flex items-center gap-2 mt-2">
+                                                        <span className="text-sm text-gray-500">
+                                                            Categoría: {measurement.category.replace('_', ' ')}
+                                                        </span>
+                                                        <span className="text-sm font-semibold text-blue-600">
+                                                            +{measurement.points} puntos
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Resumen de Resultados */}
+                            {hasSelections && (
+                                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-700 mb-4">
+                                        Resumen de la Evaluación
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-blue-600">
+                                                {selectedMeasurements.size}
+                                            </div>
+                                            <div className="text-sm text-gray-600">
+                                                Características seleccionadas
+                                            </div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-green-600">
+                                                {totalPoints}
+                                            </div>
+                                            <div className="text-sm text-gray-600">
+                                                Puntos totales
+                                            </div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-purple-600">
+                                                {strengthPercentage}%
+                                            </div>
+                                            <div className="text-sm text-gray-600">
+                                                Fuerza del genotipo
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
-                </div>
+
+                    {/* Mensaje cuando no hay genotipo seleccionado */}
+                    {!currentGenotypeId && (
+                        <div className="text-center py-12 text-gray-500">
+                            <Target className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                            <p className="text-lg">
+                                Selecciona un genotipo para comenzar la evaluación
+                            </p>
+                        </div>
+                    )}
+                </>
             )}
 
-            {/* Mensaje cuando no hay genotipo seleccionado */}
-            {!currentGenotypeId && (
-                <div className="text-center py-12 text-gray-500">
-                    <Target className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg">
-                        Selecciona un genotipo para comenzar la evaluación
-                    </p>
-                </div>
+            {/* Pestaña de Historial */}
+            {activeTab === 'history' && (
+                <GenotypeStrengthHistory
+                    onLoadResult={handleLoadFromHistory}
+                    onDeleteResult={handleDeleteFromHistory}
+                />
             )}
         </div>
     );
