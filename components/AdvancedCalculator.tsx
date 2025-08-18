@@ -144,36 +144,38 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
         <MedicalSection 
             title="Medidas Corporales (cm)"
             subtitle="Introduce las medidas corporales precisas para el cálculo del genotipo"
-            spacing="normal"
+            spacing="tight"
             className="animate-fade-in"
         >
-            {[
-                { name: "heightStanding", label: "Altura de pie (estatura)", placeholder: "Ej. 170.5" },
-                { name: "heightSitting", label: "Altura sentado (suelo a cabeza)", placeholder: "Ej. 120.5" },
-                { name: "chairHeight", label: "Altura de la silla", placeholder: "Ej. 45.0" },
-                { name: "upperLegLength", label: "Longitud pierna superior (muslo)", placeholder: "Ej. 42.0" },
-                { name: "lowerLegLength", label: "Longitud pierna inferior (pantorrilla)", placeholder: "Ej. 38.0" },
-                { name: "indexFingerLeft", label: "Dedo índice (izquierdo)", placeholder: "Ej. 7.5" },
-                { name: "ringFingerLeft", label: "Dedo anular (izquierdo)", placeholder: "Ej. 8.0" },
-                { name: "indexFingerRight", label: "Dedo índice (derecho)", placeholder: "Ej. 7.5" },
-                { name: "ringFingerRight", label: "Dedo anular (derecho)", placeholder: "Ej. 8.0" }
-            ].map(field => (
-                <MedicalInput
-                    key={field.name}
-                    label={field.label}
-                    name={field.name}
-                    type="number"
-                    value={measurements[field.name as keyof BodyMeasurements]?.toString() || ''}
-                    onChange={handleMeasurementChange}
-                    placeholder={field.placeholder}
-                />
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                    { name: "heightStanding", label: "Altura de pie (estatura)", placeholder: "Ej. 170.5" },
+                    { name: "heightSitting", label: "Altura sentado (suelo a cabeza)", placeholder: "Ej. 120.5" },
+                    { name: "chairHeight", label: "Altura de la silla", placeholder: "Ej. 45.0" },
+                    { name: "upperLegLength", label: "Longitud pierna superior (muslo)", placeholder: "Ej. 42.0" },
+                    { name: "lowerLegLength", label: "Longitud pierna inferior (pantorrilla)", placeholder: "Ej. 38.0" },
+                    { name: "indexFingerLeft", label: "Dedo índice (izquierdo)", placeholder: "Ej. 7.5" },
+                    { name: "ringFingerLeft", label: "Dedo anular (izquierdo)", placeholder: "Ej. 8.0" },
+                    { name: "indexFingerRight", label: "Dedo índice (derecho)", placeholder: "Ej. 7.5" },
+                    { name: "ringFingerRight", label: "Dedo anular (derecho)", placeholder: "Ej. 8.0" }
+                ].map(field => (
+                    <MedicalInput
+                        key={field.name}
+                        label={field.label}
+                        name={field.name}
+                        type="number"
+                        value={measurements[field.name as keyof BodyMeasurements]?.toString() || ''}
+                        onChange={handleMeasurementChange}
+                        placeholder={field.placeholder}
+                    />
+                ))}
+            </div>
             
             <MedicalButton
                 variant="primary"
-                size="lg"
+                size="sm"
                 onClick={calculateProportions}
-                className="w-full"
+                className="w-full mt-4"
             >
                 Calcular Proporciones
             </MedicalButton>
@@ -184,63 +186,68 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
         <MedicalSection 
             title="Información Sanguínea"
             subtitle="Selecciona tu grupo sanguíneo, factor Rh y estado secretor"
-            spacing="normal" 
+            spacing="tight" 
             className="animate-fade-in"
         >
-            <div>
-                <MedicalHeading level={4} variant="secondary" className="mb-3">Grupo Sanguíneo</MedicalHeading>
-                <div className="grid grid-cols-2 gap-2">
-                    {(['A', 'B', 'AB', 'O'] as BloodType[]).map(type => (
-                        <MedicalButton 
-                            key={type} 
-                            variant={bloodType === type ? "primary" : "secondary"}
-                            onClick={() => setBloodType(type)}
-                            className="w-full"
-                        >
-                            {type}
-                        </MedicalButton>
-                    ))}
+            <div className="space-y-4">
+                <div>
+                    <MedicalHeading level={5} variant="secondary" className="mb-2">Grupo Sanguíneo</MedicalHeading>
+                    <div className="grid grid-cols-2 gap-2">
+                        {(['A', 'B', 'AB', 'O'] as BloodType[]).map(type => (
+                            <MedicalButton 
+                                key={type} 
+                                variant={bloodType === type ? "primary" : "secondary"}
+                                onClick={() => setBloodType(type)}
+                                size="sm"
+                                className="w-full"
+                            >
+                                {type}
+                            </MedicalButton>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            
-            <div>
-                <MedicalHeading level={4} variant="secondary" className="mb-3">Factor Rh</MedicalHeading>
-                <div className="grid grid-cols-2 gap-2">
-                    {(['+', '-'] as RhFactor[]).map(rh => (
-                        <MedicalButton 
-                            key={rh} 
-                            variant={rhFactor === rh ? "primary" : "secondary"}
-                            onClick={() => setRhFactor(rh)}
-                            className="w-full"
-                        >
-                            {rh === '+' ? 'Positivo (+)' : 'Negativo (-)'}
-                        </MedicalButton>
-                    ))}
+                
+                <div>
+                    <MedicalHeading level={5} variant="secondary" className="mb-2">Factor Rh</MedicalHeading>
+                    <div className="grid grid-cols-2 gap-2">
+                        {(['+', '-'] as RhFactor[]).map(rh => (
+                            <MedicalButton 
+                                key={rh} 
+                                variant={rhFactor === rh ? "primary" : "secondary"}
+                                onClick={() => setRhFactor(rh)}
+                                size="sm"
+                                className="w-full"
+                            >
+                                {rh === '+' ? 'Positivo (+)' : 'Negativo (-)'}
+                            </MedicalButton>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            
-            <div>
-                <MedicalHeading level={4} variant="secondary" className="mb-3">Estado Secretor</MedicalHeading>
-                <div className="grid grid-cols-2 gap-2">
-                    {(['secretor', 'no_secretor'] as SecretorStatus[]).map(status => (
-                        <MedicalButton 
-                            key={status} 
-                            variant={secretorStatus === status ? "primary" : "secondary"}
-                            onClick={() => setSecretorStatus(status)}
-                            className="w-full"
-                        >
-                            {status === 'secretor' ? 'Secretor' : 'No Secretor'}
-                        </MedicalButton>
-                    ))}
+                
+                <div>
+                    <MedicalHeading level={5} variant="secondary" className="mb-2">Estado Secretor</MedicalHeading>
+                    <div className="grid grid-cols-2 gap-2">
+                        {(['secretor', 'no_secretor'] as SecretorStatus[]).map(status => (
+                            <MedicalButton 
+                                key={status} 
+                                variant={secretorStatus === status ? "primary" : "secondary"}
+                                onClick={() => setSecretorStatus(status)}
+                                size="sm"
+                                className="w-full"
+                            >
+                                {status === 'secretor' ? 'Secretor' : 'No Secretor'}
+                            </MedicalButton>
+                        ))}
+                    </div>
                 </div>
             </div>
             
             <MedicalButton
                 variant="primary"
-                size="lg"
+                size="sm"
                 onClick={() => setActiveTab('summary')}
                 disabled={!isBloodComplete}
-                className="w-full"
+                className="w-full mt-4"
             >
                 Continuar
             </MedicalButton>
@@ -251,12 +258,12 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
         <MedicalSection 
             title="Resumen y Datos Adicionales"
             subtitle="Verifica la información ingresada y completa los datos faltantes"
-            spacing="normal"
+            spacing="tight"
             className="animate-fade-in"
         >
-            <MedicalCard variant="outline" className="p-6">
-                <MedicalHeading level={5} variant="muted" className="mb-4">Datos Calculados</MedicalHeading>
-                <div className="space-y-2">
+            <MedicalCard variant="outline" className="p-4 mb-4">
+                <MedicalHeading level={5} variant="muted" className="mb-3">Datos Calculados</MedicalHeading>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                     <MedicalText variant="body" size="sm">
                         <strong>Relación Torso-Piernas:</strong> {proportions?.torsoLonger ? 'Torso más largo' : 'Piernas más largas'}
                     </MedicalText>
@@ -276,13 +283,14 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             </MedicalCard>
             
             <div>
-                <MedicalHeading level={4} variant="secondary" className="mb-3">Sexo</MedicalHeading>
+                <MedicalHeading level={5} variant="secondary" className="mb-2">Sexo</MedicalHeading>
                 <div className="grid grid-cols-2 gap-2">
                     {(['hombre', 'mujer'] as Sex[]).map(s => (
                         <MedicalButton 
                             key={s} 
                             variant={sex === s ? "primary" : "secondary"}
                             onClick={() => setSex(s)}
+                            size="sm"
                             className="w-full"
                         >
                             {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -293,10 +301,10 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             
             <MedicalButton
                 variant="success"
-                size="lg"
+                size="sm"
                 onClick={calculateGenotype}
                 disabled={!sex}
-                className="w-full"
+                className="w-full mt-4"
             >
                 Calcular Genotipo
             </MedicalButton>
@@ -307,11 +315,11 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
         <MedicalSection
             title="Tu Genotipo"
             subtitle="Haz clic en tu resultado para ver información detallada"
-            spacing="loose"
+            spacing="tight"
             className="text-center animate-fade-in"
         >
             {results && results.genotypes.length > 0 ? (
-                <div className="flex justify-center items-center flex-wrap gap-4">
+                <div className="flex justify-center items-center flex-wrap gap-3 mb-4">
                     {results.genotypes.map((g, i) => (
                         <div key={i} onClick={() => setSelectedGenotype(g)} className="cursor-pointer">
                             <GenotypeBox number={g} imageUrl={`https://picsum.photos/seed/genotipo${g}/160/96`} />
@@ -319,14 +327,14 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                     ))}
                 </div>
             ) : (
-                <MedicalText variant="muted" size="lg" className="text-center">
+                <MedicalText variant="muted" size="base" className="text-center mb-4">
                     No se encontraron genotipos para esta combinación. Por favor, verifica tus datos.
                 </MedicalText>
             )}
             
-            <MedicalCard variant="outline" className="p-6 text-left">
-                <MedicalHeading level={5} variant="muted" align="center" className="mb-4">Resumen de Cálculo</MedicalHeading>
-                <div className="space-y-2">
+            <MedicalCard variant="outline" className="p-4 text-left mb-4">
+                <MedicalHeading level={5} variant="muted" align="center" className="mb-3">Resumen de Cálculo</MedicalHeading>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                     <MedicalText variant="body" size="sm">
                         <strong>Línea de cálculo:</strong> <span className="font-mono">{results?.line}</span>
                     </MedicalText>
@@ -348,13 +356,13 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 </div>
             </MedicalCard>
             
-            <MedicalText variant="caption" size="xs" className="text-center">
+            <MedicalText variant="caption" size="xs" className="text-center mb-4">
                 *Genotipo 4 indica acetilación lenta.
             </MedicalText>
             
             <MedicalButton
                 variant="primary"
-                size="lg"
+                size="sm"
                 onClick={resetForm}
                 className="w-full"
             >
