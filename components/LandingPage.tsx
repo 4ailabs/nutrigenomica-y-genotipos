@@ -348,95 +348,61 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                     </div>
                 </Section>
 
-                {/* Comparison Section Mejorado */}
-                <Section>
-                    <div className="text-center max-w-3xl mx-auto mb-16 animate-slideUp">
-                         <MedicalBadge variant="warning" size="lg" className="mb-4">
-                            Análisis Comparativo
-                         </MedicalBadge>
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">GenoTipo vs Planes tradicionales</h2>
-                        <p className="text-gray-600 mt-4 text-lg leading-relaxed">Comparación del programa de nutrición por GenoTipo con otros programas nutricionales del mercado.</p>
-                    </div>
-                     
-                     <MedicalCard className="max-w-4xl mx-auto p-2 animate-scaleIn" style={{animationDelay: '150ms'}}>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
-                                <thead>
-                                    <tr className="border-b border-gray-200 bg-gray-50">
-                                        <th className="p-4 text-sm font-semibold text-gray-600">Características</th>
-                                        <th className="p-4 text-center"><GenoTipoLogo /></th>
-                                        <th className="p-4 text-center"><PlanTradicionalLogo /></th>
-                                        <th className="p-4 text-center"><PlanGenericoLogo /></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[
-                                        "Determinación del GenoTipo", "Recomendaciones Personalizadas según tu GenoTipo", "Lista de Superalimentos y Toxinas específicas",
-                                        "Análisis de Huellas Digitales y Permeabilidad", "Menú adaptado a tu biología", "Recomendación de Suplementos Personalizada", "Chatbot de IA para seguimiento (3 meses)"
-                                    ].map((feature, i) => (
-                                         <tr key={i} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-200">
-                                            <td className="p-4 text-sm text-gray-700">{feature}</td>
-                                            <td className="p-4 text-center"><CheckmarkIcon /></td>
-                                            <td className="p-4 text-center"><MinusIcon className="text-gray-400" /></td>
-                                            <td className="p-4 text-center"><MinusIcon className="text-gray-400" /></td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </MedicalCard>
-                </Section>
-                
-                 {/* FAQ Section Mejorado */}
-                <Section className="bg-gradient-to-r from-gray-50 to-blue-50">
-                    <div className="max-w-4xl mx-auto animate-slideUp">
-                        <div className="text-center mb-12">
-                             <MedicalBadge variant="info" size="lg" className="mb-4">
-                                Preguntas Frecuentes
-                             </MedicalBadge>
-                            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">¿Tienes alguna pregunta?</h2>
-                            <p className="text-gray-600 mt-4 text-lg leading-relaxed">Nosotros estamos para resolver tus dudas y guiarte en tu bienestar.</p>
-                        </div>
-                        
-                        <MedicalCard className="p-8">
-                            {faqData.map((item, index) => (
-                                <FaqItem key={index} q={item.q} a={item.a} isOpen={openFaq === index} onClick={() => toggleFaq(index)} />
-                            ))}
-                        </MedicalCard>
-                    </div>
-                </Section>
-
-                {/* Transform Section Mejorado */}
-                <Section>
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div className="animate-slideIn">
-                             <MedicalBadge variant="success" size="lg" className="mb-4">
+                {/* Transform Section Final - Diseño Limpio */}
+                <Section className="bg-white">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <div className="inline-flex items-center px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
                                 Beneficios Clave
-                             </MedicalBadge>
-                            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Transforma tu salud desde tu código biológico</h2>
-                            <p className="text-gray-600 text-lg leading-relaxed">Adapta tu alimentación, mejora tu bienestar y alcanza tus objetivos con un plan diseñado para ti desde el ADN.</p>
+                            </div>
+                            <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                                Transforma tu salud desde tu código biológico
+                            </h2>
+                            <p className="text-gray-600 text-lg leading-relaxed">
+                                Adapta tu alimentación, mejora tu bienestar y alcanza tus objetivos con un plan diseñado para ti desde el ADN.
+                            </p>
                         </div>
                         
-                        <div className="space-y-4 stagger-children">
-                                                    <MedicalCard className="p-6 flex justify-between items-center hover:scale-105 transition-transform duration-300" delay={100}>
-                            <span className="font-semibold text-gray-700">Mejora tu energía y enfoque diario</span>
-                            <EnergyIcon />
-                        </MedicalCard>
-                        
-                        <MedicalCard className="p-6 flex justify-between items-center hover:scale-105 transition-transform duration-300" delay={200}>
-                            <span className="font-semibold text-gray-700">Planes flexibles con seguimiento inteligente</span>
-                            <ChartIcon />
-                        </MedicalCard>
-                         
-                         <MedicalCard className="p-6 flex justify-between items-center hover:scale-105 transition-transform duration-300" delay={300}>
-                            <span className="font-semibold text-gray-700">Recibe recomendaciones personalizadas</span>
-                            <RecommendationsIcon />
-                        </MedicalCard>
-                         
-                         <MedicalCard className="p-6 flex justify-between items-center hover:scale-105 transition-transform duration-300" delay={400}>
-                            <span className="font-semibold text-gray-700">Planes flexibles con seguimiento inteligente</span>
-                            <SparklesIcon />
-                        </MedicalCard>
+                        <div className="space-y-4">
+                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-gray-700">Mejora tu energía y enfoque diario</span>
+                                    <div className="text-gray-400">»</div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-gray-700">Planes flexibles con seguimiento inteligente</span>
+                                    <div className="text-gray-400">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-gray-700">Recibe recomendaciones personalizadas</span>
+                                    <div className="text-gray-400">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-gray-700">Optimización metabólica personalizada</span>
+                                    <div className="text-gray-400">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </Section>
