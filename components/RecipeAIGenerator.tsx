@@ -130,10 +130,10 @@ Generado por IA Premium - ${new Date().toLocaleDateString()}
       </div>
 
       {/* Formulario de Parámetros */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
         <h4 className="text-lg font-semibold text-gray-800 mb-4">Personaliza tu receta</h4>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
           {/* Tipo de comida */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -173,16 +173,45 @@ Generado por IA Premium - ${new Date().toLocaleDateString()}
               Número de porciones
             </label>
             <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-gray-400" />
-              <input
-                type="number"
-                min="1"
-                max="8"
-                value={servings}
-                onChange={(e) => setServings(parseInt(e.target.value) || 2)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-              />
+              <Users className="w-5 h-5 text-gray-400 flex-shrink-0" />
+              <div className="flex-1 flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => setServings(Math.max(1, servings - 1))}
+                  className="px-3 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-bold text-lg transition-colors duration-200 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
+                  disabled={servings <= 1}
+                  aria-label="Reducir porciones"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  min="1"
+                  max="12"
+                  value={servings}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (value >= 1 && value <= 12) {
+                      setServings(value);
+                    }
+                  }}
+                  className="flex-1 px-3 py-2 text-center border-0 focus:ring-0 focus:outline-none text-lg font-semibold bg-white min-w-[60px]"
+                  aria-label="Número de porciones"
+                />
+                <button
+                  type="button"
+                  onClick={() => setServings(Math.min(12, servings + 1))}
+                  className="px-3 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-bold text-lg transition-colors duration-200 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
+                  disabled={servings >= 12}
+                  aria-label="Aumentar porciones"
+                >
+                  +
+                </button>
+              </div>
             </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Rango: 1-12 personas
+            </p>
           </div>
         </div>
 
