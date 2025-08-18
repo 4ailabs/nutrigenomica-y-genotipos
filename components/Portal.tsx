@@ -18,6 +18,7 @@ interface PortalProps {
     onNavigateToBiometrics: () => void;
     onNavigateToMain?: () => void;
     onNavigateToChat?: () => void;
+    onNavigateToPatients?: () => void;
 }
 
 interface ToolCardProps {
@@ -55,6 +56,13 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
                     icon: "bg-violet-100 text-violet-600",
                     button: "bg-violet-500 hover:bg-violet-600 active:bg-violet-700 text-white"
                 };
+            case 'patients':
+                return {
+                    header: "bg-amber-50 border-amber-200", 
+                    badge: "bg-amber-100 text-amber-700",
+                    icon: "bg-amber-100 text-amber-600",
+                    button: "bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white"
+                };
             default:
                 return {
                     header: "bg-slate-50 border-slate-200",
@@ -73,6 +81,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
             case 'biometrics': return <Target className="w-8 h-8" />;
             case 'calculator': return <Calculator className="w-8 h-8" />;
             case 'chat': return <Bot className="w-8 h-8" />;
+            case 'patients': return <Users className="w-8 h-8" />;
             default: return <Target className="w-8 h-8" />;
         }
     };
@@ -113,7 +122,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
     );
 };
 
-const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain, onNavigateToChat }) => {
+const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain, onNavigateToChat, onNavigateToPatients }) => {
     const genotypes = [1, 2, 3, 4, 5, 6];
     
     // Colores médicos para cada genotipo
@@ -277,15 +286,30 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                             <MedicalHeading level={5} variant="muted" align="center" className="mb-4">
                                 Herramientas de Consulta
                             </MedicalHeading>
-                            <div className="flex justify-center">
-                                <div className="w-full max-w-md">
-                                    {consultationTools.map((tool) => (
-                                        <ToolCard 
-                                            key={tool.title} 
-                                            {...tool}
-                                        />
-                                    ))}
-                                </div>
+                            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                                {consultationTools.map((tool) => (
+                                    <ToolCard 
+                                        key={tool.title} 
+                                        {...tool}
+                                    />
+                                ))}
+                                
+                                {/* Tarjeta de Pacientes */}
+                                {onNavigateToPatients && (
+                                    <ToolCard 
+                                        type="patients"
+                                        title="Portal de Pacientes"
+                                        description="Accede a la información personalizada de pacientes, incluyendo genotipos, listas de alimentos y características clave."
+                                        features={[
+                                            "Información personalizada por paciente",
+                                            "Lista de alimentos recomendados",
+                                            "Características clave del genotipo",
+                                            "Objetivos de salud individuales"
+                                        ]}
+                                        onClick={onNavigateToPatients}
+                                        category="consultation"
+                                    />
+                                )}
                             </div>
                         </div>
                     )}
