@@ -3,6 +3,7 @@ import { CheckCircle, Circle, Target, TrendingUp, Zap, Award, History, BarChart3
 import { useGenotypeStrength } from '../hooks/useGenotypeStrength';
 import { getAllGenotypeStrengthMeters } from '../genotypeStrengthData';
 import GenotypeStrengthHistory from './GenotypeStrengthHistory';
+import SafariNavigationBar from './SafariNavigationBar';
 import type { BiometricResult } from '../types';
 
 interface GenotypeStrengthMeterProps {
@@ -90,8 +91,10 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
     const handleSaveResult = async () => {
         const success = await saveResult();
         if (success) {
-            alert('Resultado guardado exitosamente');
-            setActiveTab('history');
+            // Usar setTimeout para evitar problemas de navegación en Safari
+            setTimeout(() => {
+                setActiveTab('history');
+            }, 100);
         } else {
             alert('Error al guardar el resultado');
         }
@@ -115,6 +118,16 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+            {/* Barra de Navegación para Safari */}
+            <SafariNavigationBar
+                onBack={onBackToPortal || (() => window.history.back())}
+                onForward={() => window.history.forward()}
+                onRefresh={() => window.location.reload()}
+                canGoBack={!!onBackToPortal || window.history.length > 1}
+                canGoForward={window.history.length > 1}
+                className="force-show"
+            />
+
             {/* Header con Botón de Regreso */}
             <div className="relative mb-8">
                 {onBackToPortal && (

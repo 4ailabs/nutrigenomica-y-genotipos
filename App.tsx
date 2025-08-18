@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Portal from './components/Portal';
 import AdvancedCalculator from './components/AdvancedCalculator';
 import GenotypeDetail from './components/GenotypeDetail';
@@ -7,6 +7,7 @@ import BiometricsPage from './components/BiometricsPage';
 import ChatPage from './components/ChatPage';
 import PatientView from './components/PatientView';
 import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
+import { useBrowserNavigation } from './hooks/useBrowserNavigation';
 
 type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter';
 
@@ -14,9 +15,35 @@ const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
     const [viewingGenotype, setViewingGenotype] = useState<number | null>(null);
 
+    // Hook para manejar la navegación del navegador (compatible con Safari)
+    const { setupHistory, navigateTo: browserNavigateTo } = useBrowserNavigation({
+        onBack: () => {
+            // Lógica para manejar el botón atrás del navegador
+            if (currentPage !== 'landing') {
+                if (viewingGenotype) {
+                    setViewingGenotype(null);
+                } else {
+                    setCurrentPage('landing');
+                }
+            }
+        },
+        onForward: () => {
+            // Lógica para manejar el botón siguiente del navegador
+            console.log('Botón siguiente presionado');
+        }
+    });
+
+    // Configurar el historial del navegador al cargar la app
+    useEffect(() => {
+        setupHistory('landing');
+    }, [setupHistory]);
+
     const navigateTo = (page: Page) => {
         setCurrentPage(page);
         setViewingGenotype(null);
+        
+        // Actualizar el historial del navegador
+        browserNavigateTo(page);
     };
     
     const handleViewGenotype = (id: number) => {
