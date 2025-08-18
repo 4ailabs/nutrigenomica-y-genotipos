@@ -198,41 +198,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                             Datos Clínicos
                         </h3>
                         
-                        <div className="space-y-2">
-                            <label htmlFor="bloodType" className="block text-sm font-semibold text-gray-700">
-                                Grupo Sanguíneo
-                            </label>
-                            <select 
-                                name="bloodType" 
-                                id="bloodType" 
-                                value={personalData.bloodType} 
-                                onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
-                            >
-                                <option value="">Seleccionar</option>
-                                <option value="A">A</option>
-                                <option value="AB">AB</option>
-                                <option value="B">B</option>
-                                <option value="O">O</option>
-                            </select>
-                        </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="rhFactor" className="block text-sm font-semibold text-gray-700">
-                                Factor RH
-                            </label>
-                            <select 
-                                name="rhFactor" 
-                                id="rhFactor" 
-                                value={personalData.rhFactor} 
-                                onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
-                            >
-                                <option value="">Seleccionar</option>
-                                <option value="+">Positivo (+)</option>
-                                <option value="-">Negativo (-)</option>
-                            </select>
-                        </div>
 
                         <div className="sm:col-span-2 space-y-2">
                             <label htmlFor="healthConditions" className="block text-sm font-semibold text-gray-700">
