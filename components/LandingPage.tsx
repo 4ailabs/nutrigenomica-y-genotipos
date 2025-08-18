@@ -24,13 +24,12 @@ const Section: React.FC<{ children: React.ReactNode; className?: string; id?: st
     </section>
 );
 
-const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode, style?: React.CSSProperties }> = ({ icon, title, children, style }) => (
+const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
     <MedicalCard 
         className="p-8 text-center hover:scale-105 transition-transform duration-300" 
         animation="slideUp"
-        style={style}
     >
-                                <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+        <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
             {icon}
         </div>
         <h3 className="font-bold text-xl mb-3 text-gray-900">{title}</h3>
@@ -38,11 +37,10 @@ const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: Re
     </MedicalCard>
 );
 
-const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode, iconBgColor: string, style?: React.CSSProperties }> = ({ icon, title, children, iconBgColor, style }) => (
+const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode, iconBgColor: string }> = ({ icon, title, children, iconBgColor }) => (
     <MedicalCard 
-                                className="p-6 transition-colors duration-300" 
+        className="p-6 transition-colors duration-300" 
         animation="slideUp"
-        style={style}
     >
         <div className="flex justify-end mb-4">
             <div className={`w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center ${iconBgColor} shadow-lg`}>
@@ -54,11 +52,10 @@ const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: Re
     </MedicalCard>
 );
 
-const FocusCard: React.FC<{ number: string; title: string; items: string[], style?: React.CSSProperties }> = ({ number, title, items, style }) => (
+const FocusCard: React.FC<{ number: string; title: string; items: string[] }> = ({ number, title, items }) => (
      <MedicalCard 
         className="p-8 h-full" 
         animation="slideUp"
-        style={style}
     >
         <div className="flex items-center mb-4">
             <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 font-bold text-lg flex items-center justify-center mr-4">
@@ -159,43 +156,73 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                             </div>
                         </div>
                         
-                        {/* Botones de Acción */}
-                        <div className="flex justify-center gap-4 flex-wrap">
-                           <MedicalButton 
-                                variant="primary" 
-                                size="lg" 
-                                onClick={onNavigateToCalculators}
-                                className="bg-blue-600 hover:bg-blue-700"
-                            >
-                                <Target className="w-5 h-5 mr-2" />
-                                Acceder al Sistema
-                            </MedicalButton>
-                             
-                             <MedicalButton 
-                                variant="secondary" 
-                                size="lg"
-                                onClick={onNavigateToPatientView}
-                                className="bg-green-600 hover:bg-green-700 text-white"
-                            >
-                                <Users className="w-5 h-5 mr-2" />
-                                Mi Genotipo
-                            </MedicalButton>
-                             
-                             <MedicalButton 
-                                variant="outline" 
-                                size="lg"
-                                className="border-gray-300 text-gray-700 hover:bg-gray-50"
-                            >
-                                <a 
-                                    href="https://wa.me/5211234567890?text=Hola,%20soy%20médico%20y%20me%20gustaría%20conocer%20más%20sobre%20el%20sistema%20GenoTipo."
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="flex items-center"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                    Consulta Médica
-                                </a>
-                            </MedicalButton>
+                        {/* Botones de Acción Mejorados */}
+                        <div className="max-w-4xl mx-auto">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                {/* Botón Principal - Acceder al Sistema */}
+                                <div className="group cursor-pointer" onClick={onNavigateToCalculators}>
+                                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-700/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <div className="relative z-10">
+                                            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                                <Target className="w-10 h-10 text-white" />
+                                            </div>
+                                            <h3 className="text-xl font-bold mb-2">Acceder al Sistema</h3>
+                                            <p className="text-blue-100 text-sm opacity-90">
+                                                Evaluación nutrigenómica completa
+                                            </p>
+                                        </div>
+                                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Botón Secundario - Mi Genotipo */}
+                                <div className="group cursor-pointer" onClick={onNavigateToPatientView}>
+                                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/25 border border-emerald-500/20">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/90 to-teal-600/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <div className="relative z-10">
+                                            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                                <Users className="w-10 h-10 text-white" />
+                                            </div>
+                                            <h3 className="text-xl font-bold mb-2">Mi Genotipo</h3>
+                                            <p className="text-emerald-100 text-sm opacity-90">
+                                                Ver características y alimentos
+                                            </p>
+                                        </div>
+                                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Botón de Consulta - WhatsApp */}
+                                <div className="group">
+                                    <a 
+                                        href="https://wa.me/5211234567890?text=Hola,%20soy%20médico%20y%20me%20gustaría%20conocer%20más%20sobre%20el%20sistema%20GenoTipo."
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="block"
+                                    >
+                                        <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 text-gray-700 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/25 border border-gray-300/20">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-gray-100/90 to-gray-200/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            <div className="relative z-10">
+                                                <div className="w-20 h-20 mx-auto mb-4 bg-green-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-green-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                                </div>
+                                                <h3 className="text-xl font-bold mb-2">Consulta Médica</h3>
+                                                <p className="text-gray-600 text-sm opacity-90">
+                                                    Contacto directo vía WhatsApp
+                                                </p>
+                                            </div>
+                                            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         
                         {/* Indicador de Scroll */}
