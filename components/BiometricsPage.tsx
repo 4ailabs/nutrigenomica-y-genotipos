@@ -60,7 +60,10 @@ const FingerprintSelect: React.FC<{ name: string; value: string; onChange: (e: R
 const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavigateToMain }) => {
     const [openAccordion, setOpenAccordion] = useState<number | null>(null);
     const [formData, setFormData] = useState<any>({
-        fingerprints: { right: {}, left: {} }
+        fingerprints: { 
+            right: { thumb: '', index: '', middle: '', ring: '', pinky: '' },
+            left: { thumb: '', index: '', middle: '', ring: '', pinky: '' }
+        }
     });
 
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
