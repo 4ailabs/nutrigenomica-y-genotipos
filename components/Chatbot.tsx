@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { generateChatResponse } from '../utils/gemini';
+import { generateChatResponse } from '../utils/openai';
 import type { ChatMessage } from '../types';
 import { SendHorizonal, Bot, X, MessageCircle, Sparkles } from 'lucide-react';
 import '../styles/chatbot.css';

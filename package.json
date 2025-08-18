@@ -4,7 +4,14 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Sistema de evaluación nutrigenómica basado en evidencia científica para determinar perfiles genotípicos nutricionales",
-  "keywords": ["nutrigenómica", "genotipos", "nutrición", "medicina", "IA", "salud"],
+  "keywords": [
+    "nutrigenómica",
+    "genotipos",
+    "nutrición",
+    "medicina",
+    "IA",
+    "salud"
+  ],
   "author": "Dr. Miguel Ojeda Rios",
   "license": "MIT",
   "repository": {
@@ -22,12 +29,13 @@
     "test": "echo 'Testing not configured yet'"
   },
   "dependencies": {
-    "react-dom": "^19.1.1",
-    "react": "^19.1.1",
+    "@google/genai": "^1.14.0",
     "lucide-react": "^0.417.0",
+    "openai": "^5.12.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-markdown": "^9.0.1",
-    "remark-gfm": "^4.0.0",
-    "@google/genai": "^1.14.0"
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

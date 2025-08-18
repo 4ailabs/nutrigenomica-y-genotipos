@@ -95,3 +95,4 @@ temp/
 *.pem
 *.key
 *.crt
+.vercel
