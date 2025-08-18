@@ -3,6 +3,15 @@ import type { BodyMeasurements, CalculatedProportions, FingerRelation, BloodType
 import { DATOS_GENOTIPOS, GENOTYPE_NAMES } from '../constants';
 import GenotypeBox from './GenotypeBox';
 import GenotypeDetail from './GenotypeDetail';
+import { 
+    MedicalHeading, 
+    MedicalText, 
+    MedicalInput, 
+    MedicalButton, 
+    MedicalCard,
+    MedicalSection,
+    MedicalBadge 
+} from './MedicalComponents';
 import { Info } from 'lucide-react';
 
 interface AdvancedCalculatorProps {
@@ -132,8 +141,12 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
     const isBloodComplete = bloodType && rhFactor && secretorStatus;
     
     const renderMeasurementFields = () => (
-        <div className="space-y-6 animate-fade-in">
-            <h2 className="text-xl font-bold text-gray-800">Medidas Corporales (cm)</h2>
+        <MedicalSection 
+            title="Medidas Corporales (cm)"
+            subtitle="Introduce las medidas corporales precisas para el cálculo del genotipo"
+            spacing="normal"
+            className="animate-fade-in"
+        >
             {[
                 { name: "heightStanding", label: "Altura de pie (estatura)", placeholder: "Ej. 170.5" },
                 { name: "heightSitting", label: "Altura sentado (suelo a cabeza)", placeholder: "Ej. 120.5" },
@@ -145,79 +158,158 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 { name: "indexFingerRight", label: "Dedo índice (derecho)", placeholder: "Ej. 7.5" },
                 { name: "ringFingerRight", label: "Dedo anular (derecho)", placeholder: "Ej. 8.0" }
             ].map(field => (
-                <div key={field.name}>
-                    <label htmlFor={field.name} className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
-                    <input
-                        type="number"
-                        id={field.name}
-                        name={field.name}
-                        value={measurements[field.name as keyof BodyMeasurements] || ''}
-                        onChange={handleMeasurementChange}
-                        placeholder={field.placeholder}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#2D31FA] focus:border-[#2D31FA] transition"
-                    />
-                </div>
+                <MedicalInput
+                    key={field.name}
+                    label={field.label}
+                    name={field.name}
+                    type="number"
+                    value={measurements[field.name as keyof BodyMeasurements]?.toString() || ''}
+                    onChange={handleMeasurementChange}
+                    placeholder={field.placeholder}
+                />
             ))}
-            <button onClick={calculateProportions} className="w-full bg-[#2D31FA] text-white font-bold py-3 rounded-lg hover:bg-[#1A1E85] transition-colors">Calcular Proporciones</button>
-        </div>
+            
+            <MedicalButton
+                variant="primary"
+                size="lg"
+                onClick={calculateProportions}
+                className="w-full"
+            >
+                Calcular Proporciones
+            </MedicalButton>
+        </MedicalSection>
     );
 
     const renderBloodFields = () => (
-        <div className="space-y-6 animate-fade-in">
+        <MedicalSection 
+            title="Información Sanguínea"
+            subtitle="Selecciona tu grupo sanguíneo, factor Rh y estado secretor"
+            spacing="normal" 
+            className="animate-fade-in"
+        >
             <div>
-                <h3 className="text-lg font-semibold mb-2">Grupo Sanguíneo</h3>
+                <MedicalHeading level={4} variant="secondary" className="mb-3">Grupo Sanguíneo</MedicalHeading>
                 <div className="grid grid-cols-2 gap-2">
                     {(['A', 'B', 'AB', 'O'] as BloodType[]).map(type => (
-                        <button key={type} onClick={() => setBloodType(type)} className={`p-3 rounded-lg border-2 transition ${bloodType === type ? 'bg-[#2D31FA] text-white border-[#2D31FA]' : 'bg-white hover:border-[#5D8BF4]'}`}>{type}</button>
+                        <MedicalButton 
+                            key={type} 
+                            variant={bloodType === type ? "primary" : "secondary"}
+                            onClick={() => setBloodType(type)}
+                            className="w-full"
+                        >
+                            {type}
+                        </MedicalButton>
                     ))}
                 </div>
             </div>
-             <div>
-                <h3 className="text-lg font-semibold mb-2">Factor Rh</h3>
+            
+            <div>
+                <MedicalHeading level={4} variant="secondary" className="mb-3">Factor Rh</MedicalHeading>
                 <div className="grid grid-cols-2 gap-2">
                     {(['+', '-'] as RhFactor[]).map(rh => (
-                        <button key={rh} onClick={() => setRhFactor(rh)} className={`p-3 rounded-lg border-2 transition ${rhFactor === rh ? 'bg-[#2D31FA] text-white border-[#2D31FA]' : 'bg-white hover:border-[#5D8BF4]'}`}>{rh === '+' ? 'Positivo (+)' : 'Negativo (-)'}</button>
+                        <MedicalButton 
+                            key={rh} 
+                            variant={rhFactor === rh ? "primary" : "secondary"}
+                            onClick={() => setRhFactor(rh)}
+                            className="w-full"
+                        >
+                            {rh === '+' ? 'Positivo (+)' : 'Negativo (-)'}
+                        </MedicalButton>
                     ))}
                 </div>
             </div>
+            
             <div>
-                <h3 className="text-lg font-semibold mb-2">Estado Secretor</h3>
+                <MedicalHeading level={4} variant="secondary" className="mb-3">Estado Secretor</MedicalHeading>
                 <div className="grid grid-cols-2 gap-2">
                     {(['secretor', 'no_secretor'] as SecretorStatus[]).map(status => (
-                        <button key={status} onClick={() => setSecretorStatus(status)} className={`p-3 rounded-lg border-2 transition ${secretorStatus === status ? 'bg-[#2D31FA] text-white border-[#2D31FA]' : 'bg-white hover:border-[#5D8BF4]'}`}>{status === 'secretor' ? 'Secretor' : 'No Secretor'}</button>
+                        <MedicalButton 
+                            key={status} 
+                            variant={secretorStatus === status ? "primary" : "secondary"}
+                            onClick={() => setSecretorStatus(status)}
+                            className="w-full"
+                        >
+                            {status === 'secretor' ? 'Secretor' : 'No Secretor'}
+                        </MedicalButton>
                     ))}
                 </div>
             </div>
-            <button onClick={() => setActiveTab('summary')} disabled={!isBloodComplete} className="w-full bg-[#2D31FA] text-white font-bold py-3 rounded-lg hover:bg-[#1A1E85] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">Continuar</button>
-        </div>
+            
+            <MedicalButton
+                variant="primary"
+                size="lg"
+                onClick={() => setActiveTab('summary')}
+                disabled={!isBloodComplete}
+                className="w-full"
+            >
+                Continuar
+            </MedicalButton>
+        </MedicalSection>
     );
     
     const renderSummary = () => (
-        <div className="space-y-6 animate-fade-in">
-            <h2 className="text-xl font-bold text-gray-800">Resumen y Datos Adicionales</h2>
-            <div className="bg-gray-100 p-4 rounded-lg space-y-2 text-sm">
-                <p><strong>Relación Torso-Piernas:</strong> {proportions?.torsoLonger ? 'Torso más largo' : 'Piernas más largas'}</p>
-                <p><strong>Relación Segmentos Pierna:</strong> {proportions?.upperSegmentLonger ? 'Segmento superior más largo' : 'Segmento inferior más largo'}</p>
-                <p><strong>Relación Dedos:</strong> {proportions?.fingerRelation.replace(/_/g, ' ')}</p>
-                <p><strong>Tipo de Sangre:</strong> {bloodType}{rhFactor}</p>
-                <p><strong>Estado Secretor:</strong> {secretorStatus === 'secretor' ? 'Secretor' : 'No Secretor'}</p>
-            </div>
-             <div>
-                <h3 className="text-lg font-semibold mb-2">Sexo</h3>
+        <MedicalSection 
+            title="Resumen y Datos Adicionales"
+            subtitle="Verifica la información ingresada y completa los datos faltantes"
+            spacing="normal"
+            className="animate-fade-in"
+        >
+            <MedicalCard variant="outline" className="p-6">
+                <MedicalHeading level={5} variant="muted" className="mb-4">Datos Calculados</MedicalHeading>
+                <div className="space-y-2">
+                    <MedicalText variant="body" size="sm">
+                        <strong>Relación Torso-Piernas:</strong> {proportions?.torsoLonger ? 'Torso más largo' : 'Piernas más largas'}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Relación Segmentos Pierna:</strong> {proportions?.upperSegmentLonger ? 'Segmento superior más largo' : 'Segmento inferior más largo'}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Relación Dedos:</strong> {proportions?.fingerRelation.replace(/_/g, ' ')}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Tipo de Sangre:</strong> {bloodType}{rhFactor}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Estado Secretor:</strong> {secretorStatus === 'secretor' ? 'Secretor' : 'No Secretor'}
+                    </MedicalText>
+                </div>
+            </MedicalCard>
+            
+            <div>
+                <MedicalHeading level={4} variant="secondary" className="mb-3">Sexo</MedicalHeading>
                 <div className="grid grid-cols-2 gap-2">
                     {(['hombre', 'mujer'] as Sex[]).map(s => (
-                        <button key={s} onClick={() => setSex(s)} className={`p-3 rounded-lg border-2 transition ${sex === s ? 'bg-[#2D31FA] text-white border-[#2D31FA]' : 'bg-white hover:border-[#5D8BF4]'}`}>{s.charAt(0).toUpperCase() + s.slice(1)}</button>
+                        <MedicalButton 
+                            key={s} 
+                            variant={sex === s ? "primary" : "secondary"}
+                            onClick={() => setSex(s)}
+                            className="w-full"
+                        >
+                            {s.charAt(0).toUpperCase() + s.slice(1)}
+                        </MedicalButton>
                     ))}
                 </div>
             </div>
-            <button onClick={calculateGenotype} disabled={!sex} className="w-full bg-green-500 text-white font-bold py-3 rounded-lg hover:bg-green-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">Calcular Genotipo</button>
-        </div>
+            
+            <MedicalButton
+                variant="success"
+                size="lg"
+                onClick={calculateGenotype}
+                disabled={!sex}
+                className="w-full"
+            >
+                Calcular Genotipo
+            </MedicalButton>
+        </MedicalSection>
     );
 
     const renderResults = () => (
-        <div className="text-center animate-fade-in space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800">Tu Genotipo</h2>
-            <p className="text-gray-600">Haz clic en tu resultado para ver información detallada.</p>
+        <MedicalSection
+            title="Tu Genotipo"
+            subtitle="Haz clic en tu resultado para ver información detallada"
+            spacing="loose"
+            className="text-center animate-fade-in"
+        >
             {results && results.genotypes.length > 0 ? (
                 <div className="flex justify-center items-center flex-wrap gap-4">
                     {results.genotypes.map((g, i) => (
@@ -227,20 +319,48 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                     ))}
                 </div>
             ) : (
-                <p className="text-gray-600">No se encontraron genotipos para esta combinación. Por favor, verifica tus datos.</p>
+                <MedicalText variant="muted" size="lg" className="text-center">
+                    No se encontraron genotipos para esta combinación. Por favor, verifica tus datos.
+                </MedicalText>
             )}
-             <div className="bg-gray-100 p-4 rounded-lg space-y-2 text-sm text-left">
-                <h3 className="font-bold text-center mb-2">Resumen de Cálculo</h3>
-                <p><strong>Línea de cálculo:</strong> <span className="font-mono">{results?.line}</span></p>
-                <p><strong>Relación Torso-Piernas:</strong> {proportions?.torsoLonger ? 'Torso más largo' : 'Piernas más largas'}</p>
-                <p><strong>Relación Dedos:</strong> {proportions?.fingerRelation.replace(/_/g, ' ')}</p>
-                <p><strong>Tipo de Sangre:</strong> {bloodType}{rhFactor}</p>
-                <p><strong>Estado Secretor:</strong> {secretorStatus === 'secretor' ? 'Secretor' : 'No Secretor'}</p>
-                <p><strong>Sexo:</strong> {sex}</p>
-            </div>
-            <p className="text-xs text-gray-500">*Genotipo 4 indica acetilación lenta.</p>
-            <button onClick={resetForm} className="w-full bg-[#2D31FA] text-white font-bold py-3 rounded-lg hover:bg-[#1A1E85] transition-colors">Calcular de Nuevo</button>
-        </div>
+            
+            <MedicalCard variant="outline" className="p-6 text-left">
+                <MedicalHeading level={5} variant="muted" align="center" className="mb-4">Resumen de Cálculo</MedicalHeading>
+                <div className="space-y-2">
+                    <MedicalText variant="body" size="sm">
+                        <strong>Línea de cálculo:</strong> <span className="font-mono">{results?.line}</span>
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Relación Torso-Piernas:</strong> {proportions?.torsoLonger ? 'Torso más largo' : 'Piernas más largas'}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Relación Dedos:</strong> {proportions?.fingerRelation.replace(/_/g, ' ')}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Tipo de Sangre:</strong> {bloodType}{rhFactor}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Estado Secretor:</strong> {secretorStatus === 'secretor' ? 'Secretor' : 'No Secretor'}
+                    </MedicalText>
+                    <MedicalText variant="body" size="sm">
+                        <strong>Sexo:</strong> {sex}
+                    </MedicalText>
+                </div>
+            </MedicalCard>
+            
+            <MedicalText variant="caption" size="xs" className="text-center">
+                *Genotipo 4 indica acetilación lenta.
+            </MedicalText>
+            
+            <MedicalButton
+                variant="primary"
+                size="lg"
+                onClick={resetForm}
+                className="w-full"
+            >
+                Calcular de Nuevo
+            </MedicalButton>
+        </MedicalSection>
     );
 
     if (selectedGenotype) {
@@ -251,8 +371,12 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
         <div className="p-4 sm:p-6 md:p-8 min-h-screen">
             <div className="max-w-2xl mx-auto">
                 <header className="text-center mb-8">
-                    <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">Calculadora Avanzada</h1>
-                    <p className="text-gray-500">Determina tus posibles genotipos.</p>
+                    <MedicalHeading level={1} variant="primary" align="center" className="mb-2">
+                        Calculadora Avanzada
+                    </MedicalHeading>
+                    <MedicalText variant="caption" size="lg" className="text-center">
+                        Determina tus posibles genotipos nutricionales.
+                    </MedicalText>
                 </header>
                 <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
                     <div className="flex items-start gap-3 bg-blue-50 p-4 rounded-lg mb-6">

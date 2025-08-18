@@ -1,6 +1,172 @@
 import React from 'react';
 import { MEDICAL_COLORS, MEDICAL_COMPONENTS, MEDICAL_ANIMATIONS } from '../constants/designSystem';
 
+// Typography médica profesional
+export const MedicalHeading: React.FC<{
+  children: React.ReactNode;
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  className?: string;
+  variant?: 'default' | 'primary' | 'secondary' | 'muted';
+  weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
+  align?: 'left' | 'center' | 'right';
+}> = ({ 
+  children, 
+  level, 
+  className = '', 
+  variant = 'default',
+  weight = 'semibold',
+  align = 'left'
+}) => {
+  const baseClasses = 'leading-tight tracking-tight';
+  
+  const levelClasses = {
+    1: 'text-4xl lg:text-5xl',
+    2: 'text-3xl lg:text-4xl',
+    3: 'text-2xl lg:text-3xl',
+    4: 'text-xl lg:text-2xl',
+    5: 'text-lg lg:text-xl',
+    6: 'text-base lg:text-lg'
+  };
+
+  const variantClasses = {
+    default: 'text-gray-900',
+    primary: 'text-blue-900',
+    secondary: 'text-blue-700',
+    muted: 'text-gray-600'
+  };
+
+  const weightClasses = {
+    light: 'font-light',
+    normal: 'font-normal', 
+    medium: 'font-medium',
+    semibold: 'font-semibold',
+    bold: 'font-bold'
+  };
+
+  const alignClasses = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right'
+  };
+
+  const classes = `${baseClasses} ${levelClasses[level]} ${variantClasses[variant]} ${weightClasses[weight]} ${alignClasses[align]} ${className}`;
+  
+  const Component = `h${level}` as keyof JSX.IntrinsicElements;
+  
+  return React.createElement(Component, { className: classes }, children);
+};
+
+export const MedicalText: React.FC<{
+  children: React.ReactNode;
+  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+  variant?: 'body' | 'caption' | 'label' | 'muted' | 'accent';
+  weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
+  className?: string;
+  as?: 'p' | 'span' | 'div';
+}> = ({ 
+  children, 
+  size = 'base', 
+  variant = 'body',
+  weight = 'normal',
+  className = '',
+  as = 'p'
+}) => {
+  const sizeClasses = {
+    xs: 'text-xs',
+    sm: 'text-sm',
+    base: 'text-base',
+    lg: 'text-lg', 
+    xl: 'text-xl'
+  };
+
+  const variantClasses = {
+    body: 'text-gray-800 leading-relaxed',
+    caption: 'text-gray-600 leading-normal',
+    label: 'text-gray-700 font-medium leading-normal',
+    muted: 'text-gray-500 leading-relaxed',
+    accent: 'text-blue-700 leading-normal'
+  };
+
+  const weightClasses = {
+    light: 'font-light',
+    normal: 'font-normal',
+    medium: 'font-medium', 
+    semibold: 'font-semibold',
+    bold: 'font-bold'
+  };
+
+  const classes = `${sizeClasses[size]} ${variantClasses[variant]} ${weightClasses[weight]} ${className}`;
+  
+  return React.createElement(as, { className: classes }, children);
+};
+
+export const MedicalBadge: React.FC<{
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}> = ({ 
+  children, 
+  variant = 'primary',
+  size = 'md',
+  className = ''
+}) => {
+  const baseClasses = 'inline-flex items-center font-medium rounded-full transition-colors';
+  
+  const variantClasses = {
+    primary: 'bg-blue-100 text-blue-800 border border-blue-200',
+    secondary: 'bg-gray-100 text-gray-800 border border-gray-200',
+    success: 'bg-green-100 text-green-800 border border-green-200',
+    warning: 'bg-amber-100 text-amber-800 border border-amber-200',
+    error: 'bg-red-100 text-red-800 border border-red-200',
+    info: 'bg-blue-50 text-blue-700 border border-blue-100'
+  };
+
+  const sizeClasses = {
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-2.5 py-1.5 text-sm',
+    lg: 'px-3 py-2 text-base'
+  };
+
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
+  return <span className={classes}>{children}</span>;
+};
+
+export const MedicalSection: React.FC<{
+  children: React.ReactNode;
+  title?: string;
+  subtitle?: string;
+  className?: string;
+  spacing?: 'tight' | 'normal' | 'loose';
+}> = ({ 
+  children, 
+  title, 
+  subtitle, 
+  className = '',
+  spacing = 'normal' 
+}) => {
+  const spacingClasses = {
+    tight: 'space-y-4',
+    normal: 'space-y-6',
+    loose: 'space-y-8'
+  };
+
+  return (
+    <section className={`${spacingClasses[spacing]} ${className}`}>
+      {title && (
+        <div className="space-y-2">
+          <MedicalHeading level={2} variant="primary">{title}</MedicalHeading>
+          {subtitle && (
+            <MedicalText variant="caption" size="lg">{subtitle}</MedicalText>
+          )}
+        </div>
+      )}
+      {children}
+    </section>
+  );
+};
+
 // Botón médico principal
 export const MedicalButton: React.FC<{
   children: React.ReactNode;
@@ -50,22 +216,41 @@ export const MedicalButton: React.FC<{
   );
 };
 
-// Tarjeta médica con animaciones
+// Tarjeta médica con animaciones profesionales
 export const MedicalCard: React.FC<{
   children: React.ReactNode;
   className?: string;
+  variant?: 'default' | 'elevated' | 'interactive' | 'highlighted' | 'outline';
   hover?: boolean;
   animation?: 'fadeIn' | 'slideUp' | 'slideIn';
   delay?: number;
+  onClick?: () => void;
 }> = ({ 
   children, 
   className = '', 
+  variant = 'default',
   hover = true, 
   animation = 'fadeIn',
-  delay = 0 
+  delay = 0,
+  onClick
 }) => {
-  const baseClasses = 'bg-white rounded-xl shadow-md transition-all duration-300';
-  const hoverClasses = hover ? 'hover:shadow-lg hover:-translate-y-1' : '';
+  const baseClasses = 'bg-white rounded-2xl transition-all duration-300 ease-out';
+  
+  const variantClasses = {
+    default: 'shadow-sm border border-gray-100/50',
+    elevated: 'shadow-lg border border-gray-100/30',
+    interactive: 'shadow-md border border-gray-100/50 cursor-pointer',
+    highlighted: 'shadow-lg border-2 border-blue-100 bg-gradient-to-br from-white to-blue-50/30',
+    outline: 'shadow-sm border-2 border-gray-200 bg-gray-50/30'
+  };
+  
+  const hoverClasses = hover ? {
+    default: 'hover:shadow-md hover:border-gray-200/60 hover:-translate-y-0.5',
+    elevated: 'hover:shadow-xl hover:border-gray-200/50 hover:-translate-y-1',
+    interactive: 'hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 hover:scale-[1.02]',
+    highlighted: 'hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 hover:from-white hover:to-blue-50/50',
+    outline: 'hover:shadow-md hover:border-blue-300 hover:bg-blue-50/20 hover:-translate-y-0.5'
+  }[variant] : '';
   
   const animationClasses = {
     fadeIn: 'animate-fadeIn',
@@ -73,16 +258,85 @@ export const MedicalCard: React.FC<{
     slideIn: 'animate-slideIn',
   };
   
-  const classes = `${baseClasses} ${hoverClasses} ${animationClasses[animation]} ${className}`;
+  const classes = `${baseClasses} ${variantClasses[variant]} ${hoverClasses} ${animationClasses[animation]} ${className}`;
   
   return (
     <div 
       className={classes}
+      onClick={onClick}
       style={{ 
         animationDelay: `${delay}ms`,
         animationFillMode: 'both'
       }}
     >
+      {children}
+    </div>
+  );
+};
+
+// Card especializada para genotipos
+export const GenotypeCard: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  genotypeColor?: string;
+  isActive?: boolean;
+  onClick?: () => void;
+}> = ({ 
+  children, 
+  className = '', 
+  genotypeColor = 'blue',
+  isActive = false,
+  onClick
+}) => {
+  const colorClasses = {
+    blue: 'border-blue-200 hover:border-blue-300 hover:shadow-blue-100/50',
+    green: 'border-green-200 hover:border-green-300 hover:shadow-green-100/50',
+    purple: 'border-purple-200 hover:border-purple-300 hover:shadow-purple-100/50',
+    orange: 'border-orange-200 hover:border-orange-300 hover:shadow-orange-100/50',
+    red: 'border-red-200 hover:border-red-300 hover:shadow-red-100/50',
+    indigo: 'border-indigo-200 hover:border-indigo-300 hover:shadow-indigo-100/50',
+  };
+
+  const activeClasses = isActive 
+    ? `ring-2 ring-${genotypeColor}-500 ring-opacity-50 shadow-lg` 
+    : '';
+
+  const classes = `
+    bg-white rounded-2xl shadow-md border-2 transition-all duration-300 ease-out
+    hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] cursor-pointer
+    ${colorClasses[genotypeColor as keyof typeof colorClasses]}
+    ${activeClasses}
+    ${className}
+  `;
+  
+  return (
+    <div className={classes} onClick={onClick}>
+      {children}
+    </div>
+  );
+};
+
+// Card para información médica crítica
+export const MedicalAlertCard: React.FC<{
+  children: React.ReactNode;
+  type: 'info' | 'warning' | 'error' | 'success';
+  className?: string;
+}> = ({ children, type, className = '' }) => {
+  const typeClasses = {
+    info: 'bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200 shadow-blue-100/50',
+    warning: 'bg-gradient-to-br from-amber-50 to-amber-100/50 border-amber-200 shadow-amber-100/50',
+    error: 'bg-gradient-to-br from-red-50 to-red-100/50 border-red-200 shadow-red-100/50',
+    success: 'bg-gradient-to-br from-green-50 to-green-100/50 border-green-200 shadow-green-100/50'
+  };
+
+  const classes = `
+    rounded-xl border-2 shadow-lg transition-all duration-300
+    ${typeClasses[type]}
+    ${className}
+  `;
+
+  return (
+    <div className={classes}>
       {children}
     </div>
   );
@@ -157,42 +411,6 @@ export const MedicalInput: React.FC<{
   );
 };
 
-// Badge médico
-export const MedicalBadge: React.FC<{
-  children: React.ReactNode;
-  variant?: 'primary' | 'success' | 'warning' | 'error' | 'info';
-  size?: 'sm' | 'md' | 'lg';
-  className?: string;
-}> = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
-  className = '' 
-}) => {
-  const baseClasses = 'inline-flex items-center font-medium rounded-full transition-colors duration-200';
-  
-  const variantClasses = {
-    primary: 'bg-blue-100 text-blue-800',
-    success: 'bg-green-100 text-green-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    error: 'bg-red-100 text-red-800',
-    info: 'bg-gray-100 text-gray-800',
-  };
-  
-  const sizeClasses = {
-    sm: 'px-2 py-0.5 text-xs',
-    md: 'px-2.5 py-1 text-sm',
-    lg: 'px-3 py-1.5 text-base',
-  };
-  
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
-  
-  return (
-    <span className={classes}>
-      {children}
-    </span>
-  );
-};
 
 // Separador médico
 export const MedicalDivider: React.FC<{

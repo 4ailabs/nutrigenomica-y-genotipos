@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { generateChatResponse } from '../utils/gemini';
 import type { ChatMessage } from '../types';
-import { SendHorizonal, Bot, X } from 'lucide-react';
+import { SendHorizonal, Bot, X, Copy, Check } from 'lucide-react';
 import '../styles/chatbot.css';
 
 interface ChatbotProps {
@@ -17,12 +17,53 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId, i
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const getInitialMessage = (genotypeId: number | null) => {
-        return genotypeId
-            ? `Hola, soy tu asistente del Genotipo ${genotypeId}. ¿En qué puedo ayudarte?`
-            : "Hola, soy tu asistente. ¿En qué puedo ayudarte?";
+        const genotypeNames: { [key: number]: string } = {
+            1: "Hunter",
+            2: "Gatherer", 
+            3: "Master",
+            4: "Explorer",
+            5: "Warrior",
+            6: "Nomad"
+        };
+        
+        if (genotypeId && genotypeNames[genotypeId]) {
+            return `**Asistente Nutrigenómico Profesional**
+
+**Contexto del Paciente**: GenoTipo ${genotypeId} (${genotypeNames[genotypeId]})
+
+**Información disponible para presentar al paciente:**
+
+📋 **Recomendaciones dietéticas específicas**
+🧬 **Características genotípicas del ${genotypeNames[genotypeId]}**
+⚠️ **Alimentos a evitar y superalimentos recomendados**
+📊 **Comparativas con otros genotipos**
+📝 **Información lista para explicar al paciente**
+
+¿Qué información necesita generar para su paciente?`;
+        }
+        
+        return `**Asistente Nutrigenómico Profesional**
+
+**Sistema de 6 GenoTipos Nutricionales disponibles:**
+
+• **GenoTipo 1 - Hunter** (Cazador)
+• **GenoTipo 2 - Gatherer** (Recolector)
+• **GenoTipo 3 - Master** (Maestro)
+• **GenoTipo 4 - Explorer** (Explorador)
+• **GenoTipo 5 - Warrior** (Guerrero)
+• **GenoTipo 6 - Nomad** (Nómada)
+
+**Capacidades del asistente:**
+- Generar explicaciones para pacientes
+- Crear listas de alimentos personalizadas
+- Proporcionar fundamentos científicos
+- Comparar perfiles genotípicos
+
+¿Sobre qué genotipo necesita información para su paciente?`;
     };
 
     useEffect(() => {
@@ -56,6 +97,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId, i
         }
     };
 
+    const handleCopyMessage = async (content: string, index: number) => {
+        try {
+            await navigator.clipboard.writeText(content);
+            setCopiedIndex(index);
+            setTimeout(() => setCopiedIndex(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
+
     if (!isOpen) return null;
 
     const containerClasses = isIntegrated 
@@ -71,8 +122,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId, i
                         <Bot size={16} />
                     </div>
                     <div>
-                        <h3 className="font-medium text-gray-900 text-sm">Asistente IA</h3>
-                        <p className="text-xs text-gray-600">GenoTipo</p>
+                        <h3 className="font-medium text-gray-900 text-sm">Asistente Nutrigenómico</h3>
+                        <p className="text-xs text-gray-600">Uso Médico Profesional</p>
                     </div>
                 </div>
                 {!isIntegrated && (
@@ -93,10 +144,19 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId, i
                             msg.role === 'user' 
                                 ? 'bg-gray-800 text-white' 
                                 : 'bg-gray-100 text-gray-800'
-                        }`}>
+                        } ${msg.role === 'model' ? 'relative group' : ''}`}>
                             <div className="text-sm">
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                             </div>
+                            {msg.role === 'model' && (
+                                <button
+                                    onClick={() => handleCopyMessage(msg.content, index)}
+                                    className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded p-1 shadow-sm border text-gray-600 hover:text-gray-800"
+                                    title="Copiar para compartir con paciente"
+                                >
+                                    {copiedIndex === index ? <Check size={12} /> : <Copy size={12} />}
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}

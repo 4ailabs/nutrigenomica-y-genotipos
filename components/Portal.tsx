@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import GenotypeBox from './GenotypeBox';
-import { MedicalButton, MedicalCard, MedicalBadge, MedicalProgress } from './MedicalComponents';
+import { 
+    MedicalButton, 
+    MedicalCard, 
+    MedicalBadge, 
+    MedicalHeading, 
+    MedicalText, 
+    MedicalSection,
+    GenotypeCard,
+    MedicalAlertCard
+} from './MedicalComponents';
 import { Target, Calculator, Users, Award, Clock, ArrowRight, CheckCircle, Home, ArrowLeft } from 'lucide-react';
 import Chatbot from './Chatbot';
 
@@ -42,18 +51,23 @@ const CalculatorCard: React.FC<CalculatorCardProps> = ({ type, title, descriptio
 
     return (
         <MedicalCard 
-            className="overflow-hidden flex flex-col h-full hover:scale-105 transition-transform duration-300" 
+            variant="interactive"
+            className="overflow-hidden flex flex-col h-full" 
             animation="slideUp"
+            onClick={onClick}
         >
             <div className={`h-32 relative overflow-hidden ${colors.header} border-b`}>
                 {/* Número del paso con estilo médico */}
-                <div className={`absolute top-4 right-4 ${colors.badge} text-xs font-bold px-3 py-1 rounded-full`}>
+                <MedicalBadge 
+                    variant={step === 1 ? "info" : "success"}
+                    className="absolute top-4 right-4"
+                >
                     Paso {step}
-                </div>
+                </MedicalBadge>
                 
                 {/* Icono médico centrado */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`w-16 h-16 ${colors.icon} rounded-full flex items-center justify-center`}>
+                    <div className={`w-16 h-16 ${colors.icon} rounded-full flex items-center justify-center shadow-md`}>
                         {step === 1 ? (
                             <Target className="w-8 h-8" />
                         ) : (
@@ -65,20 +79,20 @@ const CalculatorCard: React.FC<CalculatorCardProps> = ({ type, title, descriptio
             
             <div className="p-6 flex flex-col flex-grow">
                 <div className="flex items-center mb-3">
-                    <div className={`w-8 h-8 rounded-full font-bold text-sm flex items-center justify-center mr-3 ${colors.number}`}>
+                    <div className={`w-8 h-8 rounded-full font-bold text-sm flex items-center justify-center mr-3 ${colors.number} shadow-sm`}>
                         {step}
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+                    <MedicalHeading level={4} variant="default" className="mb-0">{title}</MedicalHeading>
                 </div>
                 
-                <p className="text-gray-600 mb-4 text-sm flex-grow leading-relaxed">{description}</p>
+                <MedicalText variant="body" size="sm" className="mb-4 flex-grow">{description}</MedicalText>
                 
                 {features && (
                     <ul className="space-y-2 mb-6">
                         {features.map((feature, index) => (
-                            <li key={index} className="flex items-start text-sm text-gray-600">
+                            <li key={index} className="flex items-start">
                                 <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                                <span className="leading-relaxed">{feature}</span>
+                                <MedicalText variant="caption" size="sm" as="span">{feature}</MedicalText>
                             </li>
                         ))}
                     </ul>
@@ -160,64 +174,69 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 {/* Header Profesional */}
                 <header className="text-center mb-16">
-                    <div className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
+                    <MedicalBadge variant="info" size="md" className="mb-6">
                         <Target className="w-4 h-4 mr-2" />
                         Portal de Evaluación GenoTipo
-                    </div>
+                    </MedicalBadge>
                     
-                    <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-gray-900">
+                    <MedicalHeading level={1} variant="primary" align="center" className="mb-6">
                         Portal GenoTipo
-                    </h1>
+                    </MedicalHeading>
                     
-                    <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                    <MedicalText variant="body" size="lg" className="max-w-3xl mx-auto mb-8">
                         Sistema de evaluación nutrigenómica basado en evidencia científica para determinar tu perfil genotípico nutricional.
-                    </p>
+                    </MedicalText>
                     
-                    {/* Barra de progreso */}
-                    <div className="mt-8 max-w-md mx-auto">
-                        <MedicalProgress 
-                            value={0} 
-                            max={2} 
-                            label="Progreso del análisis" 
-                            variant="primary"
-                        />
-                    </div>
+                    {/* Información médica */}
+                    <MedicalAlertCard type="info" className="max-w-2xl mx-auto p-6">
+                        <MedicalText variant="caption" size="sm">
+                            <strong>Proceso médico profesional:</strong> Sigue los pasos en secuencia para obtener un análisis nutrigenómico completo y preciso.
+                        </MedicalText>
+                    </MedicalAlertCard>
                 </header>
 
                 {/* Sección de GenoTipos Profesional */}
-                <section className="mb-20">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Explora los GenoTipos</h2>
-                        <p className="text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                            Haz clic en cada GenoTipo para aprender sobre sus características únicas, su constitución física y metabólica, 
-                            y las recomendaciones de alimentación para optimizar tu salud y bienestar.
-                        </p>
-                    </div>
-                    
+                <MedicalSection 
+                    title="Explora los GenoTipos"
+                    subtitle="Haz clic en cada GenoTipo para aprender sobre sus características únicas, su constitución física y metabólica, y las recomendaciones de alimentación para optimizar tu salud y bienestar."
+                    className="mb-20"
+                    spacing="loose"
+                >
                     <div className="flex justify-center items-center flex-wrap gap-8 max-w-6xl mx-auto">
                         {genotypes.map((num, index) => (
-                            <div key={num} onClick={() => onNavigateToGenotype(num)} className="cursor-pointer group">
-                                <div className="group-hover:scale-105 transition-transform duration-300">
-                                    <GenotypeBox number={num} />
-                                </div>
-                            </div>
+                            <GenotypeCard 
+                                key={num}
+                                onClick={() => onNavigateToGenotype(num)}
+                                genotypeColor={['blue', 'green', 'purple', 'orange', 'red', 'indigo'][index]}
+                                className="transform transition-all duration-300"
+                            >
+                                <GenotypeBox number={num} />
+                            </GenotypeCard>
                         ))}
                     </div>
-                </section>
+                </MedicalSection>
                 
                  {/* Sección de Calculadoras Profesional */}
-                <section className="text-center mb-16">
-                    <div className="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
-                        <Calculator className="w-4 h-4 mr-2" />
-                        Proceso de Evaluación
+                <MedicalSection 
+                    className="text-center mb-16"
+                    spacing="loose"
+                >
+                    <div className="text-center mb-8">
+                        <MedicalBadge variant="success" size="md" className="mb-4">
+                            <Calculator className="w-4 h-4 mr-2" />
+                            Proceso de Evaluación
+                        </MedicalBadge>
+                        
+                        <MedicalHeading level={2} variant="primary" align="center">
+                            Calcula tu GenoTipo
+                        </MedicalHeading>
                     </div>
                     
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">Calcula tu GenoTipo</h2>
-                     <p className="text-gray-700 max-w-3xl mx-auto mb-8 text-lg leading-relaxed">
+                    <MedicalText variant="body" size="lg" className="max-w-3xl mx-auto mb-8">
                         Utiliza nuestras herramientas científicas para descubrir qué GenoTipo te corresponde. 
                         Comienza con las Biomediciones para obtener los datos necesarios.
-                    </p>
-                </section>
+                    </MedicalText>
+                </MedicalSection>
 
                 {/* Cards de Calculadoras Mejoradas */}
                 <section className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">

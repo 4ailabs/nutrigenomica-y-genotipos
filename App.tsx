@@ -63,6 +63,11 @@ const App: React.FC = () => {
 
     return (
         <div className="bg-white min-h-screen font-sans text-gray-800 antialiased">
+            {/* Debug temporal */}
+            <div className="fixed top-4 left-4 bg-black text-white px-3 py-2 text-xs rounded z-50">
+                Página: {currentPage} | Chat: {isChatOpen ? 'Abierto' : 'Cerrado'} | Genotipo: {viewingGenotype || 'ninguno'}
+            </div>
+            
             <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
                  {renderPage()}
             </div>
