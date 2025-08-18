@@ -5,6 +5,7 @@ import type { AIAssistantProps, AIPersonalData } from '../types';
 import { generateAiResponse } from '../utils/gemini';
 import { WandSparkles, LoaderCircle, Brain, Sparkles, Target, Heart, Zap } from 'lucide-react';
 import Disclaimer from './Disclaimer';
+import '../styles/aiResponse.css';
 
 const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
     const [personalData, setPersonalData] = useState<AIPersonalData>({
@@ -194,15 +195,57 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                             )}
                             
                             {aiResponse && (
-                                <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 border border-gray-200">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                                            <Brain className="w-5 h-5 text-white" />
+                                <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl p-8 border border-blue-100 shadow-xl">
+                                    {/* Header de la respuesta */}
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                            <Brain className="w-7 h-7 text-white" />
                                         </div>
-                                        <h3 className="text-lg font-bold text-gray-900">Recomendación de IA</h3>
+                                        <div>
+                                            <h3 className="text-2xl font-bold text-gray-900">Recomendación Personalizada</h3>
+                                            <p className="text-gray-600 text-sm">Generada por IA basada en tu perfil</p>
+                                        </div>
                                     </div>
-                                    <div className="prose prose-sm max-w-none prose-headings:text-gray-800 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900">
-                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
+                                    
+                                    {/* Contenido de la respuesta con mejor tipografía */}
+                                    <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                                        <div className="prose prose-lg max-w-none">
+                                            <div className="ai-response">
+                                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Footer con información adicional */}
+                                    <div className="mt-6 pt-6 border-t border-gray-200">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                                <span>Generado con IA avanzada</span>
+                                            </div>
+                                            
+                                            <div className="flex gap-2">
+                                                <button 
+                                                    onClick={() => navigator.clipboard.writeText(aiResponse)}
+                                                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    Copiar
+                                                </button>
+                                                
+                                                <button 
+                                                    onClick={() => window.print()}
+                                                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                                    </svg>
+                                                    Imprimir
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )}
