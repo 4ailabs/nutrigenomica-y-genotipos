@@ -37,6 +37,7 @@ import {
     Sun,
     Moon,
     ChevronRight,
+    ChevronDown,
     ChefHat
 } from 'lucide-react';
 import { GENOTYPE_DATA } from '../genotypeData';
@@ -54,10 +55,25 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(null);
     const [activeTab, setActiveTab] = useState<'genotype' | 'foods' | 'menus' | 'recipes'>('genotype');
+    const [openSections, setOpenSections] = useState<Set<string>>(new Set(['essence'])); // Por defecto solo la esencia está abierta
 
     const handleGenotypeSelect = (genotypeId: number) => {
         setSelectedGenotype(genotypeId);
         setActiveTab('genotype');
+        // Resetear secciones abiertas al cambiar de genotipo
+        setOpenSections(new Set(['essence']));
+    };
+
+    const toggleSection = (sectionName: string) => {
+        setOpenSections(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(sectionName)) {
+                newSet.delete(sectionName);
+            } else {
+                newSet.add(sectionName);
+            }
+            return newSet;
+        });
     };
 
     const getFoodData = (): FoodGuideData | null => {
@@ -160,7 +176,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         const genotypeGradient = getGenotypeGradient(selectedGenotype);
 
         return (
-            <div className="space-y-8">
+            <div className="space-y-4">
                 {/* Header del Genotipo */}
                 <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
                     <div className="absolute inset-0 opacity-10">
@@ -173,79 +189,137 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     </div>
                 </div>
 
-                {/* Esencia del Genotipo */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
-                    <h3 className="text-2xl md:text-2xl font-bold text-gray-900 mb-4">{genotype.essence.title}</h3>
-                    <blockquote className="text-lg md:text-lg italic text-gray-700 mb-4 border-l-4 border-blue-500 pl-4">
-                        "{genotype.essence.quote}"
-                    </blockquote>
-                    <p className="text-gray-600 text-base md:text-base">{genotype.essence.description}</p>
-                </div>
-
-                                            {/* Características */}
-                            <div className="space-y-6 md:space-y-6">
-                                {/* Características Principales */}
-                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
-                                    <div className="flex items-center space-x-3 mb-5">
-                                        <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
-                                            <Target className="w-4 h-4 text-blue-600" />
-                                        </div>
-                                        <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Principales</h4>
-                                    </div>
-                                    <div className="space-y-5">
-                                        {genotype.characteristics1.map((char, index) => (
-                                            <div key={index} className="bg-gray-50 rounded-xl p-4 md:p-4 hover:bg-gray-100 transition-colors duration-200">
-                                                <div className="flex items-start space-x-3">
-                                                    <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
-                                                        <char.icon className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <h5 className="font-bold text-gray-900 text-base md:text-lg mb-1">{char.title}</h5>
-                                                        <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                {/* Acordeón de Características */}
+                <div className="space-y-3">
+                    {/* Esencia del Genotipo */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                        <button
+                            onClick={() => toggleSection('essence')}
+                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
+                                    <Target className="w-4 h-4 text-blue-600" />
                                 </div>
+                                <h3 className="text-xl md:text-2xl font-bold text-gray-900">{genotype.essence.title}</h3>
+                            </div>
+                            <ChevronDown 
+                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                    openSections.has('essence') ? 'rotate-180' : ''
+                                }`} 
+                            />
+                        </button>
+                        {openSections.has('essence') && (
+                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
+                                <blockquote className="text-lg md:text-lg italic text-gray-700 mb-4 border-l-4 border-blue-500 pl-4">
+                                    "{genotype.essence.quote}"
+                                </blockquote>
+                                <p className="text-gray-600 text-base md:text-base">{genotype.essence.description}</p>
+                            </div>
+                        )}
+                    </div>
 
-                                {/* Características Secundarias */}
-                                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
-                                    <div className="flex items-center space-x-3 mb-5">
-                                        <div className="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
-                                            <Leaf className="w-4 h-4 text-purple-600" />
-                                        </div>
-                                        <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Secundarias</h4>
-                                    </div>
-                                    <div className="space-y-5">
-                                        {genotype.characteristics2.map((char, index) => (
-                                            <div key={index} className="bg-gray-50 rounded-xl p-4 md:p-4 hover:bg-gray-100 transition-colors duration-200">
-                                                <div className="flex items-start space-x-3">
-                                                    <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
-                                                        <char.icon className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <h5 className="font-bold text-gray-900 text-base md:text-lg mb-1">{char.title}</h5>
-                                                        <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
-                                                    </div>
+                    {/* Características Principales */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                        <button
+                            onClick={() => toggleSection('characteristics1')}
+                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
+                                    <Target className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Principales</h4>
+                            </div>
+                            <ChevronDown 
+                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                    openSections.has('characteristics1') ? 'rotate-180' : ''
+                                }`} 
+                            />
+                        </button>
+                        {openSections.has('characteristics1') && (
+                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
+                                <div className="space-y-4">
+                                    {genotype.characteristics1.map((char, index) => (
+                                        <div key={index} className="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors duration-200">
+                                            <div className="flex items-start space-x-3">
+                                                <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                                                    <char.icon className="w-5 h-5 text-white" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <h5 className="font-bold text-gray-900 text-base md:text-lg mb-1">{char.title}</h5>
+                                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
+                        )}
+                    </div>
 
-                                            {/* Características Físicas y Metabólicas */}
-                                                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
-                                <div className="flex items-center space-x-3 mb-5">
-                                    <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
-                                        <Activity className="w-4 h-4 text-green-600" />
-                                    </div>
-                                    <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
+                    {/* Características Secundarias */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                        <button
+                            onClick={() => toggleSection('characteristics2')}
+                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
+                                    <Leaf className="w-4 h-4 text-purple-600" />
                                 </div>
-                                <div className="space-y-5">
+                                <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Secundarias</h4>
+                            </div>
+                            <ChevronDown 
+                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                    openSections.has('characteristics2') ? 'rotate-180' : ''
+                                }`} 
+                            />
+                        </button>
+                        {openSections.has('characteristics2') && (
+                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
+                                <div className="space-y-4">
+                                    {genotype.characteristics2.map((char, index) => (
+                                        <div key={index} className="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors duration-200">
+                                            <div className="flex items-start space-x-3">
+                                                <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                                                    <char.icon className="w-5 h-5 text-white" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <h5 className="font-bold text-gray-900 text-base md:text-lg mb-1">{char.title}</h5>
+                                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Características Físicas y Metabólicas */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                        <button
+                            onClick={() => toggleSection('physical')}
+                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
+                                    <Activity className="w-4 h-4 text-green-600" />
+                                </div>
+                                <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
+                            </div>
+                            <ChevronDown 
+                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                    openSections.has('physical') ? 'rotate-180' : ''
+                                }`} 
+                            />
+                        </button>
+                        {openSections.has('physical') && (
+                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
+                                <div className="space-y-4">
                                     {genotype.physicalAndMetabolic.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-5 border border-gray-200">
+                                        <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
                                             <h5 className="font-bold text-gray-900 mb-3 text-base md:text-lg flex items-center space-x-2">
                                                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                 <span>{section.title}</span>
@@ -262,19 +336,33 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     ))}
                                 </div>
                             </div>
+                        )}
+                    </div>
 
-                                            {/* Plan Alimentario */}
-                                                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
-                                <div className="flex items-center space-x-3 mb-5">
-                                    <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center">
-                                        <Apple className="w-4 h-4 text-emerald-600" />
-                                    </div>
-                                    <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
+                    {/* Plan Alimentario */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                        <button
+                            onClick={() => toggleSection('foodPlan')}
+                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center">
+                                    <Apple className="w-4 h-4 text-emerald-600" />
                                 </div>
+                                <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
+                            </div>
+                            <ChevronDown 
+                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                    openSections.has('foodPlan') ? 'rotate-180' : ''
+                                }`} 
+                            />
+                        </button>
+                        {openSections.has('foodPlan') && (
+                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
                                 <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-emerald-50 p-3 rounded-lg border border-emerald-200">{genotype.foodPlan.description}</p>
-                                <div className="space-y-5">
+                                <div className="space-y-4">
                                     {genotype.foodPlan.sections.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-5 border border-emerald-200">
+                                        <div key={index} className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
                                             <h5 className="font-bold text-emerald-800 mb-3 text-base md:text-lg flex items-center space-x-2">
                                                 <CheckCircle className="w-4 h-4 text-emerald-600" />
                                                 <span>{section.title}</span>
@@ -291,19 +379,33 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     ))}
                                 </div>
                             </div>
+                        )}
+                    </div>
 
-                                            {/* Alimentos a Evitar */}
-                                                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 md:p-6">
-                                <div className="flex items-center space-x-3 mb-5">
-                                    <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center">
-                                        <XCircle className="w-4 h-4 text-red-600" />
-                                    </div>
-                                    <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
+                    {/* Alimentos a Evitar */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                        <button
+                            onClick={() => toggleSection('foodsToAvoid')}
+                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center">
+                                    <XCircle className="w-4 h-4 text-red-600" />
                                 </div>
+                                <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
+                            </div>
+                            <ChevronDown 
+                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                    openSections.has('foodsToAvoid') ? 'rotate-180' : ''
+                                }`} 
+                            />
+                        </button>
+                        {openSections.has('foodsToAvoid') && (
+                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
                                 <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-red-50 p-3 rounded-lg border border-red-200">{genotype.foodsToAvoid.description}</p>
-                                <div className="space-y-5">
+                                <div className="space-y-4">
                                     {genotype.foodsToAvoid.sections.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-5 border border-red-200">
+                                        <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-4 border border-red-200">
                                             <h5 className="font-bold text-red-800 mb-3 text-base md:text-lg flex items-center space-x-2">
                                                 <XCircle className="w-4 h-4 text-red-600" />
                                                 <span>{section.title}</span>
@@ -320,6 +422,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                     ))}
                                 </div>
                             </div>
+                        )}
+                    </div>
+                </div>
             </div>
         );
     };
