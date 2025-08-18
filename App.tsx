@@ -6,8 +6,9 @@ import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
 import ChatPage from './components/ChatPage';
 import PatientView from './components/PatientView';
+import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
 
-type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView';
+type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter';
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -39,6 +40,7 @@ const App: React.FC = () => {
                     onNavigateToCalculator={() => navigateTo('calculator')} 
                     onNavigateToGenotype={handleViewGenotype} 
                     onNavigateToBiometrics={() => navigateTo('biometrics')} 
+                    onNavigateToStrengthMeter={() => navigateTo('strengthMeter')}
                     onNavigateToMain={() => navigateTo('landing')}
                     onNavigateToChat={() => navigateTo('chat')}
                 />;
@@ -57,6 +59,12 @@ const App: React.FC = () => {
                     onBackToPortal={() => navigateTo('portal')} 
                     onNavigateToMain={() => navigateTo('landing')}
                     contextGenotypeId={viewingGenotype}
+                />;
+            case 'strengthMeter':
+                return <GenotypeStrengthMeter 
+                    onResultChange={(result) => {
+                        console.log('Resultado del medidor de fuerza:', result);
+                    }}
                 />;
             case 'patientView':
                 return <PatientView 

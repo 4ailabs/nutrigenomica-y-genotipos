@@ -16,6 +16,7 @@ interface PortalProps {
     onNavigateToCalculator: () => void;
     onNavigateToGenotype: (id: number) => void;
     onNavigateToBiometrics: () => void;
+    onNavigateToStrengthMeter: () => void;
     onNavigateToMain?: () => void;
     onNavigateToChat?: () => void;
 }
@@ -48,6 +49,13 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
                     icon: "bg-cyan-100 text-cyan-600",
                     button: "bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white"
                 };
+            case 'strength':
+                return {
+                    header: "bg-amber-50 border-amber-200",
+                    badge: "bg-amber-100 text-amber-700",
+                    icon: "bg-amber-100 text-amber-600",
+                    button: "bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white"
+                };
             case 'chat':
                 return {
                     header: "bg-violet-50 border-violet-200", 
@@ -73,6 +81,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
         switch(type) {
             case 'biometrics': return <Target className="w-8 h-8" />;
             case 'calculator': return <Calculator className="w-8 h-8" />;
+            case 'strength': return <Award className="w-8 h-8" />;
             case 'chat': return <Bot className="w-8 h-8" />;
 
             default: return <Target className="w-8 h-8" />;
@@ -115,7 +124,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
     );
 };
 
-const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain, onNavigateToChat }) => {
+const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToStrengthMeter, onNavigateToMain, onNavigateToChat }) => {
     const genotypes = [1, 2, 3, 4, 5, 6];
     
     // Colores médicos para cada genotipo
@@ -150,6 +159,17 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                 "Algoritmo validado"
             ],
             onClick: onNavigateToCalculator,
+            category: 'evaluation' as const
+        },
+        {
+            type: "strength",
+            title: "Medidor de Fuerza del Genotipo",
+            description: "Evalúa la fuerza del genotipo basado en biomediciones",
+            features: [
+                "Evaluación biométrica",
+                "Historial de resultados"
+            ],
+            onClick: onNavigateToStrengthMeter,
             category: 'evaluation' as const
         }
     ];

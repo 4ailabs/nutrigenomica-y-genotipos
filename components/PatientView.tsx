@@ -46,7 +46,7 @@ import { GENOTYPE_COLORS } from '../constants';
 import type { FoodGuideData } from '../types';
 import GenotypeMenus from './GenotypeMenus';
 import GenotypeRecipes from './GenotypeRecipes';
-import GenotypeStrengthMeter from './GenotypeStrengthMeter';
+
 
 interface PatientViewProps {
     onBackToMain: () => void;
@@ -55,7 +55,7 @@ interface PatientViewProps {
 const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(null);
-    const [activeTab, setActiveTab] = useState<'genotype' | 'foods' | 'menus' | 'recipes' | 'strength'>('genotype');
+    const [activeTab, setActiveTab] = useState<'genotype' | 'foods' | 'menus' | 'recipes'>('genotype');
     const [openSections, setOpenSections] = useState<Set<string>>(new Set(['essence'])); // Por defecto solo la esencia está abierta
 
     const handleGenotypeSelect = (genotypeId: number) => {
@@ -670,30 +670,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         );
     };
 
-    const renderStrengthMeter = () => {
-        if (!selectedGenotype) return null;
 
-        return (
-            <div className="space-y-6">
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                    <div className="text-center mb-6">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                            Medidor de Fuerza del Genotipo
-                        </h3>
-                        <p className="text-gray-600">
-                            Evalúa la fuerza de tu genotipo basado en características biométricas
-                        </p>
-                    </div>
-                    
-                    <GenotypeStrengthMeter 
-                        onResultChange={(result) => {
-                            console.log('Resultado del medidor de fuerza:', result);
-                        }}
-                    />
-                </div>
-            </div>
-        );
-    };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -863,18 +840,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                 <span className="hidden sm:inline">Recetas</span>
                                 <span className="sm:hidden">Recetas</span>
                             </button>
-                            <button
-                                onClick={() => setActiveTab('strength')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
-                                    activeTab === 'strength'
-                                        ? 'bg-green-100 text-green-700 shadow-md'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                }`}
-                            >
-                                <TrendingUp className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
-                                <span className="hidden sm:inline">Fuerza</span>
-                                <span className="sm:hidden">Fuerza</span>
-                            </button>
+
                         </div>
                     </div>
 
@@ -883,7 +849,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     {activeTab === 'foods' && renderFoodGuide()}
                     {activeTab === 'menus' && renderMenus()}
                     {activeTab === 'recipes' && renderRecipes()}
-                    {activeTab === 'strength' && renderStrengthMeter()}
+
                 </div>
             )}
             
