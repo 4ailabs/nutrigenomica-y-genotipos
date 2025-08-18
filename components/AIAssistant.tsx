@@ -84,9 +84,6 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                     </div>
                     
                     <div className="relative flex items-center gap-3">
-                        <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                            <Brain className="w-4 h-4 text-white" />
-                        </div>
                         <div className="flex-1">
                             <h2 className="text-lg font-bold text-white mb-1">
                                 Asistente IA Nutrigenómico
