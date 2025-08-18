@@ -77,10 +77,6 @@ const App: React.FC = () => {
                     <ChatbotFAB isOpen={isChatOpen} onClick={() => setIsChatOpen(prev => !prev)} />
                 </>
              )}
-             {/* Debug siempre visible */}
-             <div className="fixed top-4 left-4 bg-black text-white px-2 py-1 text-xs rounded z-50">
-                Página: {currentPage} | Genotipo: {viewingGenotype || 'ninguno'}
-             </div>
         </div>
     );
 };
