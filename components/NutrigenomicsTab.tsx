@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dna, BookOpen, Target, TrendingUp, Lightbulb, ChevronRight, ChevronDown } from 'lucide-react';
+import { Atom, BookOpen, Target, TrendingUp, Lightbulb, ChevronRight, ChevronDown } from 'lucide-react';
 import type { FoodGuideData } from '../types';
 
 interface NutrigenomicsTabProps {
@@ -106,7 +106,7 @@ const NutrigenomicsTab: React.FC<NutrigenomicsTabProps> = ({
         </div>
         <div className="relative">
           <div className="flex items-center gap-4 mb-4">
-                                    <Dna className="w-10 h-10" />
+                                    <Atom className="w-10 h-10" />
             <h2 className="text-3xl md:text-4xl font-bold">Nutrigenómica Personalizada</h2>
           </div>
           <p className="text-xl opacity-90 mb-6">
@@ -231,7 +231,7 @@ const NutrigenomicsTab: React.FC<NutrigenomicsTabProps> = ({
       <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                                    <Dna className="w-6 h-6 text-purple-600" />
+                                    <Atom className="w-6 h-6 text-purple-600" />
           </div>
           <div>
             <h4 className="text-lg font-semibold text-purple-800 mb-3">Ciencia detrás de tu Nutrición</h4>

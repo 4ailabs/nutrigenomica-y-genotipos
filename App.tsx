@@ -7,9 +7,10 @@ import BiometricsPage from './components/BiometricsPage';
 import ChatPage from './components/ChatPage';
 import PatientView from './components/PatientView';
 import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
+import NutrigenomicsPage from './components/NutrigenomicsPage';
 import { useBrowserNavigation } from './hooks/useBrowserNavigation';
 
-type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter';
+type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter' | 'nutrigenomics';
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -70,6 +71,7 @@ const App: React.FC = () => {
                     onNavigateToStrengthMeter={() => navigateTo('strengthMeter')}
                     onNavigateToMain={() => navigateTo('landing')}
                     onNavigateToChat={() => navigateTo('chat')}
+                    onNavigateToNutrigenomics={() => navigateTo('nutrigenomics')}
                 />;
             case 'calculator':
                 return <AdvancedCalculator 
@@ -97,6 +99,11 @@ const App: React.FC = () => {
             case 'patientView':
                 return <PatientView 
                     onBackToMain={() => navigateTo('landing')}
+                />;
+            case 'nutrigenomics':
+                return <NutrigenomicsPage 
+                    onBackToPortal={() => navigateTo('portal')}
+                    onNavigateToMain={() => navigateTo('landing')}
                 />;
             default:
                 return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} onNavigateToPatientView={() => navigateTo('patientView')} />;
