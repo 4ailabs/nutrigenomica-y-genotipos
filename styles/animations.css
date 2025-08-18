@@ -1,0 +1,375 @@
+/* Animaciones Médicas Profesionales */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Configuración base de animaciones */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Clases de animación */
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.6s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-bounceIn {
+  animation: bounceIn 0.8s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-rotate {
+  animation: rotate 1s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Delays de animación */
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animate-delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Duración de animaciones */
+.animate-duration-fast {
+  animation-duration: 200ms;
+}
+
+.animate-duration-normal {
+  animation-duration: 400ms;
+}
+
+.animate-duration-slow {
+  animation-duration: 800ms;
+}
+
+/* Transiciones suaves */
+.transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.transition-transform {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-opacity {
+  transition: opacity 0.2s ease;
+}
+
+.transition-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Efectos de hover mejorados */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.hover-scale {
+  transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Estados de carga */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+/* Efectos de entrada escalonados */
+.stagger-children > * {
+  opacity: 0;
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 500ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 600ms; }
+
+/* Animaciones de entrada para páginas */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Efectos de scroll suaves */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Gradientes animados */
+.gradient-animate {
+  background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Efectos de texto */
+.text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Animaciones para dispositivos móviles */
+@media (max-width: 768px) {
+  .animate-slideUp {
+    animation-duration: 0.4s;
+  }
+  
+  .animate-fadeIn {
+    animation-duration: 0.4s;
+  }
+}
+
+/* Efectos de profundidad */
+.depth-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.depth-2 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.depth-3 {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.depth-4 {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.depth-5 {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
