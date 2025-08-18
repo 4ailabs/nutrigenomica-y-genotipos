@@ -289,7 +289,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                          <MedicalBadge variant="success" size="lg" className="mb-4">
                             Metodología Científica
                          </MedicalBadge>
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">NUESTRO ENFOQUE</h2>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Nuestro Enfoque</h2>
                         <p className="text-gray-600 mt-4 text-lg leading-relaxed">En lugar de aplicar dietas genéricas, analizamos la expresión de tu ADN para construir un plan nutricional adaptado a tu biología única.</p>
                     </div>
                     
