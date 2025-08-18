@@ -160,8 +160,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                         <div className="max-w-4xl mx-auto">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                                 {/* Botón Principal - Acceder al Sistema */}
-                                <div className="group cursor-pointer" onClick={onNavigateToCalculators}>
-                                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20">
+                                <div className="group cursor-pointer h-full" onClick={onNavigateToCalculators}>
+                                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 h-full flex flex-col justify-center">
                                         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-700/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                         <div className="relative z-10">
                                             <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -179,8 +179,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                                 </div>
 
                                 {/* Botón Secundario - Mi Genotipo */}
-                                <div className="group cursor-pointer" onClick={onNavigateToPatientView}>
-                                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/25 border border-emerald-500/20">
+                                <div className="group cursor-pointer h-full" onClick={onNavigateToPatientView}>
+                                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/25 border border-emerald-500/20 h-full flex flex-col justify-center">
                                         <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/90 to-teal-600/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                         <div className="relative z-10">
                                             <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -198,14 +198,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                                 </div>
 
                                 {/* Botón de Consulta - WhatsApp */}
-                                <div className="group">
+                                <div className="group h-full">
                                     <a 
                                         href="https://wa.me/5211234567890?text=Hola,%20soy%20médico%20y%20me%20gustaría%20conocer%20más%20sobre%20el%20sistema%20GenoTipo."
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="block"
+                                        className="block h-full"
                                     >
-                                        <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 text-gray-700 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/25 border border-gray-300/20">
+                                        <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 text-gray-700 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/25 border border-gray-300/20 h-full flex flex-col justify-center">
                                             <div className="absolute inset-0 bg-gradient-to-br from-gray-100/90 to-gray-200/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                             <div className="relative z-10">
                                                 <div className="w-20 h-20 mx-auto mb-4 bg-green-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
