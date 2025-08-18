@@ -25,9 +25,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
     };
 
     useEffect(() => {
-        // Reset chat when context changes or when opening
         if (isOpen) {
-            setMessages([{ role: 'model', content: getInitialMessage(contextGenotypeId) }]);
+            setMessages([{ role: 'assistant', content: getInitialMessage(contextGenotypeId) }]);
         }
     }, [contextGenotypeId, isOpen]);
 
@@ -46,10 +45,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
 
         try {
             const response = await generateChatResponse(newMessages, contextGenotypeId);
-            const modelMessage: ChatMessage = { role: 'model', content: response };
-            setMessages(prev => [...prev, modelMessage]);
+            const assistantMessage: ChatMessage = { role: 'assistant', content: response };
+            setMessages(prev => [...prev, assistantMessage]);
         } catch (error) {
-            const errorMessage: ChatMessage = { role: 'model', content: 'Lo siento, algo salió mal. Inténtalo de nuevo.' };
+            const errorMessage: ChatMessage = { role: 'assistant', content: 'Lo siento, algo salió mal. Inténtalo de nuevo.' };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);

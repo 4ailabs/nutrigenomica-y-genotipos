@@ -1,14 +1,14 @@
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '',
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY || '',
 });
 
-const ASSISTANT_ID = 'asst_9kVz1JdQkkFN7icyLPjbYRs3';
+const ASSISTANT_ID = import.meta.env.VITE_OPENAI_ASSISTANT_ID || 'asst_9kVz1JdQkkFN7icyLPjbYRs3';
 
 export async function createThread() {
   try {
-    const thread = await openai.beta.threads.create();
+    const thread = await (openai as any).beta.threads.create();
     return thread.id;
   } catch (error) {
     console.error('Error creating thread:', error);
@@ -18,7 +18,7 @@ export async function createThread() {
 
 export async function sendMessage(threadId: string, message: string) {
   try {
-    const messageResponse = await openai.beta.threads.messages.create(threadId, {
+    const messageResponse = await (openai as any).beta.threads.messages.create(threadId, {
       role: 'user',
       content: message,
     });
@@ -31,7 +31,7 @@ export async function sendMessage(threadId: string, message: string) {
 
 export async function runAssistant(threadId: string) {
   try {
-    const run = await openai.beta.threads.runs.create(threadId, {
+    const run = await (openai as any).beta.threads.runs.create(threadId, {
       assistant_id: ASSISTANT_ID,
     });
     return run.id;
@@ -43,7 +43,7 @@ export async function runAssistant(threadId: string) {
 
 export async function checkRunStatus(threadId: string, runId: string) {
   try {
-    const run = await openai.beta.threads.runs.retrieve(threadId, runId);
+    const run = await (openai as any).beta.threads.runs.retrieve(threadId, runId);
     return run.status;
   } catch (error) {
     console.error('Error checking run status:', error);
@@ -53,7 +53,7 @@ export async function checkRunStatus(threadId: string, runId: string) {
 
 export async function getMessages(threadId: string) {
   try {
-    const messages = await openai.beta.threads.messages.list(threadId);
+    const messages = await (openai as any).beta.threads.messages.list(threadId);
     return messages.data;
   } catch (error) {
     console.error('Error getting messages:', error);
@@ -65,44 +65,39 @@ export async function generateChatResponse(
   history: { role: 'user' | 'assistant'; content: string }[],
   genotypeId: number | null
 ): Promise<string> {
-  if (!process.env.OPENAI_API_KEY) {
+  if (!import.meta.env.VITE_OPENAI_API_KEY) {
     return "Lo siento, la IA no está disponible por falta de credenciales. Configura VITE_OPENAI_API_KEY.";
   }
 
   try {
-    // Crear un nuevo hilo para cada conversación
     const threadId = await createThread();
-    
-    // Enviar el mensaje del usuario
+
     await sendMessage(threadId, history[history.length - 1].content);
-    
-    // Ejecutar el asistente
+
     const runId = await runAssistant(threadId);
-    
-    // Esperar a que el asistente termine
-    let status = 'queued';
+
+    let status: string = 'queued';
     while (status === 'queued' || status === 'in_progress') {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundo
+      await new Promise(resolve => setTimeout(resolve, 1000));
       status = await checkRunStatus(threadId, runId);
     }
-    
+
     if (status === 'failed') {
       throw new Error('El asistente falló al procesar la solicitud');
     }
-    
-    // Obtener la respuesta
+
     const messages = await getMessages(threadId);
-    const lastMessage = messages[0]; // El mensaje más reciente
-    
+    const lastMessage = messages[0];
+
     if (lastMessage && lastMessage.content[0]?.type === 'text') {
       return lastMessage.content[0].text.value;
     } else {
       return "Lo siento, no pude generar una respuesta clara. Por favor, intenta de nuevo.";
     }
-    
-  } catch (error) {
+
+  } catch (error: any) {
     console.error('Error in OpenAI chat:', error);
-    if (error.message.includes('API key')) {
+    if (typeof error?.message === 'string' && error.message.includes('API key')) {
       return "Lo siento, la clave de API de OpenAI no es válida. Por favor, verifica la configuración.";
     }
     return "Lo siento, tuve un problema para procesar tu pregunta. Por favor, intenta de nuevo.";
