@@ -195,17 +195,6 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
             ],
             onClick: onNavigateToChat,
             category: 'consultation' as const
-        }] : []),
-        ...(onNavigateToNutrigenomics ? [{
-            type: "nutrigenomics",
-            title: "Nutrigenómica",
-            description: "Ciencia genética aplicada a la nutrición personalizada",
-            features: [
-                "Fundamentos científicos",
-                "Educación especializada"
-            ],
-            onClick: onNavigateToNutrigenomics,
-            category: 'consultation' as const
         }] : [])
     ];
 
