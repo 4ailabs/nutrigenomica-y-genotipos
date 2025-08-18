@@ -173,22 +173,22 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
             
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 {/* Header Profesional */}
-                <header className="text-center mb-16">
-                    <MedicalBadge variant="info" size="md" className="mb-6">
+                <header className="text-center mb-12">
+                    <MedicalBadge variant="info" size="md" className="mb-4">
                         <Target className="w-4 h-4 mr-2" />
                         Portal de Evaluación GenoTipo
                     </MedicalBadge>
                     
-                    <MedicalHeading level={1} variant="primary" align="center" className="mb-6">
+                    <MedicalHeading level={3} variant="primary" align="center" className="mb-4">
                         Portal GenoTipo
                     </MedicalHeading>
                     
-                    <MedicalText variant="body" size="lg" className="max-w-3xl mx-auto mb-8">
+                    <MedicalText variant="body" size="base" className="max-w-3xl mx-auto mb-6">
                         Sistema de evaluación nutrigenómica basado en evidencia científica para determinar tu perfil genotípico nutricional.
                     </MedicalText>
                     
                     {/* Información médica */}
-                    <MedicalAlertCard type="info" className="max-w-2xl mx-auto p-6">
+                    <MedicalAlertCard type="info" className="max-w-2xl mx-auto p-4">
                         <MedicalText variant="caption" size="sm">
                             <strong>Proceso médico profesional:</strong> Sigue los pasos en secuencia para obtener un análisis nutrigenómico completo y preciso.
                         </MedicalText>
@@ -199,8 +199,8 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                 <MedicalSection 
                     title="Explora los GenoTipos"
                     subtitle="Haz clic en cada GenoTipo para aprender sobre sus características únicas, su constitución física y metabólica, y las recomendaciones de alimentación para optimizar tu salud y bienestar."
-                    className="mb-20"
-                    spacing="loose"
+                    className="mb-16"
+                    spacing="normal"
                 >
                     <div className="flex justify-center items-center flex-wrap gap-8 max-w-6xl mx-auto">
                         {genotypes.map((num, index) => (
@@ -218,21 +218,21 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                 
                  {/* Sección de Calculadoras Profesional */}
                 <MedicalSection 
-                    className="text-center mb-16"
-                    spacing="loose"
+                    className="text-center mb-12"
+                    spacing="normal"
                 >
-                    <div className="text-center mb-8">
-                        <MedicalBadge variant="success" size="md" className="mb-4">
+                    <div className="text-center mb-6">
+                        <MedicalBadge variant="success" size="md" className="mb-3">
                             <Calculator className="w-4 h-4 mr-2" />
                             Proceso de Evaluación
                         </MedicalBadge>
                         
-                        <MedicalHeading level={2} variant="primary" align="center">
+                        <MedicalHeading level={3} variant="primary" align="center">
                             Calcula tu GenoTipo
                         </MedicalHeading>
                     </div>
                     
-                    <MedicalText variant="body" size="lg" className="max-w-3xl mx-auto mb-8">
+                    <MedicalText variant="body" size="base" className="max-w-3xl mx-auto mb-6">
                         Utiliza nuestras herramientas científicas para descubrir qué GenoTipo te corresponde. 
                         Comienza con las Biomediciones para obtener los datos necesarios.
                     </MedicalText>
