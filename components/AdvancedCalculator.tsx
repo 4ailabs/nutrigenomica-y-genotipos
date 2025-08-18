@@ -378,11 +378,11 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
     return (
         <div className="p-4 sm:p-6 md:p-8 min-h-screen">
             <div className="max-w-2xl mx-auto">
-                <header className="text-center mb-8">
-                    <MedicalHeading level={1} variant="primary" align="center" className="mb-2">
+                <header className="text-center mb-6">
+                    <MedicalHeading level={3} variant="primary" align="center" className="mb-2">
                         Calculadora Avanzada
                     </MedicalHeading>
-                    <MedicalText variant="caption" size="lg" className="text-center">
+                    <MedicalText variant="caption" size="sm" className="text-center">
                         Determina tus posibles genotipos nutricionales.
                     </MedicalText>
                 </header>
