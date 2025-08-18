@@ -3,16 +3,42 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { AIAssistantProps, AIPersonalData } from '../types';
 import { generateAiResponse } from '../utils/gemini';
-import { WandSparkles, LoaderCircle, Brain, Sparkles, Target, Heart, Zap, Apple, Coffee, Salad, Utensils, Clock, BookOpen, Leaf, Droplets } from 'lucide-react';
+import { WandSparkles, LoaderCircle, Brain, Sparkles, Target, Heart, Zap, Apple, Coffee, Salad, Utensils, Clock, BookOpen, Leaf, Droplets, User } from 'lucide-react';
 import Disclaimer from './Disclaimer';
 import '../styles/aiResponse.css';
 
 const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
     const [personalData, setPersonalData] = useState<AIPersonalData>({
+        // Datos básicos
         age: '',
         sex: 'femenino',
+        
+        // Datos físicos
+        height: '',
+        weight: '',
+        activityLevel: 'moderado',
+        
+        // Datos clínicos
         healthConditions: '',
-        goals: ''
+        allergies: '',
+        medications: '',
+        bloodType: '',
+        rhFactor: '',
+        
+        // Historial médico
+        familyHistory: '',
+        previousSurgeries: '',
+        chronicConditions: '',
+        
+        // Objetivos y preferencias
+        goals: '',
+        dietaryRestrictions: '',
+        foodPreferences: '',
+        
+        // Estilo de vida
+        sleepHours: '',
+        stressLevel: 'moderado',
+        exerciseFrequency: ''
     });
     const [isLoading, setIsLoading] = useState(false);
     const [aiResponse, setAiResponse] = useState('');
@@ -49,29 +75,24 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Formulario Principal */}
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-                {/* Header del Formulario Mejorado */}
-                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-4 md:px-6 py-4 md:py-6 relative overflow-hidden">
+                {/* Header del Formulario Reducido */}
+                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-4 md:px-6 py-3 md:py-4 relative overflow-hidden">
                     {/* Elementos decorativos de fondo */}
                     <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-2 md:top-4 right-2 md:right-4 w-16 md:w-32 h-16 md:h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 w-12 md:w-24 h-12 md:h-24 rounded-full bg-white"></div>
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 md:w-16 h-8 md:h-16 rounded-full bg-white"></div>
+                        <div className="absolute top-2 right-2 w-12 h-12 rounded-full bg-white"></div>
+                        <div className="absolute bottom-2 left-2 w-8 h-8 rounded-full bg-white"></div>
                     </div>
                     
-                    <div className="relative flex flex-col sm:flex-row items-center gap-3 md:gap-4">
-                        <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
-                            <Brain className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                    <div className="relative flex items-center gap-3">
+                        <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                            <Brain className="w-4 h-4 text-white" />
                         </div>
-                        <div className="flex-1 text-center sm:text-left">
-                            <h2 className="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2">
+                        <div className="flex-1">
+                            <h2 className="text-lg font-bold text-white mb-1">
                                 Asistente IA Nutrigenómico
                             </h2>
-                            <h3 className="text-base md:text-lg font-semibold text-blue-100 mb-1 md:mb-2">
+                            <p className="text-blue-200 text-sm leading-relaxed">
                                 Tu Perfil Nutricional Personalizado
-                            </h3>
-                            <p className="text-blue-200 text-sm md:text-base leading-relaxed max-w-2xl mx-auto sm:mx-0">
-                                Completa tus datos para recibir recomendaciones inteligentes de la IA basadas en tu GenoTipo específico. 
-                                Genera menús, recetas, snacks y más, todo personalizado para tu perfil genético.
                             </p>
                         </div>
                     </div>
@@ -79,11 +100,16 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
 
                 {/* Contenido del Formulario */}
                 <div className="p-4 md:p-6 lg:p-8">
-                    {/* Grid de Campos */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                    {/* Grid de Campos - Datos Básicos */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                            <User className="w-5 h-5 text-blue-600" />
+                            Datos Básicos
+                        </h3>
+                        
                         <div className="space-y-2">
                             <label htmlFor="age" className="block text-sm font-semibold text-gray-700">
-                                Edad
+                                Edad *
                             </label>
                             <input 
                                 type="number" 
@@ -93,12 +119,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 onChange={handleInputChange} 
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. 35" 
+                                required
                             />
                         </div>
                         
                         <div className="space-y-2">
                             <label htmlFor="sex" className="block text-sm font-semibold text-gray-700">
-                                Sexo
+                                Sexo *
                             </label>
                             <select 
                                 name="sex" 
@@ -106,13 +133,107 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 value={personalData.sex} 
                                 onChange={handleInputChange} 
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                                required
                             >
                                 <option value="femenino">Femenino</option>
                                 <option value="masculino">Masculino</option>
                                 <option value="otro">Otro</option>
                             </select>
                         </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="height" className="block text-sm font-semibold text-gray-700">
+                                Altura (cm)
+                            </label>
+                            <input 
+                                type="number" 
+                                name="height" 
+                                id="height" 
+                                value={personalData.height} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. 165" 
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="weight" className="block text-sm font-semibold text-gray-700">
+                                Peso (kg)
+                            </label>
+                            <input 
+                                type="number" 
+                                name="weight" 
+                                id="weight" 
+                                value={personalData.weight} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. 70" 
+                            />
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="activityLevel" className="block text-sm font-semibold text-gray-700">
+                                Nivel de Actividad Física
+                            </label>
+                            <select 
+                                name="activityLevel" 
+                                id="activityLevel" 
+                                value={personalData.activityLevel} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                            >
+                                <option value="sedentario">Sedentario (poco o ningún ejercicio)</option>
+                                <option value="ligero">Ligero (1-3 días/semana)</option>
+                                <option value="moderado">Moderado (3-5 días/semana)</option>
+                                <option value="activo">Activo (6-7 días/semana)</option>
+                                <option value="muy_activo">Muy Activo (ejercicio intenso diario)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Grid de Campos - Datos Clínicos */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                            <Heart className="w-5 h-5 text-red-600" />
+                            Datos Clínicos
+                        </h3>
                         
+                        <div className="space-y-2">
+                            <label htmlFor="bloodType" className="block text-sm font-semibold text-gray-700">
+                                Grupo Sanguíneo
+                            </label>
+                            <select 
+                                name="bloodType" 
+                                id="bloodType" 
+                                value={personalData.bloodType} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                            >
+                                <option value="">Seleccionar</option>
+                                <option value="A">A</option>
+                                <option value="AB">AB</option>
+                                <option value="B">B</option>
+                                <option value="O">O</option>
+                            </select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="rhFactor" className="block text-sm font-semibold text-gray-700">
+                                Factor RH
+                            </label>
+                            <select 
+                                name="rhFactor" 
+                                id="rhFactor" 
+                                value={personalData.rhFactor} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                            >
+                                <option value="">Seleccionar</option>
+                                <option value="+">Positivo (+)</option>
+                                <option value="-">Negativo (-)</option>
+                            </select>
+                        </div>
+
                         <div className="sm:col-span-2 space-y-2">
                             <label htmlFor="healthConditions" className="block text-sm font-semibold text-gray-700">
                                 Condiciones de Salud <span className="text-gray-500 font-normal">(opcional)</span>
@@ -127,20 +248,185 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 placeholder="Ej. Diabetes tipo 2, hipertensión" 
                             />
                         </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="allergies" className="block text-sm font-semibold text-gray-700">
+                                Alergias Alimentarias <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="allergies" 
+                                id="allergies" 
+                                value={personalData.allergies} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. Gluten, lactosa, frutos secos" 
+                            />
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="medications" className="block text-sm font-semibold text-gray-700">
+                                Medicamentos Actuales <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="medications" 
+                                id="medications" 
+                                value={personalData.medications} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. Metformina, enalapril" 
+                            />
+                        </div>
+                    </div>
+
+                    {/* Grid de Campos - Historial Médico */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                            <BookOpen className="w-5 h-5 text-green-600" />
+                            Historial Médico
+                        </h3>
+                        
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="familyHistory" className="block text-sm font-semibold text-gray-700">
+                                Historial Familiar <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <textarea 
+                                name="familyHistory" 
+                                id="familyHistory" 
+                                value={personalData.familyHistory} 
+                                onChange={handleInputChange} 
+                                rows={3} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400 resize-none" 
+                                placeholder="Ej. Padre con diabetes, madre con hipertensión"
+                            ></textarea>
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="chronicConditions" className="block text-sm font-semibold text-gray-700">
+                                Condiciones Crónicas <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="chronicConditions" 
+                                id="chronicConditions" 
+                                value={personalData.chronicConditions} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. Artritis, asma, enfermedad tiroidea" 
+                            />
+                        </div>
+                    </div>
+
+                    {/* Grid de Campos - Objetivos y Preferencias */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                            <Target className="w-5 h-5 text-purple-600" />
+                            Objetivos y Preferencias
+                        </h3>
                         
                         <div className="sm:col-span-2 space-y-2">
                             <label htmlFor="goals" className="block text-sm font-semibold text-gray-700">
-                                Objetivos Principales
+                                Objetivos Principales *
                             </label>
                             <textarea 
                                 name="goals" 
                                 id="goals" 
                                 value={personalData.goals} 
                                 onChange={handleInputChange} 
-                                rows={4} 
+                                rows={3} 
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400 resize-none" 
                                 placeholder="Ej. Perder peso, aumentar energía, mejorar digestión"
+                                required
                             ></textarea>
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="dietaryRestrictions" className="block text-sm font-semibold text-gray-700">
+                                Restricciones Dietéticas <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="dietaryRestrictions" 
+                                id="dietaryRestrictions" 
+                                value={personalData.dietaryRestrictions} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. Vegetariano, sin gluten, bajo en sodio" 
+                            />
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="foodPreferences" className="block text-sm font-semibold text-gray-700">
+                                Preferencias Alimentarias <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="foodPreferences" 
+                                id="foodPreferences" 
+                                value={personalData.foodPreferences} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. Prefiero pescado, no me gustan las legumbres" 
+                            />
+                        </div>
+                    </div>
+
+                    {/* Grid de Campos - Estilo de Vida */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                            <Zap className="w-5 h-5 text-yellow-600" />
+                            Estilo de Vida
+                        </h3>
+                        
+                        <div className="space-y-2">
+                            <label htmlFor="sleepHours" className="block text-sm font-semibold text-gray-700">
+                                Horas de Sueño
+                            </label>
+                            <input 
+                                type="number" 
+                                name="sleepHours" 
+                                id="sleepHours" 
+                                value={personalData.sleepHours} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. 7" 
+                                min="4"
+                                max="12"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="stressLevel" className="block text-sm font-semibold text-gray-700">
+                                Nivel de Estrés
+                            </label>
+                            <select 
+                                name="stressLevel" 
+                                id="stressLevel" 
+                                value={personalData.stressLevel} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                            >
+                                <option value="bajo">Bajo</option>
+                                <option value="moderado">Moderado</option>
+                                <option value="alto">Alto</option>
+                                <option value="muy_alto">Muy Alto</option>
+                            </select>
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-2">
+                            <label htmlFor="exerciseFrequency" className="block text-sm font-semibold text-gray-700">
+                                Frecuencia de Ejercicio <span className="text-gray-500 font-normal">(opcional)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="exerciseFrequency" 
+                                id="exerciseFrequency" 
+                                value={personalData.exerciseFrequency} 
+                                onChange={handleInputChange} 
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                placeholder="Ej. 3 veces por semana, 30 minutos" 
+                            />
                         </div>
                     </div>
 

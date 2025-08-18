@@ -159,10 +159,36 @@ export interface FoodGuideData {
 
 // AI Assistant Types
 export interface AIPersonalData {
+  // Datos básicos
   age: string;
   sex: 'masculino' | 'femenino' | 'otro';
+  
+  // Datos físicos
+  height: string;
+  weight: string;
+  activityLevel: 'sedentario' | 'ligero' | 'moderado' | 'activo' | 'muy_activo';
+  
+  // Datos clínicos
   healthConditions: string;
+  allergies: string;
+  medications: string;
+  bloodType: 'A' | 'AB' | 'B' | 'O' | '';
+  rhFactor: '+' | '-' | '';
+  
+  // Historial médico
+  familyHistory: string;
+  previousSurgeries: string;
+  chronicConditions: string;
+  
+  // Objetivos y preferencias
   goals: string;
+  dietaryRestrictions: string;
+  foodPreferences: string;
+  
+  // Estilo de vida
+  sleepHours: string;
+  stressLevel: 'bajo' | 'moderado' | 'alto' | 'muy_alto';
+  exerciseFrequency: string;
 }
 
 export interface AIAssistantProps {
