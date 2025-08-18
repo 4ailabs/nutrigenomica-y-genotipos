@@ -171,7 +171,7 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                 </div>
             )}
             
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header Profesional */}
                 <header className="text-center mb-12">
                     <MedicalBadge variant="info" size="md" className="mb-4">
@@ -183,90 +183,93 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                         Portal GenoTipo
                     </MedicalHeading>
                     
-                    <MedicalText variant="body" size="base" className="max-w-3xl mx-auto mb-6">
+                    <MedicalText variant="body" size="base" className="max-w-2xl mx-auto mb-6 text-gray-700">
                         Sistema de evaluación nutrigenómica basado en evidencia científica para determinar tu perfil genotípico nutricional.
                     </MedicalText>
                     
                     {/* Información médica */}
-                    <MedicalAlertCard type="info" className="max-w-2xl mx-auto p-4">
+                    <MedicalAlertCard type="info" className="max-w-xl mx-auto p-4">
                         <MedicalText variant="caption" size="sm">
                             <strong>Proceso médico profesional:</strong> Sigue los pasos en secuencia para obtener un análisis nutrigenómico completo y preciso.
                         </MedicalText>
                     </MedicalAlertCard>
                 </header>
 
-                {/* Sección de GenoTipos Profesional */}
-                <MedicalSection 
-                    title="Explora los GenoTipos"
-                    subtitle="Haz clic en cada GenoTipo para aprender sobre sus características únicas, su constitución física y metabólica, y las recomendaciones de alimentación para optimizar tu salud y bienestar."
-                    className="mb-16"
-                    spacing="normal"
-                >
-                    <div className="flex justify-center items-center flex-wrap gap-8 max-w-6xl mx-auto">
+                {/* Sección de GenoTipos - Reorganizada */}
+                <section className="mb-16">
+                    <div className="text-center mb-8">
+                        <MedicalHeading level={4} variant="secondary" align="center" className="mb-3">
+                            Exploración de GenoTipos
+                        </MedicalHeading>
+                        <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
+                            Haz clic en cada GenoTipo para aprender sobre sus características únicas, constitución física y metabólica, 
+                            y recomendaciones de alimentación para optimizar tu salud.
+                        </MedicalText>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
                         {genotypes.map((num, index) => (
                             <GenotypeCard 
                                 key={num}
                                 onClick={() => onNavigateToGenotype(num)}
                                 genotypeColor={['blue', 'green', 'purple', 'orange', 'red', 'indigo'][index]}
-                                className="transform transition-all duration-300"
+                                className="transform transition-all duration-300 hover:scale-105"
                             >
                                 <GenotypeBox number={num} />
                             </GenotypeCard>
                         ))}
                     </div>
-                </MedicalSection>
+                </section>
                 
-                 {/* Sección de Calculadoras Profesional */}
-                <MedicalSection 
-                    className="text-center mb-12"
-                    spacing="normal"
-                >
-                    <div className="text-center mb-6">
+                {/* Sección de Evaluación - Reorganizada */}
+                <section className="mb-16">
+                    <div className="text-center mb-8">
                         <MedicalBadge variant="success" size="md" className="mb-3">
                             <Calculator className="w-4 h-4 mr-2" />
                             Proceso de Evaluación
                         </MedicalBadge>
                         
-                        <MedicalHeading level={3} variant="primary" align="center">
+                        <MedicalHeading level={4} variant="secondary" align="center" className="mb-3">
                             Calcula tu GenoTipo
                         </MedicalHeading>
+                        
+                        <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
+                            Utiliza nuestras herramientas científicas para descubrir qué GenoTipo te corresponde. 
+                            Comienza con las Biomediciones para obtener los datos necesarios.
+                        </MedicalText>
                     </div>
                     
-                    <MedicalText variant="body" size="base" className="max-w-3xl mx-auto mb-6">
-                        Utiliza nuestras herramientas científicas para descubrir qué GenoTipo te corresponde. 
-                        Comienza con las Biomediciones para obtener los datos necesarios.
-                    </MedicalText>
-                </MedicalSection>
-
-                {/* Cards de Calculadoras Mejoradas */}
-                <section className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    {calculatorCards.map((card, index) => (
-                         <CalculatorCard 
-                            key={card.title} 
-                            {...card}
-                        />
-                    ))}
+                    {/* Cards de Calculadoras en Grid */}
+                    <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        {calculatorCards.map((card, index) => (
+                             <CalculatorCard 
+                                key={card.title} 
+                                {...card}
+                            />
+                        ))}
+                    </div>
                 </section>
 
-                {/* Chat Integrado */}
-                <section className="mt-20">
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
+                {/* Chat Integrado - Reorganizado */}
+                <section className="mb-8">
+                    <div className="text-center mb-6">
+                        <MedicalBadge variant="info" size="sm" className="mb-3">
                             <Users className="w-4 h-4 mr-2" />
                             Asistente IA Integrado
-                        </div>
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Consulta con tu Asistente IA</h2>
-                        <p className="text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                            Pregunta sobre GenoTipos, nutrición personalizada, planes alimenticios o cualquier duda que tengas. 
-                            Tu asistente está aquí para ayudarte.
-                        </p>
+                        </MedicalBadge>
+                        <MedicalHeading level={4} variant="secondary" align="center" className="mb-2">
+                            Consulta con tu Asistente IA
+                        </MedicalHeading>
+                        <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
+                            Pregunta sobre GenoTipos, nutrición personalizada, planes alimenticios o cualquier duda que tengas.
+                        </MedicalText>
                     </div>
                     
                     <div className="max-w-4xl mx-auto">
-                        <div className="h-96"> {/* Altura fija para el chat */}
+                        <div className="h-80 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                             <Chatbot
-                                isOpen={isChatOpen}
-                                onClose={() => setIsChatOpen(false)}
+                                isOpen={true}
+                                onClose={() => {}}
                                 contextGenotypeId={null}
                                 isIntegrated={true}
                             />
