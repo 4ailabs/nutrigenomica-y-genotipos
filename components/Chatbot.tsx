@@ -37,11 +37,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId, i
 
 **Información disponible para presentar al paciente:**
 
-📋 **Recomendaciones dietéticas específicas**
-🧬 **Características genotípicas del ${genotypeNames[genotypeId]}**
-⚠️ **Alimentos a evitar y superalimentos recomendados**
-📊 **Comparativas con otros genotipos**
-📝 **Información lista para explicar al paciente**
+• **Recomendaciones dietéticas específicas**
+• **Características genotípicas del ${genotypeNames[genotypeId]}**
+• **Alimentos a evitar y superalimentos recomendados**
+• **Comparativas con otros genotipos**
+• **Información lista para explicar al paciente**
 
 ¿Qué información necesita generar para su paciente?`;
         }
@@ -58,10 +58,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId, i
 • **GenoTipo 6 - Nomad** (Nómada)
 
 **Capacidades del asistente:**
-- Generar explicaciones para pacientes
-- Crear listas de alimentos personalizadas
-- Proporcionar fundamentos científicos
-- Comparar perfiles genotípicos
+• Generar explicaciones para pacientes
+• Crear listas de alimentos personalizadas
+• Proporcionar fundamentos científicos
+• Comparar perfiles genotípicos
 
 ¿Sobre qué genotipo necesita información para su paciente?`;
     };

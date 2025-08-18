@@ -246,7 +246,7 @@ export async function generateChatResponse(
         HISTORIAL DE CONVERSACIÓN:
         ${history.map(msg => `${msg.role === 'user' ? 'Usuario' : 'Asistente'}: ${msg.content}`).join('\n')}
         
-        INSTRUCCIÓN: Responde la última pregunta del usuario basándote en el contexto del GenoTipo y las reglas dietéticas establecidas.
+        INSTRUCCIÓN: Responde la última pregunta del usuario de forma directa y neutral, basándote en el contexto del GenoTipo y las reglas dietéticas establecidas. NO uses fórmulas de cortesía como "entendido", "doctor", "estimado", etc.
     `;
 
     try {
