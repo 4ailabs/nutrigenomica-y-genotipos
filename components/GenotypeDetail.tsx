@@ -1,10 +1,11 @@
 import React from 'react';
 import { GENOTYPE_DATA } from '../genotypeData';
 import { GENOTYPE_COLORS, GENOTYPE_NAMES } from '../constants';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Download } from 'lucide-react';
 import { FOOD_GUIDE_DATA } from '../foodData';
 import FoodGuide from './FoodGuide';
 import AIAssistant from './AIAssistant';
+import { generateGenotypePDF, type GenotypePDFData } from '../utils/pdfGenerator';
 
 interface GenotypeDetailProps {
     genotypeId: number;
@@ -70,6 +71,28 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                         className="absolute top-0 left-4 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 p-3 rounded-full shadow-md hover:shadow-lg"
                     >
                         <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    
+                    <button 
+                        onClick={() => {
+                            const pdfData: GenotypePDFData = {
+                                id: data.id,
+                                name: data.name,
+                                title: data.title,
+                                tagline: data.tagline,
+                                essence: data.essence,
+                                characteristics1: data.characteristics1,
+                                characteristics2: data.characteristics2,
+                                physicalAndMetabolic: data.physicalAndMetabolic,
+                                foodPlan: data.foodPlan,
+                                foodsToAvoid: data.foodsToAvoid
+                            };
+                            generateGenotypePDF(pdfData);
+                        }}
+                        className="absolute top-0 right-4 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 p-3 rounded-full shadow-md hover:shadow-lg"
+                        title="Descargar Plan Nutricional en PDF"
+                    >
+                        <Download className="h-5 w-5" />
                     </button>
                     
                     <div className="text-center max-w-4xl mx-auto">
