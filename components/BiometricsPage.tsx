@@ -58,7 +58,7 @@ const FingerprintSelect: React.FC<{ name: string; value: string; onChange: (e: R
 
 
 const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavigateToMain }) => {
-    const [openAccordion, setOpenAccordion] = useState<number | null>(0);
+    const [openAccordion, setOpenAccordion] = useState<number | null>(null);
     const [formData, setFormData] = useState<any>({
         fingerprints: { right: {}, left: {} }
     });
@@ -415,30 +415,7 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                             Guía completa para realizar las 8 mediciones biomédicas que determinarán tu genotipo nutricional personalizado.
                         </p>
                         
-                        <div className="mt-8 flex justify-center">
-                            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
-                                <div className="flex items-center space-x-8 text-center">
-                                    <div className="text-center">
-                                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                                            <Target className="w-6 h-6 text-blue-600" />
-                                        </div>
-                                        <p className="text-sm font-medium text-slate-700">Mediciones</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                                            <Clock className="w-6 h-6 text-teal-600" />
-                                        </div>
-                                        <p className="text-sm font-medium text-slate-700">Minutos</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                                            <Zap className="w-6 h-6 text-indigo-600" />
-                                        </div>
-                                        <p className="text-sm font-medium text-slate-700">Precisión</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                  </header>
 
