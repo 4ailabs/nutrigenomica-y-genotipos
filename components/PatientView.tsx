@@ -108,7 +108,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     // Función para obtener el icono del marcador especial
     const getSpecialMarkerIcon = (marcador: string) => {
         if (marcador.includes('Activador Metabólico') || marcador.includes('◊') || marcador.includes('diamante_')) {
-            return <Star className="w-4 h-4 text-yellow-600" />;
+            return <div className="w-4 h-4 bg-yellow-500 rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm font-bold">◊</span>
+            </div>;
         }
         if (marcador.includes('Evitar 60 Días') || marcador.includes('•') || marcador.includes('punto_negro')) {
             return <div className="w-3 h-3 bg-orange-400 rounded-full flex items-center justify-center">
