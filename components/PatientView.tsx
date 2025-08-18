@@ -550,6 +550,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                 genotypeId={selectedGenotype} 
                 genotypeColor={genotypeColor} 
                 genotypeGradient={genotypeGradient} 
+                foodData={foodData}
             />
         );
     };
@@ -620,7 +621,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             return (
                                 <div 
                                     key={id} 
-                                    onClick={() => setSelectedGenotype(id)}
+                                    onClick={() => handleGenotypeSelect(id)}
                                     className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6 cursor-pointer hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
                                 >
                                     <div className={`bg-gradient-to-r ${gradient} rounded-xl p-4 mb-4 text-white`}>
