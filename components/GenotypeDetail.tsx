@@ -302,7 +302,8 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                         <GenotypeRecipes 
                             genotypeId={genotypeId} 
                             genotypeColor={theme.mainColor} 
-                            genotypeGradient={`${theme.fromColor} ${theme.viaColor} ${theme.toColor}`} 
+                            genotypeGradient={`${theme.fromColor} ${theme.viaColor} ${theme.toColor}`}
+                            foodData={foodData} 
                         />
                     </Section>
                 )}
