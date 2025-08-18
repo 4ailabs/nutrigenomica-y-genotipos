@@ -66,8 +66,8 @@ const App: React.FC = () => {
             <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
                  {renderPage()}
             </div>
-             {/* Chat flotante - oculto en Portal */}
-             {currentPage !== 'portal' && (
+             {/* Chat flotante solo en calculadora y biometrías */}
+             {(currentPage === 'calculator' || currentPage === 'biometrics') && (
                 <>
                     <Chatbot
                         isOpen={isChatOpen}
