@@ -364,6 +364,33 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
                     onDeleteResult={handleDeleteFromHistory}
                 />
             )}
+
+            {/* Espacio adicional en la parte inferior para mejor navegación */}
+            <div className="h-16 md:h-24"></div>
+
+            {/* Footer de la Página */}
+            <footer className="mt-16 border-t border-gray-200 bg-gray-50">
+                <div className="max-w-4xl mx-auto px-6 py-8">
+                    <div className="text-center">
+                        <div className="flex items-center justify-center space-x-2 mb-4">
+                            <Target className="w-6 h-6 text-blue-600" />
+                            <h3 className="text-lg font-semibold text-gray-800">
+                                Sistema de Evaluación GenoTipo
+                            </h3>
+                        </div>
+                        <p className="text-gray-600 mb-4">
+                            Herramienta profesional para la evaluación de fuerza del genotipo nutricional
+                        </p>
+                        <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                            <span>© 2024 Nutrigenómica y GenoTipos</span>
+                            <span>•</span>
+                            <span>Sistema Médico Profesional</span>
+                            <span>•</span>
+                            <span>Evaluación Biométrica Avanzada</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 };
