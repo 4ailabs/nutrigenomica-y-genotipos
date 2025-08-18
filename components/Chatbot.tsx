@@ -20,8 +20,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
 
     const getInitialMessage = (genotypeId: number | null) => {
         return genotypeId
-            ? `¡Hola! Soy tu asistente especializado en el **Genotipo ${genotypeId}**. 🧬\n\nPuedo ayudarte con:\n• Planes de alimentación personalizados\n• Recomendaciones nutricionales\n• Dudas sobre tu GenoTipo\n• Consejos de salud general\n\n¿En qué puedo ayudarte hoy?`
-            : "¡Hola! Soy tu asistente del programa **GenoTipo** 🧬\n\nEstoy aquí para ayudarte con:\n• Información sobre GenoTipos\n• Nutrición personalizada\n• Dudas sobre el programa\n• Consejos de bienestar\n\n¿En qué puedo ayudarte hoy?";
+            ? `¡Hola! Soy tu asistente especializado en el Genotipo ${genotypeId}.\n\nPuedo ayudarte con:\n• Planes de alimentación personalizados\n• Recomendaciones nutricionales\n• Dudas sobre tu GenoTipo\n• Consejos de salud general\n\n¿En qué puedo ayudarte hoy?`
+            : "¡Hola! Soy tu asistente del programa GenoTipo.\n\nEstoy aquí para ayudarte con:\n• Información sobre GenoTipos\n• Nutrición personalizada\n• Dudas sobre el programa\n• Consejos de bienestar\n\n¿En qué puedo ayudarte hoy?";
     };
 
     useEffect(() => {
@@ -61,15 +61,15 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
     return (
         <div className="fixed bottom-24 right-6 w-full max-w-md h-[75vh] max-h-[700px] bg-white rounded-3xl shadow-2xl flex flex-col z-50 animate-fadeInUp border border-gray-100 chatbot-container">
             {/* Header Mejorado */}
-            <div className="flex-shrink-0 p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-3xl flex items-center justify-between chat-header">
+            <div className="flex-shrink-0 p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-gray-50 rounded-t-3xl flex items-center justify-between chat-header">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
                         <Bot size={24} />
                     </div>
                     <div>
                         <h3 className="font-bold text-gray-900 text-lg">Asistente IA</h3>
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full online-indicator"></div>
+                            <div className="w-2 h-2 bg-green-400 rounded-full online-indicator"></div>
                             <p className="text-sm text-gray-600">En línea • Experto en GenoTipo</p>
                         </div>
                     </div>
@@ -88,7 +88,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
                     <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-xs md:max-w-sm px-5 py-3 rounded-2xl shadow-sm chat-message ${
                             msg.role === 'user' 
-                                ? 'user-message text-white' 
+                                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' 
                                 : index === 0 ? 'bot-message initial-message' : 'bot-message'
                         }`}>
                             <div className="prose prose-sm max-w-none text-inherit chat-message-content">
@@ -136,7 +136,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
                     <button 
                         onClick={handleSend} 
                         disabled={isLoading || !input.trim()} 
-                        className="p-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-md send-button"
+                        className="p-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl hover:from-blue-600 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-md send-button"
                     >
                         <SendHorizonal size={20} />
                     </button>
@@ -145,7 +145,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, contextGenotypeId })
                 {/* Footer del Chat */}
                 <div className="mt-4 text-center chat-footer">
                     <p className="text-xs text-gray-500">
-                        💡 Tip: Puedes preguntar sobre nutrición, GenoTipos o planes alimenticios
+                        Tip: Puedes preguntar sobre nutrición, GenoTipos o planes alimenticios
                     </p>
                 </div>
             </div>

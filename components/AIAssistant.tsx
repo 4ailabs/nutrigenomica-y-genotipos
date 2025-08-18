@@ -50,7 +50,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
             {/* Formulario Principal */}
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
                 {/* Header del Formulario */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-6">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                             <Target className="w-6 h-6 text-white" />
@@ -145,9 +145,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         <button 
                             onClick={() => handleSubmit('menu')} 
                             disabled={!isFormValid || isLoading} 
-                            className="group relative w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                            className="group relative w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span className="relative flex items-center justify-center">
                                 <Heart className="w-5 h-5 mr-2" />
                                 Generar Menú Semanal
@@ -157,9 +157,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         <button 
                             onClick={() => handleSubmit('recipes')} 
                             disabled={!isFormValid || isLoading} 
-                            className="group relative w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                            className="group relative w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-700 to-emerald-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span className="relative flex items-center justify-center">
                                 <Zap className="w-5 h-5 mr-2" />
                                 Generar Recetas
@@ -169,9 +169,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         <button 
                             onClick={() => handleSubmit('supplements')} 
                             disabled={!isFormValid || isLoading} 
-                            className="group relative w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                            className="group relative w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-purple-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span className="relative flex items-center justify-center">
                                 <WandSparkles className="w-5 h-5 mr-2" />
                                 Sugerir Suplementos

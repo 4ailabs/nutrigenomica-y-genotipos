@@ -290,10 +290,10 @@ export const MedicalAlert: React.FC<{
   };
   
   const icons = {
-    info: 'ℹ️',
-    success: '✅',
-    warning: '⚠️',
-    error: '❌',
+    info: 'ℹ',
+    success: '✓',
+    warning: '⚠',
+    error: '✗',
   };
   
   return (
