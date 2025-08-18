@@ -183,15 +183,15 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
     );
 
     const renderBloodFields = () => (
-        <MedicalSection 
-            title="Información Sanguínea"
-            subtitle="Selecciona tu grupo sanguíneo, factor Rh y estado secretor"
-            spacing="tight" 
-            className="animate-fade-in"
-        >
+        <div className="space-y-4">
+            <div>
+                <MedicalHeading level={5} variant="secondary" className="mb-3">Información Sanguínea</MedicalHeading>
+                <MedicalText variant="caption" size="sm" className="mb-4">Selecciona tu grupo sanguíneo, factor Rh y estado secretor</MedicalText>
+            </div>
+            
             <div className="space-y-4">
                 <div>
-                    <MedicalHeading level={5} variant="secondary" className="mb-2">Grupo Sanguíneo</MedicalHeading>
+                    <MedicalHeading level={6} variant="secondary" className="mb-2">Grupo Sanguíneo</MedicalHeading>
                     <div className="grid grid-cols-2 gap-2">
                         {(['A', 'B', 'AB', 'O'] as BloodType[]).map(type => (
                             <MedicalButton 
@@ -208,7 +208,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 </div>
                 
                 <div>
-                    <MedicalHeading level={5} variant="secondary" className="mb-2">Factor Rh</MedicalHeading>
+                    <MedicalHeading level={6} variant="secondary" className="mb-2">Factor Rh</MedicalHeading>
                     <div className="grid grid-cols-2 gap-2">
                         {(['+', '-'] as RhFactor[]).map(rh => (
                             <MedicalButton 
@@ -225,7 +225,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 </div>
                 
                 <div>
-                    <MedicalHeading level={5} variant="secondary" className="mb-2">Estado Secretor</MedicalHeading>
+                    <MedicalHeading level={6} variant="secondary" className="mb-2">Estado Secretor</MedicalHeading>
                     <div className="grid grid-cols-2 gap-2">
                         {(['secretor', 'no_secretor'] as SecretorStatus[]).map(status => (
                             <MedicalButton 
@@ -251,18 +251,18 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             >
                 Continuar
             </MedicalButton>
-        </MedicalSection>
+        </div>
     );
     
     const renderSummary = () => (
-        <MedicalSection 
-            title="Resumen y Datos Adicionales"
-            subtitle="Verifica la información ingresada y completa los datos faltantes"
-            spacing="tight"
-            className="animate-fade-in"
-        >
+        <div className="space-y-4">
+            <div>
+                <MedicalHeading level={5} variant="secondary" className="mb-3">Resumen y Datos Adicionales</MedicalHeading>
+                <MedicalText variant="caption" size="sm" className="mb-4">Verifica la información ingresada y completa los datos faltantes</MedicalText>
+            </div>
+            
             <MedicalCard variant="outline" className="p-4 mb-4">
-                <MedicalHeading level={5} variant="muted" className="mb-3">Datos Calculados</MedicalHeading>
+                <MedicalHeading level={6} variant="muted" className="mb-3">Datos Calculados</MedicalHeading>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                     <MedicalText variant="body" size="sm">
                         <strong>Relación Torso-Piernas:</strong> {proportions?.torsoLonger ? 'Torso más largo' : 'Piernas más largas'}
@@ -283,7 +283,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             </MedicalCard>
             
             <div>
-                <MedicalHeading level={5} variant="secondary" className="mb-2">Sexo</MedicalHeading>
+                <MedicalHeading level={6} variant="secondary" className="mb-2">Sexo</MedicalHeading>
                 <div className="grid grid-cols-2 gap-2">
                     {(['hombre', 'mujer'] as Sex[]).map(s => (
                         <MedicalButton 
@@ -308,16 +308,16 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             >
                 Calcular Genotipo
             </MedicalButton>
-        </MedicalSection>
+        </div>
     );
 
     const renderResults = () => (
-        <MedicalSection
-            title="Tu Genotipo"
-            subtitle="Haz clic en tu resultado para ver información detallada"
-            spacing="tight"
-            className="text-center animate-fade-in"
-        >
+        <div className="space-y-4 text-center">
+            <div>
+                <MedicalHeading level={5} variant="primary" className="mb-3">Tu Genotipo</MedicalHeading>
+                <MedicalText variant="caption" size="sm" className="mb-4">Haz clic en tu resultado para ver información detallada</MedicalText>
+            </div>
+            
             {results && results.genotypes.length > 0 ? (
                 <div className="flex justify-center items-center flex-wrap gap-3 mb-4">
                     {results.genotypes.map((g, i) => (
@@ -333,7 +333,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             )}
             
             <MedicalCard variant="outline" className="p-4 text-left mb-4">
-                <MedicalHeading level={5} variant="muted" align="center" className="mb-3">Resumen de Cálculo</MedicalHeading>
+                <MedicalHeading level={6} variant="muted" align="center" className="mb-3">Resumen de Cálculo</MedicalHeading>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                     <MedicalText variant="body" size="sm">
                         <strong>Línea de cálculo:</strong> <span className="font-mono">{results?.line}</span>
@@ -368,7 +368,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
             >
                 Calcular de Nuevo
             </MedicalButton>
-        </MedicalSection>
+        </div>
     );
 
     if (selectedGenotype) {
