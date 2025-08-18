@@ -77,6 +77,12 @@ const App: React.FC = () => {
                     <ChatbotFAB isOpen={isChatOpen} onClick={() => setIsChatOpen(prev => !prev)} />
                 </>
              )}
+             {/* Debug: mostrar la página actual */}
+             {process.env.NODE_ENV === 'development' && (
+                <div className="fixed top-4 left-4 bg-black text-white px-2 py-1 text-xs rounded z-50">
+                    Página: {currentPage}
+                </div>
+             )}
         </div>
     );
 };
