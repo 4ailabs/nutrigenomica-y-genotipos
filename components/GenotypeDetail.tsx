@@ -104,11 +104,11 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                             <span className="text-gray-700 font-semibold">Tu GenoTipo</span>
                         </div>
 
-                        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
                             {data.title}
                         </h1>
                         
-                        <p className="text-xl md:text-2xl text-gray-600 font-light leading-relaxed max-w-3xl mx-auto">
+                        <p className="text-lg sm:text-xl md:text-2xl text-gray-600 font-light leading-relaxed max-w-2xl md:max-w-3xl mx-auto px-4">
                             {data.tagline}
                         </p>
 
@@ -120,17 +120,17 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
             <main className="py-12">
                 {/* Sección de Esencia - Optimizada para pacientes */}
                 <Section title="Tu Esencia Genotípica">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 md:p-12 text-center">
-                            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-white shadow-md flex items-center justify-center">
-                                <div className="w-8 h-8 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
+                    <div className="max-w-4xl mx-auto px-4">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12 text-center">
+                            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-full bg-white shadow-md flex items-center justify-center">
+                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
                             </div>
                             
-                            <blockquote className="text-2xl md:text-3xl font-light text-gray-800 mb-8 leading-relaxed">
+                            <blockquote className="text-xl sm:text-2xl md:text-3xl font-light text-gray-800 mb-6 md:mb-8 leading-relaxed px-4">
                                 "{data.essence.quote}"
                             </blockquote>
                             
-                            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                            <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto px-4">
                                 {data.essence.description}
                             </p>
                         </div>
@@ -139,14 +139,14 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 
                 {/* Características Principales - Mejoradas para pacientes */}
                 <Section title="Tus Fortalezas Naturales" subtitle={`Lo que te caracteriza como ${data.title}`} subtitleColor={theme.textColor}>
-                    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto px-4">
                         {data.characteristics1.map((char, index) => (
-                            <div key={index} className="group bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                                <div className={`w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center ${char.iconBgColor} group-hover:scale-110 transition-transform duration-300`}>
-                                    <char.icon className="w-10 h-10 text-white" />
+                            <div key={index} className="group bg-white p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                                <div className={`w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl mx-auto mb-4 md:mb-6 flex items-center justify-center ${char.iconBgColor} group-hover:scale-110 transition-transform duration-300`}>
+                                    <char.icon className="w-8 h-8 md:w-10 md:h-10 text-white" />
                                 </div>
-                                <h3 className="font-bold text-xl mb-4 text-gray-800 group-hover:text-gray-900">{char.title}</h3>
-                                <p className="text-gray-600 text-base leading-relaxed">{char.description}</p>
+                                <h3 className="font-bold text-lg md:text-xl mb-3 md:mb-4 text-gray-800 group-hover:text-gray-900">{char.title}</h3>
+                                <p className="text-gray-600 text-sm md:text-base leading-relaxed">{char.description}</p>
                             </div>
                         ))}
                     </div>
@@ -154,16 +154,16 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
                 {/* Características Secundarias - Mejoradas */}
                 <Section title="Tu Perfil Personal" subtitle="Aspectos que te hacen único" className="bg-gradient-to-b from-gray-50 to-white" subtitleColor={theme.textColor}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto px-4">
                          {data.characteristics2.map((char, index) => (
-                            <div key={index} className="group bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300">
-                                <div className="flex items-start gap-4">
-                                    <div className={`w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center ${char.iconBgColor} group-hover:scale-105 transition-transform duration-300`}>
-                                        <char.icon className="w-6 h-6 text-white" />
+                            <div key={index} className="group bg-white p-4 md:p-6 rounded-lg md:rounded-xl shadow-md border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300">
+                                <div className="flex items-start gap-3 md:gap-4">
+                                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex-shrink-0 flex items-center justify-center ${char.iconBgColor} group-hover:scale-105 transition-transform duration-300`}>
+                                        <char.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="font-semibold text-lg mb-2 text-gray-800 group-hover:text-gray-900">{char.title}</h3>
-                                        <p className="text-gray-600 text-sm leading-relaxed">{char.description}</p>
+                                        <h3 className="font-semibold text-base md:text-lg mb-2 text-gray-800 group-hover:text-gray-900">{char.title}</h3>
+                                        <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{char.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -173,20 +173,20 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
                 {/* Constitución Física - Mejorada para pacientes */}
                 <Section title="Tu Perfil Físico y Metabólico" subtitle="Cómo funciona tu cuerpo" subtitleColor={theme.textColor}>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto px-4">
                         {data.physicalAndMetabolic.map((item, index) => (
-                             <div key={index} className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                        <span className="font-bold text-gray-700 text-lg">{index + 1}</span>
+                             <div key={index} className="bg-white p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                                <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                        <span className="font-bold text-gray-700 text-base md:text-lg">{index + 1}</span>
                                     </div>
-                                    <h3 className="font-bold text-xl text-gray-800">{item.title}</h3>
+                                    <h3 className="font-bold text-lg md:text-xl text-gray-800">{item.title}</h3>
                                 </div>
-                                <ul className="space-y-3">
+                                <ul className="space-y-2 md:space-y-3">
                                     {item.points.map((point, pIndex) => (
                                         <li key={pIndex} className="flex items-start text-gray-700">
                                             <div className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0" style={{backgroundColor: theme.mainColor}}></div>
-                                            <span className="leading-relaxed">{point}</span>
+                                            <span className="leading-relaxed text-sm md:text-base">{point}</span>
                                         </li>
                                     ))}
                                 </ul>

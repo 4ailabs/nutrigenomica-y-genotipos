@@ -65,40 +65,40 @@ const FoodGuide: React.FC<FoodGuideProps> = ({ data }) => {
     return (
         <div className="max-w-6xl mx-auto">
             {/* Legend Section Mejorada */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 mb-8 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Leyenda de Símbolos Nutricionales</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 md:p-6 mb-6 md:mb-8 shadow-sm">
+                <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4 text-center">Leyenda de Símbolos Nutricionales</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                     {Object.entries(data.genotipo_info.simbolos).map(([key, symbol]) => (
-                        <div key={key} className="bg-white rounded-lg p-4 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div className="flex items-start gap-3">
+                        <div key={key} className="bg-white rounded-lg p-3 md:p-4 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-start gap-2 md:gap-3">
                                 <div className="flex-shrink-0">
                                     {key.includes('◊') && (
-                                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <Diamond className="h-5 w-5 text-blue-600" />
+                                        <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <Diamond className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                                         </div>
                                     )}
                                     {key.includes('•') && (
-                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                                            <CircleDot className="h-5 w-5 text-orange-600" />
+                                        <div className="w-6 h-6 md:w-8 md:h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                                            <CircleDot className="h-4 w-4 md:h-5 md:w-5 text-orange-600" />
                                         </div>
                                     )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <h4 className="font-semibold text-gray-800 text-sm mb-1">{symbol.etiqueta}</h4>
+                                    <h4 className="font-semibold text-gray-800 text-xs md:text-sm mb-1">{symbol.etiqueta}</h4>
                                     <p className="text-gray-600 text-xs leading-relaxed">{symbol.descripcion}</p>
                                 </div>
                             </div>
                         </div>
                     ))}
-                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex items-start gap-3">
+                    <div className="bg-white rounded-lg p-3 md:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-start gap-2 md:gap-3">
                             <div className="flex-shrink-0">
-                                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
+                                <div className="w-6 h-6 md:w-8 md:h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <div className="w-3 h-3 md:w-4 md:h-4 bg-gray-400 rounded-full"></div>
                                 </div>
                             </div>
                             <div className="flex-1 min-w-0">
-                                <h4 className="font-semibold text-gray-800 text-sm mb-1">Alimentos Neutros</h4>
+                                <h4 className="font-semibold text-gray-800 text-xs md:text-sm mb-1">Alimentos Neutros</h4>
                                 <p className="text-gray-600 text-xs leading-relaxed">{data.genotipo_info.regla_neutros}</p>
                             </div>
                         </div>
@@ -127,19 +127,19 @@ const FoodGuide: React.FC<FoodGuideProps> = ({ data }) => {
                     </div>
                 </div>
 
-                <div key={activeTab} className="p-8 space-y-8 animate-fadeIn">
+                <div key={activeTab} className="p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8 animate-fadeIn">
                     {/* Superfoods Section */}
-                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl border border-emerald-200/60">
-                        <div className="p-4 border-b border-emerald-200/60">
+                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl md:rounded-3xl border border-emerald-200/60">
+                        <div className="p-3 md:p-4 border-b border-emerald-200/60">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                                        <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-center gap-2 md:gap-3">
+                                    <div className="w-8 h-8 md:w-10 md:h-10 bg-emerald-100 rounded-lg md:rounded-xl flex items-center justify-center">
+                                        <svg className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 className="text-xl font-bold text-emerald-800">Superalimentos</h4>
+                                        <h4 className="text-lg md:text-xl font-bold text-emerald-800">Superalimentos</h4>
                                         <p className="text-xs text-emerald-700">Alimentos recomendados</p>
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@ const FoodGuide: React.FC<FoodGuideProps> = ({ data }) => {
                             </div>
                         </div>
                         
-                        <div className="p-6">
+                        <div className="p-4 md:p-6">
                             {superfoods.length > 0 ? (
                                 <div className="grid gap-3">
                                     {superfoods.map(item => renderFoodItem(item, true))}
@@ -171,17 +171,17 @@ const FoodGuide: React.FC<FoodGuideProps> = ({ data }) => {
                     </div>
 
                     {/* Toxins Section */}
-                    <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl border border-red-200/60">
-                        <div className="p-4 border-b border-red-200/60">
+                    <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl md:rounded-3xl border border-red-200/60">
+                        <div className="p-3 md:p-4 border-b border-red-200/60">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
-                                        <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-center gap-2 md:gap-3">
+                                    <div className="w-8 h-8 md:w-10 md:h-10 bg-red-100 rounded-lg md:rounded-xl flex items-center justify-center">
+                                        <svg className="w-4 h-4 md:w-5 md:h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 className="text-xl font-bold text-red-800">Alimentos a Evitar</h4>
+                                        <h4 className="text-lg md:text-xl font-bold text-red-800">Alimentos a Evitar</h4>
                                         <p className="text-xs text-red-700">Alimentos no recomendados</p>
                                     </div>
                                 </div>
@@ -193,7 +193,7 @@ const FoodGuide: React.FC<FoodGuideProps> = ({ data }) => {
                             </div>
                         </div>
                         
-                        <div className="p-6">
+                        <div className="p-4 md:p-6">
                             {toxins.length > 0 ? (
                                 <div className="grid gap-3">
                                     {toxins.map(item => renderFoodItem(item, false))}

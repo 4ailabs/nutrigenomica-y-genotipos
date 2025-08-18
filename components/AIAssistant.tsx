@@ -50,26 +50,26 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
             {/* Formulario Principal */}
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
                 {/* Header del Formulario Mejorado */}
-                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-6 py-6 relative overflow-hidden">
+                <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 px-4 md:px-6 py-4 md:py-6 relative overflow-hidden">
                     {/* Elementos decorativos de fondo */}
                     <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white"></div>
+                        <div className="absolute top-2 md:top-4 right-2 md:right-4 w-16 md:w-32 h-16 md:h-32 rounded-full bg-white"></div>
+                        <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 w-12 md:w-24 h-12 md:h-24 rounded-full bg-white"></div>
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 md:w-16 h-8 md:h-16 rounded-full bg-white"></div>
                     </div>
                     
-                    <div className="relative flex items-center gap-4">
-                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
-                            <Brain className="w-6 h-6 text-white" />
+                    <div className="relative flex flex-col sm:flex-row items-center gap-3 md:gap-4">
+                        <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
+                            <Brain className="w-5 h-5 md:w-6 md:h-6 text-white" />
                         </div>
-                        <div className="flex-1">
-                            <h2 className="text-2xl font-bold text-white mb-2">
+                        <div className="flex-1 text-center sm:text-left">
+                            <h2 className="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2">
                                 Asistente IA Nutrigenómico
                             </h2>
-                            <h3 className="text-lg font-semibold text-blue-100 mb-2">
+                            <h3 className="text-base md:text-lg font-semibold text-blue-100 mb-1 md:mb-2">
                                 Tu Perfil Nutricional Personalizado
                             </h3>
-                            <p className="text-blue-200 text-sm leading-relaxed max-w-2xl">
+                            <p className="text-blue-200 text-sm md:text-base leading-relaxed max-w-2xl mx-auto sm:mx-0">
                                 Completa tus datos para recibir recomendaciones inteligentes de la IA basadas en tu GenoTipo específico. 
                                 Genera menús, recetas, snacks y más, todo personalizado para tu perfil genético.
                             </p>
@@ -78,9 +78,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                 </div>
 
                 {/* Contenido del Formulario */}
-                <div className="p-8">
+                <div className="p-4 md:p-6 lg:p-8">
                     {/* Grid de Campos */}
-                    <div className="grid sm:grid-cols-2 gap-6 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
                         <div className="space-y-2">
                             <label htmlFor="age" className="block text-sm font-semibold text-gray-700">
                                 Edad
