@@ -366,9 +366,9 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                     
                     <p className="font-semibold mt-4">Resultados:</p>
                      <ul className="list-disc list-inside space-y-1">
-                        <li>Índice &gt; 80: Cabeza amplia y corta (<span className="font-bold">braquicéfalo</span>).</li>
-                        <li>Índice 76-80: Cabeza mediana (<span className="font-bold">mesocéfalo/normocéfalo</span>).</li>
-                        <li>Índice &lt; 76: Cabeza alargada (<span className="font-bold">dolicocéfalo</span>).</li>
+                        <li><span className="font-bold">Incisivos en forma de pala:</span> Presentes en la superficie interior</li>
+                        <li><span className="font-bold">Cúspide de Carabelli:</span> Presente en el primer molar</li>
+                        <li><span className="font-bold">Ausencia de características:</span> Dientes con forma estándar</li>
                     </ul>
                     <div className="mt-4 p-3 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-lg">
                         <h4 className="font-bold">Contexto Genético</h4>
