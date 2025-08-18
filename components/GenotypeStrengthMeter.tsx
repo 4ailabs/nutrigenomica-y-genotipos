@@ -43,15 +43,15 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
         }
     }, [onResultChange, currentGenotypeId, currentMeter, totalPoints, strengthPercentage, hasSelections]);
 
-    // Función para obtener el color del genotipo
+    // Función para obtener el color del genotipo (colores oficiales de la aplicación)
     const getGenotypeColor = (genotypeId: number): string => {
         const colors = {
-            1: 'from-red-500 to-red-600',
-            2: 'from-orange-500 to-orange-600',
-            3: 'from-yellow-500 to-yellow-600',
-            4: 'from-green-500 to-green-600',
-            5: 'from-blue-500 to-blue-600',
-            6: 'from-purple-500 to-purple-600'
+            1: 'from-[#B53471] to-[#A02A5F]', // Hunter - Rosa/Magenta
+            2: 'from-[#9ACD32] to-[#7FB800]', // Gatherer - Verde Lima
+            3: 'from-[#5D3FD3] to-[#4A32A8]', // Master - Púrpura
+            4: 'from-[#5DA3FA] to-[#4A8CD8]', // Explorer - Azul Cielo
+            5: 'from-[#EA5455] to-[#D13E3F]', // Warrior - Rojo
+            6: 'from-[#F2994A] to-[#E0853A]'  // Nomad - Naranja
         };
         return colors[genotypeId as keyof typeof colors] || 'from-gray-500 to-gray-600';
     };
