@@ -737,10 +737,10 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     {activeTab === 'menus' && renderMenus()}
                     {activeTab === 'recipes' && renderRecipes()}
                 </div>
-                
-                {/* Espacio adicional en la parte inferior para mejor navegación móvil */}
-                <div className="h-16 md:h-24"></div>
             )}
+            
+            {/* Espacio adicional en la parte inferior para mejor navegación móvil */}
+            <div className="h-16 md:h-24"></div>
         </div>
     );
 };
