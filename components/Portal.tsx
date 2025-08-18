@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GenotypeBox from './GenotypeBox';
 import { MedicalButton, MedicalCard, MedicalBadge, MedicalProgress } from './MedicalComponents';
 import { Target, Calculator, Users, Award, Clock, ArrowRight, CheckCircle, Home, ArrowLeft } from 'lucide-react';
+import Chatbot from './Chatbot';
 
 interface PortalProps {
     onNavigateToCalculator: () => void;
@@ -98,6 +99,7 @@ const CalculatorCard: React.FC<CalculatorCardProps> = ({ type, title, descriptio
 
 const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToMain }) => {
     const genotypes = [1, 2, 3, 4, 5, 6];
+    const [isChatOpen, setIsChatOpen] = useState(true); // Chat siempre abierto en modo integrado
     
     // Colores médicos para cada genotipo
     const genotypeColors = [
@@ -111,18 +113,28 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
     
     const calculatorCards = [
         {
-            type: "Paso 1: Medir",
-            title: "Biomediciones Completas",
-            description: "Completa las 8 mediciones biométricas clave. Esta sección te guiará paso a paso y te permitirá registrar tus resultados, que son esenciales para el cálculo.",
-            features: ["8 mediciones biométricas", "Análisis de huellas digitales", "Pruebas de sensibilidad gustativa", "Mediciones antropométricas"],
+            type: "biometrics",
+            title: "Biomediciones",
+            description: "Mediciones corporales precisas para determinar proporciones físicas y características metabólicas.",
+            features: [
+                "8 mediciones biométricas clave",
+                "Análisis de proporciones corporales",
+                "Evaluación de características físicas",
+                "Datos para cálculo preciso"
+            ],
             onClick: onNavigateToBiometrics,
             step: 1
         },
         {
-            type: "Paso 2: Calcular",
+            type: "calculator",
             title: "Calculadora Avanzada",
-            description: "Una vez que tengas tus biomediciones, ingrésalas aquí junto con tu tipo de sangre para obtener tu GenoTipo.",
-            features: ["Usa datos de tus biomediciones", "Factor Rh y estado secretor", "Identifica tu genotipo exacto", "Resultados instantáneos"],
+            description: "Algoritmo científico para determinar tu GenoTipo basado en biomediciones y factores genéticos.",
+            features: [
+                "Algoritmo basado en evidencia científica",
+                "Análisis de múltiples factores",
+                "Resultado preciso del GenoTipo",
+                "Recomendaciones personalizadas"
+            ],
             onClick: onNavigateToCalculator,
             step: 2
         }
@@ -215,6 +227,32 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                             {...card}
                         />
                     ))}
+                </section>
+
+                {/* Chat Integrado */}
+                <section className="mt-20">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
+                            <Users className="w-4 h-4 mr-2" />
+                            Asistente IA Integrado
+                        </div>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Consulta con tu Asistente IA</h2>
+                        <p className="text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                            Pregunta sobre GenoTipos, nutrición personalizada, planes alimenticios o cualquier duda que tengas. 
+                            Tu asistente está aquí para ayudarte.
+                        </p>
+                    </div>
+                    
+                    <div className="max-w-4xl mx-auto">
+                        <div className="h-96"> {/* Altura fija para el chat */}
+                            <Chatbot
+                                isOpen={isChatOpen}
+                                onClose={() => setIsChatOpen(false)}
+                                contextGenotypeId={null}
+                                isIntegrated={true}
+                            />
+                        </div>
+                    </div>
                 </section>
 
                 {/* Footer Profesional */}
