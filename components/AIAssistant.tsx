@@ -72,7 +72,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
     const isFormValid = personalData.age && personalData.goals;
 
     return (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-none px-4 sm:px-6 lg:px-8">
             {/* Formulario Principal */}
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
                 {/* Header del Formulario Reducido */}
@@ -101,7 +101,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                 {/* Contenido del Formulario */}
                 <div className="p-4 md:p-6 lg:p-8">
                     {/* Grid de Campos - Datos Básicos */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
                         <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
                             <User className="w-5 h-5 text-blue-600" />
                             Datos Básicos
@@ -192,7 +192,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                     </div>
 
                     {/* Grid de Campos - Datos Clínicos */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
                         <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
                             <Heart className="w-5 h-5 text-red-600" />
                             Datos Clínicos
