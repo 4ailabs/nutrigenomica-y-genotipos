@@ -111,7 +111,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
             return <Star className="w-4 h-4 text-yellow-600" />;
         }
         if (marcador.includes('Evitar 60 Días') || marcador.includes('•') || marcador.includes('punto_negro')) {
-            return <Clock className="w-4 h-4 text-orange-600" />;
+            return <div className="w-4 h-4 bg-orange-600 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-bold">•</span>
+            </div>;
         }
         return null;
     };
