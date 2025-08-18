@@ -452,15 +452,20 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                                 <XCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
                                                     <span className="font-medium text-red-800 text-sm md:text-base block truncate">{food.nombre}</span>
-                                                    {food.marcador_especial && food.marcador_especial.includes('Activador Metabólico') && (
+                                                    {food.marcador_especial && (
                                                         <div className="flex items-center space-x-2 mt-2 p-2 bg-red-100 rounded-lg border border-red-200">
                                                             {getSpecialMarkerIcon(food.marcador_especial)}
                                                             <div className="flex-1 min-w-0">
                                                                 <div className="text-xs font-semibold text-red-700">
-                                                                    Activador Metabólico
+                                                                    {food.marcador_especial.includes('Activador Metabólico') ? 'Activador Metabólico' : 'Marcador Especial'}
                                                                 </div>
                                                                 <div className="text-xs text-red-600 mt-1">
-                                                                    Potencia pérdida de peso y ganancia muscular
+                                                                    {food.marcador_especial.includes('Activador Metabólico') 
+                                                                        ? 'Potencia pérdida de peso y ganancia muscular'
+                                                                        : food.marcador_especial.includes('Evitar 60 Días') 
+                                                                            ? 'Evitar estrictamente por 60 días'
+                                                                            : food.marcador_especial
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -732,6 +737,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     {activeTab === 'menus' && renderMenus()}
                     {activeTab === 'recipes' && renderRecipes()}
                 </div>
+                
+                {/* Espacio adicional en la parte inferior para mejor navegación móvil */}
+                <div className="h-16 md:h-24"></div>
             )}
         </div>
     );
