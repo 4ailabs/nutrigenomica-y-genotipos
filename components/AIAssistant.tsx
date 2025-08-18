@@ -102,10 +102,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                 <div className="p-4 md:p-6 lg:p-8">
                     {/* Grid de Campos - Datos Básicos */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                            <User className="w-5 h-5 text-blue-600" />
-                            Datos Básicos
-                        </h3>
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Datos Básicos</h3>
                         
                         <div className="space-y-2">
                             <label htmlFor="age" className="block text-sm font-semibold text-gray-700">
@@ -193,10 +190,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
 
                     {/* Grid de Campos - Datos Clínicos */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                            <Heart className="w-5 h-5 text-red-600" />
-                            Datos Clínicos
-                        </h3>
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Datos Clínicos</h3>
                         
 
 
@@ -248,10 +242,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
 
                     {/* Grid de Campos - Historial Médico */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                            <BookOpen className="w-5 h-5 text-green-600" />
-                            Historial Médico
-                        </h3>
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Historial Médico</h3>
                         
                         <div className="sm:col-span-2 space-y-2">
                             <label htmlFor="familyHistory" className="block text-sm font-semibold text-gray-700">
@@ -286,10 +277,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
 
                     {/* Grid de Campos - Objetivos y Preferencias */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                            <Target className="w-5 h-5 text-purple-600" />
-                            Objetivos y Preferencias
-                        </h3>
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Objetivos y Preferencias</h3>
                         
                         <div className="sm:col-span-2 space-y-2">
                             <label htmlFor="goals" className="block text-sm font-semibold text-gray-700">
@@ -340,10 +328,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
 
                     {/* Grid de Campos - Estilo de Vida */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                            <Zap className="w-5 h-5 text-yellow-600" />
-                            Estilo de Vida
-                        </h3>
+                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Estilo de Vida</h3>
                         
                         <div className="space-y-2">
                             <label htmlFor="sleepHours" className="block text-sm font-semibold text-gray-700">
@@ -409,10 +394,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         
                         {/* Categoría: Planes Principales */}
                         <div className="mb-6">
-                            <h4 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
-                                <Clock className="w-4 h-4" />
-                                Planes Principales
-                            </h4>
+                            <h4 className="text-sm font-medium text-gray-600 mb-3">Planes Principales</h4>
                             <div className="grid sm:grid-cols-3 gap-3">
                                 <button 
                                     onClick={() => handleSubmit('menu')} 
@@ -420,10 +402,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Heart className="w-4 h-4 mr-2" />
-                                        Menú Semanal
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Menú Semanal</span>
                                 </button>
                                 
                                 <button 
@@ -432,10 +411,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Utensils className="w-4 h-4 mr-2" />
-                                        Preparación Semanal
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Preparación Semanal</span>
                                 </button>
                                 
                                 <button 
@@ -444,20 +420,14 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <BookOpen className="w-4 h-4 mr-2" />
-                                        Recetas Creativas
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Recetas Creativas</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Categoría: Comidas por Tiempo */}
                         <div className="mb-6">
-                            <h4 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
-                                <Utensils className="w-4 h-4" />
-                                Comidas por Tiempo
-                            </h4>
+                            <h4 className="text-sm font-medium text-gray-600 mb-3">Comidas por Tiempo</h4>
                             <div className="grid sm:grid-cols-3 gap-3">
                                 <button 
                                     onClick={() => handleSubmit('breakfast')} 
@@ -465,10 +435,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Coffee className="w-4 h-4 mr-2" />
-                                        Desayunos
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Desayunos</span>
                                 </button>
                                 
                                 <button 
@@ -477,10 +444,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Utensils className="w-4 h-4 mr-2" />
-                                        Almuerzos
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Almuerzos</span>
                                 </button>
                                 
                                 <button 
@@ -489,20 +453,14 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-red-500 to-red-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Utensils className="w-4 h-4 mr-2" />
-                                        Cenas
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Cenas</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Categoría: Opciones Especiales */}
                         <div className="mb-6">
-                            <h4 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
-                                <Leaf className="w-4 h-4" />
-                                Opciones Especiales
-                            </h4>
+                            <h4 className="text-sm font-medium text-gray-600 mb-3">Opciones Especiales</h4>
                             <div className="grid sm:grid-cols-4 gap-3">
                                 <button 
                                     onClick={() => handleSubmit('snacks')} 
@@ -510,10 +468,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-green-500 to-green-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Apple className="w-4 h-4 mr-2" />
-                                        Snacks
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Snacks</span>
                                 </button>
                                 
                                 <button 
@@ -522,10 +477,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-teal-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Salad className="w-4 h-4 mr-2" />
-                                        Ensaladas
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Ensaladas</span>
                                 </button>
                                 
                                 <button 
@@ -534,10 +486,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-cyan-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <Droplets className="w-4 h-4 mr-2" />
-                                        Smoothies
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Smoothies</span>
                                 </button>
                                 
                                 <button 
@@ -546,10 +495,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     className="group relative bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <span className="relative flex items-center justify-center text-sm">
-                                        <WandSparkles className="w-4 h-4 mr-2" />
-                                        Suplementos
-                                    </span>
+                                    <span className="relative flex items-center justify-center text-sm">Suplementos</span>
                                 </button>
                             </div>
                         </div>
