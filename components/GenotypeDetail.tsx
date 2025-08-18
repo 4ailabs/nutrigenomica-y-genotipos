@@ -54,80 +54,119 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
     }
 
     return (
-        <div className="bg-white min-h-screen">
-            {/* Header Simple */}
-            <header className={`py-16 text-center text-white`} style={{ backgroundColor: theme.mainColor }}>
-                <div className="container mx-auto px-4">
-                    <button onClick={onBack} className="absolute top-6 left-6 text-white hover:text-gray-200 transition-colors">
-                        <ChevronLeft className="h-6 w-6" />
+        <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+            {/* Header Moderno para Pacientes */}
+            <header className="relative bg-gradient-to-br from-white to-gray-50 py-20 overflow-hidden">
+                {/* Decoración de fondo sutil */}
+                <div className="absolute inset-0 opacity-5">
+                    <div className="absolute top-10 left-10 w-32 h-32 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
+                    <div className="absolute bottom-20 right-20 w-24 h-24 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
+                    <div className="absolute top-1/2 right-10 w-16 h-16 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
+                </div>
+
+                <div className="container mx-auto px-4 relative">
+                    <button 
+                        onClick={onBack} 
+                        className="absolute top-0 left-4 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 p-3 rounded-full shadow-md hover:shadow-lg"
+                    >
+                        <ChevronLeft className="h-5 w-5" />
                     </button>
                     
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                        {data.title}
-                    </h1>
-                    
-                    <p className="text-xl text-white/90 max-w-3xl mx-auto">
-                        {data.tagline}
-                    </p>
+                    <div className="text-center max-w-4xl mx-auto">
+                        {/* Badge del genotipo */}
+                        <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-md mb-6">
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold" style={{backgroundColor: theme.mainColor}}>
+                                {genotypeId}
+                            </div>
+                            <span className="text-gray-700 font-semibold">Tu GenoTipo</span>
+                        </div>
+
+                        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                            {data.title}
+                        </h1>
+                        
+                        <p className="text-xl md:text-2xl text-gray-600 font-light leading-relaxed max-w-3xl mx-auto">
+                            {data.tagline}
+                        </p>
+
+                        {/* Indicador visual sutil */}
+                        <div className="mt-8 flex justify-center">
+                            <div className="w-1 h-12 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
             <main className="py-12">
-                {/* Sección de Esencia */}
-                <Section title={data.essence.title}>
-                    <div className="max-w-3xl mx-auto text-center">
-                        <p className="text-xl italic text-gray-700 mb-6">
-                            "{data.essence.quote}"
-                        </p>
-                        <p className="text-gray-600 text-lg">{data.essence.description}</p>
+                {/* Sección de Esencia - Optimizada para pacientes */}
+                <Section title="Tu Esencia Genotípica">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 md:p-12 text-center">
+                            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-white shadow-md flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
+                            </div>
+                            
+                            <blockquote className="text-2xl md:text-3xl font-light text-gray-800 mb-8 leading-relaxed">
+                                "{data.essence.quote}"
+                            </blockquote>
+                            
+                            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                                {data.essence.description}
+                            </p>
+                        </div>
                     </div>
                 </Section>
                 
-                {/* Características Principales */}
-                <Section title="Características Principales" subtitle={`Recursos del Genotipo ${data.id}`} subtitleColor={theme.textColor}>
-                    <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                {/* Características Principales - Mejoradas para pacientes */}
+                <Section title="Tus Fortalezas Naturales" subtitle={`Lo que te caracteriza como ${data.title}`} subtitleColor={theme.textColor}>
+                    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {data.characteristics1.map((char, index) => (
-                            <div key={index} className="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
-                                <div className={`w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center ${char.iconBgColor}`}>
-                                    <char.icon className="w-8 h-8 text-white" />
+                            <div key={index} className="group bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                                <div className={`w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center ${char.iconBgColor} group-hover:scale-110 transition-transform duration-300`}>
+                                    <char.icon className="w-10 h-10 text-white" />
                                 </div>
-                                <h3 className="font-bold text-lg mb-2 text-gray-800">{char.title}</h3>
-                                <p className="text-gray-600 text-sm">{char.description}</p>
+                                <h3 className="font-bold text-xl mb-4 text-gray-800 group-hover:text-gray-900">{char.title}</h3>
+                                <p className="text-gray-600 text-base leading-relaxed">{char.description}</p>
                             </div>
                         ))}
                     </div>
                 </Section>
 
-                {/* Características Secundarias */}
-                <Section title="Características que te Definen" subtitle="Perfil Personal" className="bg-gray-50" subtitleColor={theme.textColor}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                {/* Características Secundarias - Mejoradas */}
+                <Section title="Tu Perfil Personal" subtitle="Aspectos que te hacen único" className="bg-gradient-to-b from-gray-50 to-white" subtitleColor={theme.textColor}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
                          {data.characteristics2.map((char, index) => (
-                            <div key={index} className="bg-white p-6 rounded-lg border border-gray-200">
-                                <div className={`w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center ${char.iconBgColor}`}>
-                                    <char.icon className="w-6 h-6 text-white" />
-                                </div>
-                                <div className="mt-4">
-                                    <h3 className="font-bold text-lg mb-2 text-gray-800">{char.title}</h3>
-                                    <p className="text-gray-600">{char.description}</p>
+                            <div key={index} className="group bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300">
+                                <div className="flex items-start gap-4">
+                                    <div className={`w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center ${char.iconBgColor} group-hover:scale-105 transition-transform duration-300`}>
+                                        <char.icon className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-semibold text-lg mb-2 text-gray-800 group-hover:text-gray-900">{char.title}</h3>
+                                        <p className="text-gray-600 text-sm leading-relaxed">{char.description}</p>
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </Section>
 
-                {/* Constitución Física */}
-                <Section title="Constitución Física y Metabólica" subtitle="Análisis Biomédico" subtitleColor={theme.textColor}>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                {/* Constitución Física - Mejorada para pacientes */}
+                <Section title="Tu Perfil Físico y Metabólico" subtitle="Cómo funciona tu cuerpo" subtitleColor={theme.textColor}>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                         {data.physicalAndMetabolic.map((item, index) => (
-                             <div key={index} className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                                <h3 className="font-bold text-lg mb-4 text-gray-800">
-                                    {String(index + 1).padStart(2, '0')}. {item.title}
-                                </h3>
-                                <ul className="space-y-2">
+                             <div key={index} className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-6">
+                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                        <span className="font-bold text-gray-700 text-lg">{index + 1}</span>
+                                    </div>
+                                    <h3 className="font-bold text-xl text-gray-800">{item.title}</h3>
+                                </div>
+                                <ul className="space-y-3">
                                     {item.points.map((point, pIndex) => (
-                                        <li key={pIndex} className="flex items-start text-gray-600">
-                                            <span className="text-blue-500 mr-2 mt-1">•</span>
-                                            <span>{point}</span>
+                                        <li key={pIndex} className="flex items-start text-gray-700">
+                                            <div className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0" style={{backgroundColor: theme.mainColor}}></div>
+                                            <span className="leading-relaxed">{point}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -228,15 +267,10 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 {foodData && (
                      <Section title={foodData.genotipo_info.nombre} subtitle="Guía de Alimentos Detallada" subtitleColor={theme.textColor}>
                         <div className="max-w-7xl mx-auto">
-                            <div className="bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-200 rounded-2xl p-8 mb-8">
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
                                 <div className="text-center">
-                                    <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-indigo-800 mb-3">Guía Nutricional Completa</h3>
-                                    <p className="text-indigo-700 text-lg leading-relaxed max-w-3xl mx-auto">
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">Guía Nutricional Completa</h3>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
                                         Descubre qué alimentos son mejores para tu genotipo y cuáles debes consumir con moderación.
                                     </p>
                                 </div>
@@ -255,12 +289,29 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
             </main>
             
-            {/* Footer Simple */}
-            <footer className="bg-gray-50 border-t border-gray-200 py-8">
+            {/* Footer mejorado para pacientes */}
+            <footer className="bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200 py-12">
                 <div className="container mx-auto px-4 text-center">
-                    <button onClick={onBack} className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
-                        ← Volver al Portal
+                    <div className="max-w-2xl mx-auto mb-8">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-4">¿Tienes preguntas sobre tu GenoTipo?</h3>
+                        <p className="text-gray-600 leading-relaxed">
+                            Esta información es personalizada según tu perfil genético. Consulta con tu médico para obtener recomendaciones específicas adaptadas a tu situación individual.
+                        </p>
+                    </div>
+                    
+                    <button 
+                        onClick={onBack} 
+                        className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 font-semibold px-8 py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                        Volver al Portal
                     </button>
+                    
+                    <div className="mt-8 pt-8 border-t border-gray-300">
+                        <p className="text-sm text-gray-500">
+                            © Dr. Miguel Ojeda Rios • Sistema GenoTipo • Nutrigenómica Personalizada
+                        </p>
+                    </div>
                 </div>
             </footer>
         </div>
