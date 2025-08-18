@@ -1,12 +1,25 @@
 {
   "name": "nutrigenómica-y-genotipos",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Sistema de evaluación nutrigenómica basado en evidencia científica para determinar perfiles genotípicos nutricionales",
+  "keywords": ["nutrigenómica", "genotipos", "nutrición", "medicina", "IA", "salud"],
+  "author": "Dr. Miguel Ojeda Rios",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4ailabs/nutrigenomica-y-genotipos.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vite build",
+    "start": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "echo 'Linting not configured yet'",
+    "test": "echo 'Testing not configured yet'"
   },
   "dependencies": {
     "react-dom": "^19.1.1",
@@ -20,5 +33,21 @@
     "@types/node": "^22.14.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

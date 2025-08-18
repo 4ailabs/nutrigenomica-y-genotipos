@@ -3,62 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nutrigenómica y GenoTipos</title>
+    <meta name="description" content="Sistema de evaluación nutrigenómica basado en evidencia científica para determinar perfiles genotípicos nutricionales. Herramienta profesional para médicos." />
+    <meta name="keywords" content="nutrigenómica, genotipos, nutrición, medicina, evaluación biomédica, IA, salud" />
+    <meta name="author" content="Dr. Miguel Ojeda Rios" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nutrigenomica-y-genotipos.vercel.app/" />
+    <meta property="og:title" content="Nutrigenómica y Genotipos - Sistema Médico Profesional" />
+    <meta property="og:description" content="Sistema de evaluación nutrigenómica basado en evidencia científica para determinar perfiles genotípicos nutricionales." />
+    <meta property="og:image" content="https://nutrigenomica-y-genotipos.vercel.app/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://nutrigenomica-y-genotipos.vercel.app/" />
+    <meta property="twitter:title" content="Nutrigenómica y Genotipos - Sistema Médico Profesional" />
+    <meta property="twitter:description" content="Sistema de evaluación nutrigenómica basado en evidencia científica para determinar perfiles genotípicos nutricionales." />
+    <meta property="twitter:image" content="https://nutrigenomica-y-genotipos.vercel.app/og-image.jpg" />
+
+    <title>Nutrigenómica y GenoTipos - Sistema Médico Profesional</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/index.css" as="style" />
+    <link rel="preload" href="/index.tsx" as="script" />
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
-    "react": "https://esm.sh/react@^19.1.1",
-    "react/": "https://esm.sh/react@^19.1.1/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.417.0",
-    "react-markdown": "https://esm.sh/react-markdown@^9.0.1",
-    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.14.0"
-  }
-}
-</script>
-<style>
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 20px, 0);
+    
+    <!-- Import map for ESM modules -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+        "react": "https://esm.sh/react@^19.1.1",
+        "react/": "https://esm.sh/react@^19.1.1/",
+        "lucide-react": "https://esm.sh/lucide-react@^0.417.0",
+        "react-markdown": "https://esm.sh/react-markdown@^9.0.1",
+        "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0",
+        "@google/genai": "https://esm.sh/@google/genai@^1.14.0"
+      }
     }
-    to {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-   @keyframes fadeInDown {
-    from {
+    </script>
+    
+    <!-- Critical CSS animations -->
+    <style>
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 20px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translate3d(0, -15px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.5s ease-in-out forwards;
+      }
+      .animate-fadeInUp {
+        animation: fadeInUp 0.6s ease-out forwards;
         opacity: 0;
-        transform: translate3d(0, -15px, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out forwards;
-  }
-  .animate-fadeInUp {
-    animation: fadeInUp 0.6s ease-out forwards;
-    opacity: 0;
-  }
-   .animate-fadeInDown {
-    animation: fadeInDown 0.4s ease-out forwards;
-  }
-</style>
-<link rel="stylesheet" href="/index.css">
-</head>
+      }
+      .animate-fadeInDown {
+        animation: fadeInDown 0.4s ease-out forwards;
+      }
+      
+      /* Loading state */
+      .loading {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      
+      /* Optimizations for Vercel */
+      * {
+        box-sizing: border-box;
+      }
+      
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/index.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    
+    <!-- Theme color -->
+    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="msapplication-TileColor" content="#0ea5e9" />
+  </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <div style="padding: 20px; text-align: center; font-family: Arial, sans-serif;">
+        <h1>Nutrigenómica y Genotipos</h1>
+        <p>Necesitas habilitar JavaScript para ejecutar esta aplicación.</p>
+        <p>This application requires JavaScript to run.</p>
+      </div>
+    </noscript>
+    
     <div id="root"></div>
+    
+    <!-- Main script -->
     <script type="module" src="/index.tsx"></script>
+    
+    <!-- Performance monitoring -->
+    <script>
+      // Performance monitoring for Vercel
+      if ('performance' in window) {
+        window.addEventListener('load', () => {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          if (perfData) {
+            console.log('Page Load Time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+          }
+        });
+      }
+    </script>
   </body>
 </html>
