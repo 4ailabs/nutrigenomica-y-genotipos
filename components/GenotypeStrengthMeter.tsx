@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Circle, Target, TrendingUp, Zap, Award, History, BarChart3 } from 'lucide-react';
+import { CheckCircle, Circle, Target, TrendingUp, Zap, Award, History, BarChart3, ArrowLeft } from 'lucide-react';
 import { useGenotypeStrength } from '../hooks/useGenotypeStrength';
 import { getAllGenotypeStrengthMeters } from '../genotypeStrengthData';
 import GenotypeStrengthHistory from './GenotypeStrengthHistory';
@@ -7,9 +7,10 @@ import type { BiometricResult } from '../types';
 
 interface GenotypeStrengthMeterProps {
     onResultChange?: (result: any) => void;
+    onBackToPortal?: () => void;
 }
 
-const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultChange }) => {
+const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultChange, onBackToPortal }) => {
     const [activeTab, setActiveTab] = useState<'meter' | 'history'>('meter');
     
     const {
@@ -114,14 +115,25 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-            {/* Header */}
-            <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                    Medidor de Fuerza del Genotipo
-                </h2>
-                <p className="text-gray-600 text-lg">
-                    Evalúa la fuerza de tu genotipo basado en características biométricas
-                </p>
+            {/* Header con Botón de Regreso */}
+            <div className="relative mb-8">
+                {onBackToPortal && (
+                    <button
+                        onClick={onBackToPortal}
+                        className="absolute left-0 top-0 flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span>Regresar al Portal</span>
+                    </button>
+                    )}
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                        Medidor de Fuerza del Genotipo
+                    </h2>
+                    <p className="text-gray-600 text-lg">
+                        Evalúa la fuerza de tu genotipo basado en características biométricas
+                    </p>
+                </div>
             </div>
 
             {/* Pestañas de Navegación */}

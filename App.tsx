@@ -65,6 +65,7 @@ const App: React.FC = () => {
                     onResultChange={(result) => {
                         console.log('Resultado del medidor de fuerza:', result);
                     }}
+                    onBackToPortal={() => navigateTo('portal')}
                 />;
             case 'patientView':
                 return <PatientView 
