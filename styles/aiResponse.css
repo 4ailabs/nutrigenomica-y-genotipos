@@ -6,7 +6,7 @@
 }
 
 .ai-response h1 {
-    color: #1f2937;
+    color: #111827;
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 1.25rem;
@@ -21,94 +21,70 @@
 }
 
 .ai-response h2 {
-    color: #374151;
+    color: #1f2937;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 1rem;
-    padding-left: 0.75rem;
-    border-left: 4px solid #3b82f6;
 }
 
 .ai-response h3 {
-    color: #4b5563;
+    color: #374151;
     font-size: 1.25rem;
     font-weight: 600;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     margin-bottom: 0.75rem;
-    color: #059669;
 }
 
 .ai-response p {
     color: #4b5563;
     line-height: 1.8;
     margin-bottom: 1.25rem;
-    text-align: justify;
 }
 
 .ai-response ul {
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-left: 1.25rem;
 }
 
 .ai-response ol {
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-left: 1.25rem;
 }
 
 .ai-response li {
     color: #4b5563;
-    line-height: 1.7;
-    margin-bottom: 0.75rem;
-    padding-left: 0.5rem;
+    line-height: 1.65;
+    margin-bottom: 0.5rem;
 }
 
-.ai-response li::marker {
-    color: #3b82f6;
-    font-weight: 600;
-}
-
+/* Negritas neutrales sin color llamativo */
 .ai-response strong {
-    color: #1f2937;
+    color: #111827;
     font-weight: 700;
-    background: linear-gradient(120deg, #fbbf24 0%, #f59e0b 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
 }
 
 .ai-response em {
     color: #6b7280;
     font-style: italic;
-    background-color: #f9fafb;
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
 }
 
 .ai-response blockquote {
     border-left: 4px solid #3b82f6;
-    padding: 1rem 1.5rem;
-    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
     font-style: italic;
     color: #6b7280;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    background: #f0f9ff;
     border-radius: 0.5rem;
-    position: relative;
-}
-
-.ai-response blockquote::before {
-    content: '"';
-    font-size: 3rem;
-    color: #3b82f6;
-    position: absolute;
-    top: -0.5rem;
-    left: 0.5rem;
-    font-family: Georgia, serif;
 }
 
 .ai-response code {
     background-color: #f3f4f6;
-    padding: 0.25rem 0.5rem;
+    padding: 0.15rem 0.4rem;
     border-radius: 0.375rem;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     font-size: 0.875rem;
@@ -117,14 +93,13 @@
 }
 
 .ai-response pre {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    background: #111827;
     color: #f9fafb;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
     overflow-x: auto;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0;
     border: 1px solid #374151;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .ai-response pre code {
@@ -132,54 +107,6 @@
     color: inherit;
     padding: 0;
     border: none;
-}
-
-/* Estilos especiales para listas de menús */
-.ai-response ul li:has(strong:contains("Lunes")),
-.ai-response ul li:has(strong:contains("Martes")),
-.ai-response ul li:has(strong:contains("Miércoles")),
-.ai-response ul li:has(strong:contains("Jueves")),
-.ai-response ul li:has(strong:contains("Viernes")),
-.ai-response ul li:has(strong:contains("Sábado")),
-.ai-response ul li:has(strong:contains("Domingo")) {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    border-left: 4px solid #0ea5e9;
-}
-
-/* Estilos para recetas */
-.ai-response h3:contains("Receta"),
-.ai-response h3:contains("Ingredientes"),
-.ai-response h3:contains("Preparación") {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    border-left: 4px solid #16a34a;
-}
-
-/* Estilos para suplementos */
-.ai-response h3:contains("Suplemento"),
-.ai-response h3:contains("Vitamina"),
-.ai-response h3:contains("Mineral") {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    border-left: 4px solid #f59e0b;
-}
-
-/* Estilos para el aviso importante */
-.ai-response p:contains("Aviso Importante"),
-.ai-response strong:contains("Aviso") {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    padding: 1rem;
-    border-radius: 0.75rem;
-    border: 2px solid #ef4444;
-    color: #991b1b;
-    font-weight: 600;
-    text-align: center;
-    margin: 2rem 0;
 }
 
 /* Responsive design */
@@ -203,21 +130,6 @@
         font-size: 0.95rem;
         line-height: 1.6;
     }
-    
-    .ai-response ul,
-    .ai-response ol {
-        padding-left: 1rem;
-    }
-    
-    .ai-response blockquote {
-        padding: 0.75rem 1rem;
-        margin: 1rem 0;
-    }
-    
-    .ai-response pre {
-        padding: 1rem;
-        font-size: 0.875rem;
-    }
 }
 
 /* Animaciones sutiles */
@@ -233,23 +145,12 @@
     color: #1e40af;
 }
 
-.ai-response blockquote:hover {
-    transform: translateX(5px);
-    transition: transform 0.3s ease;
-}
-
-/* Estilos para enlaces si los hay */
+/* Enlaces */
 .ai-response a {
-    color: #3b82f6;
-    text-decoration: none;
-    border-bottom: 1px solid #3b82f6;
-    transition: all 0.3s ease;
+    color: #2563eb;
+    text-decoration: underline;
 }
 
 .ai-response a:hover {
     color: #1d4ed8;
-    border-bottom-color: #1d4ed8;
-    background-color: #eff6ff;
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
 }
