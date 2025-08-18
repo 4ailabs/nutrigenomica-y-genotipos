@@ -131,47 +131,62 @@ export async function generateChatResponse(
     if (!apiKey) {
       return "Lo siento, la IA no está disponible por falta de credenciales. Configura VITE_GEMINI_API_KEY.";
     }
-    const model = 'gemini-2.5-flash';
     
     let genotypeSpecifics = "";
     if (genotypeId && (FOOD_GUIDE_DATA as any)[genotypeId]) {
         const foodData = (FOOD_GUIDE_DATA as any)[genotypeId];
         const { superfoods, toxins } = getFoodLists(foodData);
         genotypeSpecifics = `
-          Contexto Específico:
-          Actualmente estás asistiendo a un usuario que está viendo el ${foodData.genotipo_info.nombre}.
-          Debes basar tus respuestas sobre alimentos ESTRICTAMENTE en las siguientes listas:
-          - Superalimentos Permitidos: ${superfoods.join(', ')}.
-          - Toxinas Prohibidas: ${toxins.join(', ')}.
-          - Alimentos Neutros: Cualquier alimento que no esté en ninguna de las dos listas anteriores se considera neutro y está permitido. Si te preguntan por un alimento que no está en las listas, di que es neutro.
-          NO inventes información. Si no sabes, dilo.
+          CONTEXTO CRÍTICO DEL GENOTIPO:
+          El usuario está consultando sobre el ${foodData.genotipo_info.nombre}.
+          
+          REGLAS DIETÉTICAS ESTRICTAS:
+          - SUPERALIMENTOS PERMITIDOS: ${superfoods.join(', ')}
+          - TOXINAS PROHIBIDAS: ${toxins.join(', ')}
+          - ALIMENTOS NEUTROS: Cualquier alimento que no esté en las listas anteriores
+          
+          INSTRUCCIONES:
+          1. SIEMPRE menciona el nombre del GenoTipo en tu respuesta
+          2. SIEMPRE incluye la lista de superalimentos permitidos
+          3. SIEMPRE incluye la lista de toxinas prohibidas
+          4. Si preguntan por un alimento específico, clasifícalo según estas listas
+          5. NO inventes alimentos que no estén en las listas
+          6. Responde de manera clara y específica sobre nutrición del GenoTipo
         `;
     }
 
-    const systemInstruction = `
-        Eres un asistente de IA conversacional, experto en el programa de salud GenoTipo. Responde de manera clara y concisa.
-        Reglas:
-        1. NUNCA des consejos médicos. Si preguntan por condiciones médicas, recomienda consultar a un profesional.
-        2. Basa tus respuestas en la información proporcionada sobre los Genotipos.
-        3. Mantén las respuestas breves y al grano.
-        4. Al final incluye: "Aviso: Soy un asistente de IA y esta información no reemplaza el consejo médico profesional."
-
+    const systemPrompt = `
+        Eres un asistente especializado en el programa GenoTipo nutricional. 
+        
         ${genotypeSpecifics}
+        
+        REGLAS GENERALES:
+        1. NUNCA des consejos médicos específicos
+        2. Basa tus respuestas ÚNICAMENTE en la información del GenoTipo proporcionada
+        3. Mantén respuestas claras y concisas
+        4. SIEMPRE incluye al final: "Aviso: Soy un asistente de IA y esta información no reemplaza el consejo médico profesional."
+        
+        IMPORTANTE: Si no tienes contexto de GenoTipo, pide al usuario que especifique sobre qué GenoTipo quiere información.
     `;
 
-    const contents = history.map(msg => ({
-        role: msg.role,
-        parts: [{ text: msg.content }],
-    }));
+    // Crear el prompt completo con el historial y la instrucción del sistema
+    const fullPrompt = `
+        ${systemPrompt}
+        
+        HISTORIAL DE CONVERSACIÓN:
+        ${history.map(msg => `${msg.role === 'user' ? 'Usuario' : 'Asistente'}: ${msg.content}`).join('\n')}
+        
+        INSTRUCCIÓN: Responde la última pregunta del usuario basándote en el contexto del GenoTipo y las reglas dietéticas establecidas.
+    `;
 
     try {
         const response = await (ai as any).models.generateContent({
-            model,
-            contents,
+            model: 'gemini-2.5-flash',
+            contents: fullPrompt,
             config: {
-                systemInstruction,
-                temperature: 0.7,
+                temperature: 0.3, // Más bajo para respuestas más consistentes
                 topK: 40,
+                topP: 0.8,
             }
         });
         return extractText(response);
