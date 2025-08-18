@@ -517,9 +517,6 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl p-8 border border-blue-100 shadow-xl">
                                     {/* Header de la respuesta */}
                                     <div className="flex items-center gap-4 mb-6">
-                                        <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                            <Brain className="w-7 h-7 text-white" />
-                                        </div>
                                         <div>
                                             <h3 className="text-2xl font-bold text-gray-900">Recomendación Personalizada</h3>
                                             <p className="text-gray-600 text-sm">Generada por IA basada en tu perfil</p>
