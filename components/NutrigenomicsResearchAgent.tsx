@@ -53,18 +53,49 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
   // Inicializar servicio de investigación
   useEffect(() => {
     try {
-      // Priorizar la variable que ya está configurada en Vercel
-      const apiKey = process.env.GEMINI_API_KEY
-        || (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY)
-        || process.env.VITE_GEMINI_API_KEY
-        || '';
+      console.log("[DEBUG] Iniciando inicialización del servicio...");
+      
+      // En Vercel, las variables de entorno están disponibles directamente
+      // En desarrollo local, usamos VITE_ prefijo
+      let apiKey = '';
+      
+      // Intentar diferentes formas de acceder a la API key
+      if (typeof window !== 'undefined') {
+        // Estamos en el navegador
+        if (process.env.GEMINI_API_KEY) {
+          apiKey = process.env.GEMINI_API_KEY;
+          console.log("[DEBUG] Usando process.env.GEMINI_API_KEY (Vercel)");
+        } else if ((import.meta as any).env?.VITE_GEMINI_API_KEY) {
+          apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY;
+          console.log("[DEBUG] Usando import.meta.env.VITE_GEMINI_API_KEY (Local)");
+        } else if (process.env.VITE_GEMINI_API_KEY) {
+          apiKey = process.env.VITE_GEMINI_API_KEY;
+          console.log("[DEBUG] Usando process.env.VITE_GEMINI_API_KEY (Fallback)");
+        }
+      } else {
+        // Estamos en el servidor (SSR)
+        apiKey = process.env.GEMINI_API_KEY || '';
+        console.log("[DEBUG] Usando process.env.GEMINI_API_KEY (SSR)");
+      }
+      
+      console.log("[DEBUG] API Key encontrada:", apiKey ? `✅ ${apiKey.substring(0, 10)}...` : "❌ No encontrada");
       
       if (apiKey) {
         const service = new NutrigenomicsResearchService(apiKey);
         setResearchService(service);
-        console.log("[NutrigenomicsResearchAgent] Servicio inicializado correctamente");
+        console.log("[NutrigenomicsResearchAgent] Servicio inicializado correctamente con API key válida");
       } else {
         console.warn("[NutrigenomicsResearchAgent] Falta la API key. Verifica GEMINI_API_KEY en Vercel o VITE_GEMINI_API_KEY en .env.local");
+        
+        // Mostrar mensaje más específico para el usuario
+        const errorMessage: Message = {
+          id: `api-key-error-${Date.now()}`,
+          type: 'system',
+          content: `⚠️ **API Key No Configurada**\n\nPara usar la funcionalidad completa de IA:\n\n**En Vercel:** La variable GEMINI_API_KEY ya está configurada ✅\n**En desarrollo local:** Crea un archivo .env.local con VITE_GEMINI_API_KEY=tu_api_key\n\nPor ahora, el agente funcionará en modo inteligente con análisis especializado.`,
+          timestamp: new Date(),
+          status: 'error'
+        };
+        setMessages(prev => [...prev, errorMessage]);
       }
     } catch (error) {
       console.error("[NutrigenomicsResearchAgent] Error al inicializar servicio:", error);
