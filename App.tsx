@@ -4,7 +4,7 @@ import AdvancedCalculator from './components/AdvancedCalculator';
 import GenotypeDetail from './components/GenotypeDetail';
 import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
-import EnhancedChatPage from './components/EnhancedChatPage';
+import ChatPage from './components/ChatPage';
 import PatientView from './components/PatientView';
 import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
 import NutrigenomicsPage from './components/NutrigenomicsPage';
@@ -87,7 +87,7 @@ const App: React.FC = () => {
                     onNavigateToMain={() => navigateTo('landing')}
                 />;
             case 'chat':
-                return <EnhancedChatPage 
+                return <ChatPage 
                     onBackToPortal={() => navigateTo('portal')} 
                     onNavigateToMain={() => navigateTo('landing')}
                     contextGenotypeId={viewingGenotype}

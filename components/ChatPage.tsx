@@ -8,7 +8,8 @@ import {
     MedicalCard,
     MedicalSection 
 } from './MedicalComponents';
-import { Bot, ArrowLeft, Home, MessageSquare, Brain, Lightbulb, Dna, Target, Wheat, Scale, Microscope, Sword, Mountain } from 'lucide-react';
+import { Bot, ArrowLeft, Home, MessageSquare, Brain, Lightbulb, Dna, Target, Wheat, Scale, Microscope, Sword, Mountain, Save, History } from 'lucide-react';
+import { useChat } from '../contexts/ChatContext';
 
 interface ChatPageProps {
     onBackToPortal: () => void;
@@ -22,6 +23,18 @@ const ChatPage: React.FC<ChatPageProps> = ({
     contextGenotypeId = null 
 }) => {
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(contextGenotypeId);
+    const [showStoragePanel, setShowStoragePanel] = useState(false);
+    
+    // Hook para el sistema de storage
+    const { 
+        sessions, 
+        activeSessionId, 
+        createSession, 
+        addMessage, 
+        setActiveSession,
+        exportConversations,
+        importConversations
+    } = useChat();
 
     const genotypeOptions = [
         { id: null, name: "Consulta General", description: "Información sobre todos los genotipos", icon: Dna },
@@ -78,6 +91,17 @@ const ChatPage: React.FC<ChatPageProps> = ({
                                     Inicio
                                 </MedicalButton>
                             )}
+                            
+                            {/* Botón para sistema de storage */}
+                            <MedicalButton
+                                variant="primary"
+                                size="sm"
+                                onClick={() => setShowStoragePanel(!showStoragePanel)}
+                                className="hidden sm:flex"
+                            >
+                                <History className="w-4 h-4 mr-2" />
+                                Historial
+                            </MedicalButton>
                         </div>
                     </div>
                 </div>
@@ -240,6 +264,111 @@ const ChatPage: React.FC<ChatPageProps> = ({
                         )}
                     </div>
                 </div>
+                
+                {/* Panel de Storage para Chat */}
+                {showStoragePanel && (
+                    <div className="mt-8">
+                        <MedicalSection>
+                            <MedicalHeading level={4} variant="primary" className="mb-4">
+                                <Save className="w-5 h-5 inline mr-2" />
+                                Sistema de Almacenamiento de Conversaciones
+                            </MedicalHeading>
+                            
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {/* Estadísticas */}
+                                <MedicalCard variant="elevated" className="p-4">
+                                    <MedicalHeading level={6} variant="secondary" className="mb-2">
+                                        Estadísticas del Chat
+                                    </MedicalHeading>
+                                    <div className="space-y-2 text-sm">
+                                        <div className="flex justify-between">
+                                            <span>Sesiones activas:</span>
+                                            <MedicalBadge variant="success">{sessions.length}</MedicalBadge>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>Sesión actual:</span>
+                                            <MedicalBadge variant={activeSessionId ? "primary" : "warning"}>
+                                                {activeSessionId ? "Activa" : "Ninguna"}
+                                            </MedicalBadge>
+                                        </div>
+                                    </div>
+                                </MedicalCard>
+                                
+                                {/* Acciones */}
+                                <MedicalCard variant="elevated" className="p-4">
+                                    <MedicalHeading level={6} variant="secondary" className="mb-2">
+                                        Acciones
+                                    </MedicalHeading>
+                                    <div className="space-y-2">
+                                        <MedicalButton
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={exportConversations}
+                                            className="w-full"
+                                        >
+                                            <Save className="w-4 h-4 mr-2" />
+                                            Exportar Conversaciones
+                                        </MedicalButton>
+                                        
+                                        <input
+                                            type="file"
+                                            accept=".json"
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) importConversations(file);
+                                            }}
+                                            className="hidden"
+                                            id="import-chat"
+                                        />
+                                        <label htmlFor="import-chat">
+                                            <MedicalButton
+                                                variant="outline"
+                                                size="sm"
+                                                className="w-full cursor-pointer"
+                                            >
+                                                <History className="w-4 h-4 mr-2" />
+                                                Importar Conversaciones
+                                            </MedicalButton>
+                                        </label>
+                                    </div>
+                                </MedicalCard>
+                            </div>
+                            
+                            {/* Lista de sesiones recientes */}
+                            {sessions.length > 0 && (
+                                <div className="mt-6">
+                                    <MedicalHeading level={6} variant="secondary" className="mb-3">
+                                        Sesiones Recientes
+                                    </MedicalHeading>
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {sessions.slice(0, 6).map((session) => (
+                                            <MedicalCard 
+                                                key={session.id} 
+                                                variant="elevated"
+                                                className={`p-3 cursor-pointer transition-all ${
+                                                    activeSessionId === session.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                                                }`}
+                                                onClick={() => setActiveSession(session.id)}
+                                            >
+                                                <div className="text-sm">
+                                                    <div className="font-medium mb-1 truncate">
+                                                        {session.title}
+                                                    </div>
+                                                    <div className="text-gray-500 text-xs">
+                                                        {session.messages.length} mensajes
+                                                    </div>
+                                                    <div className="text-gray-400 text-xs">
+                                                        {new Date(session.updatedAt).toLocaleDateString('es-ES')}
+                                                    </div>
+                                                </div>
+                                            </MedicalCard>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </MedicalSection>
+                    </div>
+                )}
             </div>
         </div>
     );
