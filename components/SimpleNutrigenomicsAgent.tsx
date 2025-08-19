@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Send, Bot, User, Loader2, Copy, Download } from 'lucide-react';
+import { Search, Send, Bot, User, Loader2, FileText, Atom, Microscope, Brain, Heart, RefreshCw, Copy, Download, Activity, Zap } from 'lucide-react';
 
 interface SimpleMessage {
   id: string;
@@ -57,74 +57,94 @@ const SimpleNutrigenomicsAgent: React.FC<SimpleNutrigenomicsAgentProps> = ({
   ];
 
   const simulateResearch = async (query: string, researchType: 'depth-first' | 'breadth-first') => {
-    console.log("Iniciando investigación simulada...");
-    
+    // Simular subagentes basados en el tipo de investigación
     const subagents = researchType === 'depth-first' 
-      ? ["Genética Molecular", "Metabolismo Nutricional", "Epigenética Aplicada", "Medicina Personalizada", "Literatura Reciente"]
-      : ["Panorama Nutrigenómico", "Aplicaciones Clínicas", "Tendencias Emergentes", "Síntesis Integrativa"];
+      ? ['Análisis Genético Profundo', 'Metabolismo Específico', 'Aplicaciones Clínicas']
+      : ['Panorama General', 'Múltiples Perspectivas', 'Síntesis Integrativa'];
     
     setCurrentSubagents(subagents);
 
-    // Simular proceso de investigación
+    // Simular investigación paso a paso
     for (let i = 0; i < subagents.length; i++) {
-      console.log(`Procesando subagente ${i + 1}: ${subagents[i]}`);
+      const aspect = subagents[i];
       
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const subagentMessage: SimpleMessage = {
-        id: `subagent-${Date.now()}-${i}`,
+      // Mensaje de progreso
+      const progressMessage: SimpleMessage = {
+        id: `progress-${Date.now()}-${i}`,
         type: 'agent',
-        content: `🔬 **${subagents[i]}** completado\n\nAnálisis especializado finalizado con éxito.`,
+        content: `🔬 **Analizando:** ${aspect}\n\nInvestigación especializada en progreso...`,
+        timestamp: new Date(),
+        status: 'processing'
+      };
+      setMessages(prev => [...prev, progressMessage]);
+
+      // Simular tiempo de procesamiento
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Mensaje de completado
+      const completedMessage: SimpleMessage = {
+        id: `completed-${Date.now()}-${i}`,
+        type: 'agent',
+        content: `✅ **${aspect}** completado\n\n${generateAspectContent(aspect, query, researchType)}`,
         timestamp: new Date(),
         status: 'completed'
       };
       
-      setMessages(prev => {
-        console.log("Actualizando mensajes...");
-        return [...prev, subagentMessage];
-      });
+      setMessages(prev => [...prev.slice(0, -1), completedMessage]);
     }
 
-    // Generar respuesta final
-    const finalResponse = `# 🧬 Investigación Nutrigenómica: ${query}
-
-## 📋 Análisis Completado
-- **Tipo de investigación:** ${researchType === 'depth-first' ? 'Profundidad (Depth-first)' : 'Amplitud (Breadth-first)'}
-- **Subagentes desplegados:** ${subagents.length}
-- **Estado:** Completado exitosamente
-
-## 🔬 Resultados Principales
-
-### Análisis Genético
-- Polimorfismos identificados y su significancia funcional
-- Vías metabólicas afectadas a nivel molecular
-- Interacciones gen-nutriente específicas
-
-### Recomendaciones Clínicas
-- Estrategias nutricionales personalizadas
-- Protocolos de seguimiento sugeridos
-- Consideraciones de seguridad
-
-### Evidencia Científica
-- Estudios recientes (2020-2024)
-- Nivel de evidencia: Moderado-Alto
-- Aplicabilidad clínica: Directa
-
----
-*Investigación completada por Agente Nutrigenómico*`;
-    
+    // Mensaje final de síntesis
     const finalMessage: SimpleMessage = {
       id: `final-${Date.now()}`,
       type: 'agent',
-      content: finalResponse,
+      content: generateFinalReport(query, researchType, subagents),
       timestamp: new Date(),
       status: 'completed'
     };
 
-    console.log("Agregando mensaje final...");
     setMessages(prev => [...prev, finalMessage]);
     setCurrentSubagents([]);
     setIsProcessing(false);
+  };
+
+  const generateAspectContent = (aspect: string, query: string, researchType: string): string => {
+    const contentMap = {
+      'Análisis Genético Profundo': `Análisis detallado de variantes genéticas relacionadas con ${query.toLowerCase()}. Identificación de polimorfismos relevantes y su impacto funcional.`,
+      'Metabolismo Específico': `Evaluación de vías metabólicas afectadas. Análisis de macronutrientes y micronutrientes específicos para la consulta.`,
+      'Aplicaciones Clínicas': `Protocolos clínicos personalizados. Recomendaciones nutricionales y de suplementación basadas en evidencia.`,
+      'Panorama General': `Visión amplia del campo de la nutrigenómica. Tendencias emergentes y aplicaciones prácticas.`,
+      'Múltiples Perspectivas': `Análisis desde diferentes ángulos científicos. Integración de evidencia genética, metabólica y clínica.`,
+      'Síntesis Integrativa': `Resumen comprehensivo de hallazgos. Recomendaciones prácticas para implementación clínica.`
+    };
+
+    return contentMap[aspect as keyof typeof contentMap] || `Análisis del aspecto ${aspect} relacionado con la consulta.`;
+  };
+
+  const generateFinalReport = (query: string, researchType: string, subagents: string[]): string => {
+    return `# 🧬 Investigación Nutrigenómica Completa
+
+## 📋 Resumen de Consulta
+- **Consulta:** ${query}
+- **Tipo de investigación:** ${researchType === 'depth-first' ? 'Profundidad (Depth-first)' : 'Amplitud (Breadth-first)'}
+- **Aspectos analizados:** ${subagents.length}
+
+## 🔬 Resultados por Aspecto
+${subagents.map(aspect => `### ${aspect}\n${generateAspectContent(aspect, query, researchType)}`).join('\n\n')}
+
+## 🎯 Recomendaciones Clínicas
+1. **Evaluación genética:** Tests recomendados según el perfil
+2. **Intervención nutricional:** Protocolos específicos personalizados
+3. **Monitoreo:** Biomarcadores a seguir regularmente
+4. **Seguimiento:** Cronograma de evaluaciones clínicas
+
+## 📊 Nivel de Evidencia
+- **Calidad:** Alta (análisis comprehensivo)
+- **Aplicabilidad:** Directa en entornos clínicos
+- **Personalización:** Adaptada al perfil específico
+
+---
+*Investigación completada por Agente Nutrigenómico Especializado*
+*Análisis basado en ${subagents.length} perspectivas científicas*`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -170,8 +190,6 @@ const SimpleNutrigenomicsAgent: React.FC<SimpleNutrigenomicsAgentProps> = ({
 
   const handleExampleClick = async (example: typeof researchExamples[0]) => {
     if (isProcessing) return;
-
-    console.log("Ejemplo seleccionado:", example.title);
 
     const userMessage: SimpleMessage = {
       id: `user-${Date.now()}`,
@@ -234,13 +252,13 @@ const SimpleNutrigenomicsAgent: React.FC<SimpleNutrigenomicsAgentProps> = ({
         
         {currentSubagents.length > 0 && (
           <div className="mt-4 bg-white/10 rounded-lg p-4">
-            <div className="text-sm font-medium mb-2">Subagentes Activos:</div>
+            <div className="text-sm font-medium mb-2">Subagentes Nutrigenómicos Activos:</div>
             <div className="flex flex-wrap gap-2">
-              {currentSubagents.map((agent, index) => (
-                <span key={index} className="bg-white/20 px-3 py-1 rounded-full text-xs flex items-center gap-1">
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                  {agent}
-                </span>
+              {currentSubagents.map((subagent, index) => (
+                <div key={index} className="flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm">
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  {subagent}
+                </div>
               ))}
             </div>
           </div>
@@ -259,15 +277,20 @@ const SimpleNutrigenomicsAgent: React.FC<SimpleNutrigenomicsAgentProps> = ({
                 disabled={isProcessing}
                 className="text-left p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <h5 className="font-semibold text-gray-800 mb-2">{example.title}</h5>
-                <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">{example.query}</p>
-                <span className={`inline-block mt-2 px-2 py-1 rounded text-xs font-medium ${
-                  example.type === 'depth-first' 
-                    ? 'bg-purple-100 text-purple-700' 
-                    : 'bg-blue-100 text-blue-700'
-                }`}>
-                  {example.type === 'depth-first' ? 'Profundidad' : 'Amplitud'}
-                </span>
+                <div className="flex items-start gap-3">
+                  <example.type === 'depth-first' ? Microscope : Brain className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h5 className="font-semibold text-gray-800 mb-1">{example.title}</h5>
+                    <p className="text-sm text-gray-600 leading-relaxed">{example.query}</p>
+                    <span className={`inline-block mt-2 px-2 py-1 rounded text-xs font-medium ${
+                      example.type === 'depth-first' 
+                        ? 'bg-purple-100 text-purple-700' 
+                        : 'bg-blue-100 text-blue-700'
+                    }`}>
+                      {example.type === 'depth-first' ? 'Profundidad' : 'Amplitud'}
+                    </span>
+                  </div>
+                </div>
               </button>
             ))}
           </div>
@@ -276,51 +299,60 @@ const SimpleNutrigenomicsAgent: React.FC<SimpleNutrigenomicsAgentProps> = ({
 
       {/* Chat Area */}
       <div className="h-96 overflow-y-auto p-6 space-y-4">
-        {messages.map((message) => (
-          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-4xl rounded-lg p-4 ${
-              message.type === 'user' 
-                ? 'bg-purple-600 text-white' 
-                : message.type === 'system'
-                ? 'bg-yellow-50 border border-yellow-200 text-yellow-800'
-                : 'bg-gray-50 border border-gray-200'
-            }`}>
-              <div className="flex items-start gap-3">
-                {message.type === 'user' ? (
-                  <User className="w-5 h-5 mt-1 flex-shrink-0" />
-                ) : (
-                  <Bot className="w-5 h-5 mt-1 flex-shrink-0" />
-                )}
-                <div className="flex-1">
-                  <div className="whitespace-pre-wrap">{message.content}</div>
-                  <div className="text-xs opacity-70 mt-2">
-                    {message.timestamp.toLocaleTimeString()}
-                  </div>
-                  
-                  {/* Botones de acción */}
-                  {message.type === 'agent' && message.status === 'completed' && (
-                    <div className="flex gap-2 mt-3">
-                      <button
-                        onClick={() => copyMessage(message.content)}
-                        className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-700 transition-colors"
-                      >
-                        <Copy className="w-3 h-3" />
-                        Copiar
-                      </button>
-                      <button
-                        onClick={() => downloadReport(message)}
-                        className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-700 transition-colors"
-                      >
-                        <Download className="w-3 h-3" />
-                        Descargar
-                      </button>
-                    </div>
+        {messages.length === 0 ? (
+          <div className="text-center text-gray-500 py-8">
+            <Bot className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <p>Inicia una investigación para ver los resultados</p>
+          </div>
+        ) : (
+          messages.map((message) => (
+            <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-4xl rounded-lg p-4 ${
+                message.type === 'user' 
+                  ? 'bg-purple-600 text-white' 
+                  : message.type === 'system'
+                  ? 'bg-yellow-50 border border-yellow-200 text-yellow-800'
+                  : 'bg-gray-50 border border-gray-200'
+              }`}>
+                <div className="flex items-start gap-3">
+                  {message.type === 'user' ? (
+                    <User className="w-5 h-5 mt-1 flex-shrink-0" />
+                  ) : message.type === 'system' ? (
+                    <RefreshCw className={`w-5 h-5 mt-1 flex-shrink-0 ${message.status === 'processing' ? 'animate-spin' : ''}`} />
+                  ) : (
+                    <Bot className="w-5 h-5 mt-1 flex-shrink-0" />
                   )}
+                  <div className="flex-1">
+                    <div className="whitespace-pre-wrap">{message.content}</div>
+                    <div className="text-xs opacity-70 mt-2">
+                      {message.timestamp.toLocaleTimeString()}
+                    </div>
+                    
+                    {/* Botones de acción para mensajes del agente */}
+                    {message.type === 'agent' && message.status === 'completed' && (
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          onClick={() => copyMessage(message.content)}
+                          className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-700 transition-colors"
+                        >
+                          <Copy className="w-3 h-3" />
+                          Copiar
+                        </button>
+                        <button
+                          onClick={() => downloadReport(message)}
+                          className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-700 transition-colors"
+                        >
+                          <Download className="w-3 h-3" />
+                          Descargar
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -353,7 +385,7 @@ const SimpleNutrigenomicsAgent: React.FC<SimpleNutrigenomicsAgentProps> = ({
         </form>
         
         <div className="mt-3 text-sm text-gray-500">
-          💡 Versión simplificada del agente de investigación nutrigenómica
+          💡 El agente determinará automáticamente si usar investigación en profundidad o amplitud según tu consulta
         </div>
       </div>
     </div>
