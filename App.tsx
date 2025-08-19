@@ -4,11 +4,12 @@ import AdvancedCalculator from './components/AdvancedCalculator';
 import GenotypeDetail from './components/GenotypeDetail';
 import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
-import ChatPage from './components/ChatPage';
+import EnhancedChatPage from './components/EnhancedChatPage';
 import PatientView from './components/PatientView';
 import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
 import NutrigenomicsPage from './components/NutrigenomicsPage';
 import { useNavigation } from './hooks/useNavigation';
+import { ChatProvider } from './contexts/ChatContext';
 
 type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter' | 'nutrigenomics';
 
@@ -86,7 +87,7 @@ const App: React.FC = () => {
                     onNavigateToMain={() => navigateTo('landing')}
                 />;
             case 'chat':
-                return <ChatPage 
+                return <EnhancedChatPage 
                     onBackToPortal={() => navigateTo('portal')} 
                     onNavigateToMain={() => navigateTo('landing')}
                     contextGenotypeId={viewingGenotype}
@@ -113,11 +114,13 @@ const App: React.FC = () => {
     }
 
     return (
-        <div className="bg-white min-h-screen font-sans text-gray-800 antialiased">
-            <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
-                 {renderPage()}
+        <ChatProvider>
+            <div className="bg-white min-h-screen font-sans text-gray-800 antialiased">
+                <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
+                     {renderPage()}
+                </div>
             </div>
-        </div>
+        </ChatProvider>
     );
 };
 
