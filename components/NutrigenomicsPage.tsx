@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Atom, ArrowLeft, Home, BookOpen, Users, Target, TrendingUp, Lightbulb, ChevronRight, ChevronDown, Microscope, ArrowRight } from 'lucide-react';
+import { Atom, BookOpen, Users, Target, TrendingUp, Lightbulb, ChevronRight, ChevronDown, Microscope, ArrowRight } from 'lucide-react';
 import { FOOD_GUIDE_DATA } from '../foodData';
 import { GENOTYPE_NAMES } from '../constants';
 import NutrigenomicsResearchAgent from './NutrigenomicsResearchAgent';
+import NavigationHeader from './NavigationHeader';
 
 interface NutrigenomicsPageProps {
   onBackToPortal: () => void;
@@ -118,38 +119,20 @@ const NutrigenomicsPage: React.FC<NutrigenomicsPageProps> = ({ onBackToPortal, o
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Navegación */}
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={onBackToPortal}
-              className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Portal
-            </button>
-            <button
-              onClick={onNavigateToMain}
-              className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
-            >
-              <Home className="w-4 h-4" />
-              Inicio
-            </button>
-          </div>
-
-          {/* Título principal */}
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <Atom className="w-16 h-16" />
-              <h1 className="text-4xl md:text-6xl font-bold">Nutrigenómica</h1>
-            </div>
-            <p className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed">
-              Descubre la ciencia detrás de la nutrición personalizada basada en tu perfil genético
-            </p>
-          </div>
-        </div>
+      {/* Header con navegación consistente */}
+      <NavigationHeader
+        title="Nutrigenómica"
+        subtitle="Descubre la ciencia detrás de la nutrición personalizada basada en tu perfil genético"
+        onBack={onBackToPortal}
+        onNavigateToMain={onNavigateToMain}
+        breadcrumbs={['Inicio', 'Portal', 'Nutrigenómica']}
+        variant="gradient"
+        className="py-12"
+      />
+      
+      {/* Icono del átomo centrado */}
+      <div className="flex items-center justify-center mb-8">
+        <Atom className="w-16 h-16 text-purple-600" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-12">

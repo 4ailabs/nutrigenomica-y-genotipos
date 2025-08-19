@@ -8,7 +8,7 @@ import ChatPage from './components/ChatPage';
 import PatientView from './components/PatientView';
 import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
 import NutrigenomicsPage from './components/NutrigenomicsPage';
-import { useBrowserNavigation } from './hooks/useBrowserNavigation';
+import { useNavigation } from './hooks/useNavigation';
 
 type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter' | 'nutrigenomics';
 
@@ -16,35 +16,37 @@ const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
     const [viewingGenotype, setViewingGenotype] = useState<number | null>(null);
 
-    // Hook para manejar la navegación del navegador (compatible con Safari)
-    const { setupHistory, navigateTo: browserNavigateTo } = useBrowserNavigation({
-        onBack: () => {
-            // Lógica para manejar el botón atrás del navegador
-            if (currentPage !== 'landing') {
-                if (viewingGenotype) {
-                    setViewingGenotype(null);
-                } else {
-                    setCurrentPage('landing');
-                }
-            }
-        },
-        onForward: () => {
-            // Lógica para manejar el botón siguiente del navegador
-            console.log('Botón siguiente presionado');
-        }
-    });
+    // Hook para manejar la navegación de manera eficiente
+    const navigation = useNavigation();
 
     // Configurar el historial del navegador al cargar la app
     useEffect(() => {
-        setupHistory('landing');
-    }, [setupHistory]);
+        // Configurar la página inicial
+        navigation.navigateTo('landing');
+    }, [navigation]);
+
+    // Manejar eventos de popstate (botones atrás/siguiente del navegador)
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            if (event.state?.page) {
+                const targetPage = event.state.page as Page;
+                if (targetPage !== currentPage) {
+                    setCurrentPage(targetPage);
+                    setViewingGenotype(null);
+                }
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [currentPage]);
 
     const navigateTo = (page: Page) => {
         setCurrentPage(page);
         setViewingGenotype(null);
         
         // Actualizar el historial del navegador
-        browserNavigateTo(page);
+        navigation.navigateTo(page);
     };
     
     const handleViewGenotype = (id: number) => {
