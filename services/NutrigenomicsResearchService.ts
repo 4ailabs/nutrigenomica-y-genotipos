@@ -358,15 +358,10 @@ export class NutrigenomicsResearchService {
       const prompt = getNutrigenomicsPrompt(task, model, content);
       
       const genModel = this.genAI.getGenerativeModel({ model });
-      const result = await genModel.generateContent({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          maxOutputTokens: NUTRIGENOMICS_STRATEGY[task].maxTokens || 8192,
-          temperature: NUTRIGENOMICS_STRATEGY[task].temperature || 0.2,
-        }
-      });
+      const result = await genModel.generateContent(prompt);
       
-      const text = result.response.text();
+      const response = await result.response;
+      const text = response.text();
       const responseTime = Date.now() - startTime;
       
       // Calcular confianza basada en completitud de respuesta
@@ -383,6 +378,10 @@ export class NutrigenomicsResearchService {
         return { 
           content: text, 
           sources: [], 
+          geneAnalysis: [],
+          metabolicInsights: [],
+          epigeneticFindings: [],
+          clinicalApplications: [],
           confidenceLevel: confidence,
           _meta: { model, responseTime, confidence, task }
         };

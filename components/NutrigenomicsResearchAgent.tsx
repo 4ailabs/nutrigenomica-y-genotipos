@@ -34,18 +34,22 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
   // Inicializar servicio de investigación
   useEffect(() => {
-    // Priorizar la variable que ya está configurada en Vercel
-    const apiKey = process.env.GEMINI_API_KEY
-      || (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY)
-      || process.env.VITE_GEMINI_API_KEY
-      || '';
-    
-    if (apiKey) {
-      const service = new NutrigenomicsResearchService(apiKey);
-      setResearchService(service);
-      console.log("[NutrigenomicsResearchAgent] Servicio inicializado correctamente");
-    } else {
-      console.warn("[NutrigenomicsResearchAgent] Falta la API key. Verifica GEMINI_API_KEY en Vercel o VITE_GEMINI_API_KEY en .env.local");
+    try {
+      // Priorizar la variable que ya está configurada en Vercel
+      const apiKey = process.env.GEMINI_API_KEY
+        || (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY)
+        || process.env.VITE_GEMINI_API_KEY
+        || '';
+      
+      if (apiKey) {
+        const service = new NutrigenomicsResearchService(apiKey);
+        setResearchService(service);
+        console.log("[NutrigenomicsResearchAgent] Servicio inicializado correctamente");
+      } else {
+        console.warn("[NutrigenomicsResearchAgent] Falta la API key. Verifica GEMINI_API_KEY en Vercel o VITE_GEMINI_API_KEY en .env.local");
+      }
+    } catch (error) {
+      console.error("[NutrigenomicsResearchAgent] Error al inicializar servicio:", error);
     }
   }, []);
 
