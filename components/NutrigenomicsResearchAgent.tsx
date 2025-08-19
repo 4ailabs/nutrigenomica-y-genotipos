@@ -157,8 +157,38 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     }
 
     try {
-      // Paso 1: Crear plan de investigación
-      const subagents = await researchService.createNutrigenomicsPlan(query, genotypeId);
+      // Paso 1: Crear plan de investigación con timeout y fallback
+      let subagents: string[];
+      try {
+        console.log("[NutrigenomicsResearchAgent] Iniciando creación del plan de investigación...");
+        subagents = await Promise.race([
+          researchService.createNutrigenomicsPlan(query, genotypeId),
+          new Promise<never>((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout en creación del plan')), 30000)
+          )
+        ]);
+        console.log("[NutrigenomicsResearchAgent] Plan de investigación creado:", subagents);
+      } catch (planError) {
+        console.error("[NutrigenomicsResearchAgent] Error creando plan:", planError);
+        
+        // Fallback: usar subagentes predefinidos
+        subagents = generateSubagents(query, researchType);
+        
+        const fallbackMessage: Message = {
+          id: `fallback-plan-${Date.now()}`,
+          type: 'system',
+          content: `⚠️ **Plan de Investigación con Limitaciones**\n\nDebido a un error en la creación del plan, se usarán subagentes predefinidos para continuar la investigación.`,
+          timestamp: new Date(),
+          status: 'completed'
+        };
+        setMessages(prev => [...prev, fallbackMessage]);
+      }
+
+      if (!subagents || subagents.length === 0) {
+        console.warn("[NutrigenomicsResearchAgent] No se obtuvieron subagentes, usando fallback");
+        subagents = generateSubagents(query, researchType);
+      }
+
       setCurrentSubagents(subagents);
 
       // Paso 2: Ejecutar investigación por cada aspecto
@@ -178,19 +208,28 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         setMessages(prev => [...prev, progressMessage]);
 
         try {
-          // Ejecutar investigación según el tipo de tarea
+          // Ejecutar investigación según el tipo de tarea con timeout
           let result;
-          if (task === 'GENETIC_ANALYSIS') {
-            result = await researchService.analyzeGeneticAspect(aspect, query, genotypeId);
-          } else if (task === 'METABOLIC_RESEARCH') {
-            result = await researchService.researchMetabolicAspect(aspect, query);
-          } else if (task === 'EPIGENETIC_STUDY') {
-            result = await researchService.studyEpigeneticFactors(aspect, query);
-          } else if (task === 'LITERATURE_REVIEW') {
-            result = await researchService.reviewLiterature(aspect);
-          } else {
-            result = await researchService.analyzeGeneticAspect(aspect, query, genotypeId);
-          }
+          const analysisPromise = (() => {
+            if (task === 'GENETIC_ANALYSIS') {
+              return researchService.analyzeGeneticAspect(aspect, query, genotypeId);
+            } else if (task === 'METABOLIC_RESEARCH') {
+              return researchService.researchMetabolicAspect(aspect, query);
+            } else if (task === 'EPIGENETIC_STUDY') {
+              return researchService.studyEpigeneticFactors(aspect, query);
+            } else if (task === 'LITERATURE_REVIEW') {
+              return researchService.reviewLiterature(aspect);
+            } else {
+              return researchService.analyzeGeneticAspect(aspect, query, genotypeId);
+            }
+          })();
+
+          result = await Promise.race([
+            analysisPromise,
+            new Promise<never>((_, reject) => 
+              setTimeout(() => reject(new Error(`Timeout en análisis de ${aspect}`)), 45000)
+            )
+          ]);
 
           researchResults.push({
             title: aspect,
@@ -236,9 +275,15 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         }
       }
 
-      // Paso 3: Síntesis final
+      // Paso 3: Síntesis final con timeout y fallback
       try {
-        const finalReport = await researchService.synthesizeClinicalReport(query, researchResults);
+        console.log("[NutrigenomicsResearchAgent] Iniciando síntesis final...");
+        const finalReport = await Promise.race([
+          researchService.synthesizeClinicalReport(query, researchResults),
+          new Promise<never>((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout en síntesis final')), 60000)
+          )
+        ]);
         
         const finalMessage: Message = {
           id: `final-${Date.now()}`,
@@ -305,6 +350,8 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     setCurrentSubagents([]);
     setIsProcessing(false);
   };
+
+
 
   const generateBasicAspectInfo = (aspect: string, query: string, genotypeId?: number | null): string => {
     const basicInfo = {
