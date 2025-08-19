@@ -34,10 +34,16 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
   // Inicializar servicio de investigación
   useEffect(() => {
-    const apiKey = process.env.GEMINI_API_KEY || '';
+    const apiKey = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY)
+      || process.env.VITE_GEMINI_API_KEY
+      || process.env.GEMINI_API_KEY
+      || '';
+    
     if (apiKey) {
       const service = new NutrigenomicsResearchService(apiKey);
       setResearchService(service);
+    } else {
+      console.warn("[NutrigenomicsResearchAgent] Falta la API key. Define VITE_GEMINI_API_KEY en .env.local");
     }
   }, []);
 
@@ -132,6 +138,14 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
   const conductRealResearch = async (query: string, researchType: 'depth-first' | 'breadth-first', task?: NutrigenomicsTask) => {
     if (!researchService) {
+      const errorMessage: Message = {
+        id: `error-${Date.now()}`,
+        type: 'system',
+        content: `❌ **Error de Configuración**\n\nLa API de Gemini no está configurada. Para usar el agente de investigación:\n\n1. Crea un archivo \`.env.local\` en la raíz del proyecto\n2. Agrega: \`VITE_GEMINI_API_KEY=tu_api_key_aqui\`\n3. Reinicia la aplicación\n\nO contacta al administrador para configurar la API key.`,
+        timestamp: new Date(),
+        status: 'error'
+      };
+      setMessages(prev => [...prev, errorMessage]);
       setIsProcessing(false);
       return;
     }
@@ -370,6 +384,12 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
               Investigación especializada con múltiples perspectivas científicas
             </p>
           </div>
+          {!researchService && (
+            <div className="ml-auto flex items-center gap-2 px-3 py-1 bg-red-500/20 text-red-100 rounded-full text-sm border border-red-400/30">
+              <Atom className="w-4 h-4" />
+              API no configurada
+            </div>
+          )}
         </div>
         
         {currentSubagents.length > 0 && (
