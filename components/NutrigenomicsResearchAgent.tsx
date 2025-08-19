@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Send, Bot, User, Loader2, FileText, Atom, Microscope, Brain, Heart, RefreshCw, Copy, Download, Activity, Zap, CheckCircle, AlertTriangle, Info, BookOpen, Target, TrendingUp, X } from 'lucide-react';
+import NutrigenomicsResearchService, { NutrigenomicsTask } from '../services/NutrigenomicsResearchService';
 
 interface Message {
   id: string;
@@ -45,7 +46,30 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
   const [currentSubagents, setCurrentSubagents] = useState<string[]>([]);
   const [currentResearch, setCurrentResearch] = useState<ResearchResult | null>(null);
   const [showResults, setShowResults] = useState(false);
+  const [researchService, setResearchService] = useState<NutrigenomicsResearchService | null>(null);
+  const [serviceStats, setServiceStats] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Inicializar servicio de investigación
+  useEffect(() => {
+    try {
+      // Priorizar la variable que ya está configurada en Vercel
+      const apiKey = process.env.GEMINI_API_KEY
+        || (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY)
+        || process.env.VITE_GEMINI_API_KEY
+        || '';
+      
+      if (apiKey) {
+        const service = new NutrigenomicsResearchService(apiKey);
+        setResearchService(service);
+        console.log("[NutrigenomicsResearchAgent] Servicio inicializado correctamente");
+      } else {
+        console.warn("[NutrigenomicsResearchAgent] Falta la API key. Verifica GEMINI_API_KEY en Vercel o VITE_GEMINI_API_KEY en .env.local");
+      }
+    } catch (error) {
+      console.error("[NutrigenomicsResearchAgent] Error al inicializar servicio:", error);
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -61,31 +85,36 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
       title: "Análisis de Polimorfismos MTHFR",
       query: "Paciente con antecedentes familiares de hiperhomocisteinemia. Investiga polimorfismos MTHFR C677T y A1298C, su impacto en metabolismo del folato, requerimientos de B12 y folato, y protocolo de suplementación personalizada.",
       type: "depth-first" as const,
-      icon: Microscope
+      icon: Microscope,
+      task: 'GENETIC_ANALYSIS' as NutrigenomicsTask
     },
     {
       title: "Metabolismo Lipídico y Variantes APOE",
       query: "Evalúa un caso con dislipidemia familiar. Analiza variantes APOE (ε2/ε3/ε4), su efecto en metabolismo de colesterol y triglicéridos, respuesta a ácidos grasos omega-3, y diseño de dieta cardioprotectora personalizada.",
       type: "depth-first" as const,
-      icon: Heart
+      icon: Heart,
+      task: 'METABOLIC_RESEARCH' as NutrigenomicsTask
     },
     {
       title: "Epigenética Nutricional en Obesidad",
       query: "Investigación en paciente con obesidad mórbida. Estudia modificaciones epigenéticas inducidas por dieta alta en grasas saturadas, impacto en genes de saciedad (LEP, LEPR), y estrategias nutricionales para revertir cambios epigenéticos.",
       type: "breadth-first" as const,
-      icon: Activity
+      icon: Activity,
+      task: 'EPIGENETIC_STUDY' as NutrigenomicsTask
     },
     {
       title: "Farmacogenómica y Warfarina",
       query: "Paciente en tratamiento con warfarina. Analiza polimorfismos CYP2C9 y VKORC1, interacciones con vitamina K dietética, alimentos que afectan INR, y protocolo de monitoreo nutricional personalizado.",
       type: "depth-first" as const,
-      icon: Zap
+      icon: Zap,
+      task: 'CLINICAL_SYNTHESIS' as NutrigenomicsTask
     },
     {
       title: "Revisión: Nutrigenómica en Diabetes T2",
       query: "Revisión sistemática de literature 2020-2024 sobre nutrigenómica en diabetes tipo 2. Enfócate en polimorfismos TCF7L2, FTO, PPARG, su relación con sensibilidad a insulina y respuesta a intervenciones nutricionales.",
       type: "breadth-first" as const,
-      icon: Brain
+      icon: Brain,
+      task: 'LITERATURE_REVIEW' as NutrigenomicsTask
     }
   ];
 
@@ -93,6 +122,22 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     const depthKeywords = ['caso clínico', 'paciente', 'polimorfismo', 'variante', 'gen', 'mthfr', 'apoe', 'cyp2c9', 'vkorc1'];
     const hasDepthKeywords = depthKeywords.some(keyword => query.toLowerCase().includes(keyword));
     return hasDepthKeywords ? 'depth-first' : 'breadth-first';
+  };
+
+  const determineTask = (query: string, researchType: 'depth-first' | 'breadth-first'): NutrigenomicsTask => {
+    if (query.toLowerCase().includes('mthfr') || query.toLowerCase().includes('polimorfismo')) {
+      return 'GENETIC_ANALYSIS';
+    } else if (query.toLowerCase().includes('metabolismo') || query.toLowerCase().includes('apoe')) {
+      return 'METABOLIC_RESEARCH';
+    } else if (query.toLowerCase().includes('epigenética') || query.toLowerCase().includes('obesidad')) {
+      return 'EPIGENETIC_STUDY';
+    } else if (query.toLowerCase().includes('warfarina') || query.toLowerCase().includes('farmacogenómica')) {
+      return 'CLINICAL_SYNTHESIS';
+    } else if (query.toLowerCase().includes('revisión') || query.toLowerCase().includes('literatura')) {
+      return 'LITERATURE_REVIEW';
+    } else {
+      return researchType === 'depth-first' ? 'GENETIC_ANALYSIS' : 'LITERATURE_REVIEW';
+    }
   };
 
   const generateSubagents = (query: string, researchType: 'depth-first' | 'breadth-first'): string[] => {
@@ -115,22 +160,6 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         "Síntesis Integrativa"
       ];
     }
-  };
-
-  const generateAspectContent = (aspect: string, query: string, researchType: string): string => {
-    const basicInfo = {
-      "Genética Molecular": `Análisis detallado de variantes genéticas relacionadas con ${query.toLowerCase()}. Identificación de polimorfismos relevantes y su impacto funcional en el metabolismo nutricional.`,
-      "Metabolismo Nutricional": `Evaluación de la respuesta metabólica a nutrientes específicos. Análisis de macronutrientes y micronutrientes relevantes para la consulta sobre ${query.toLowerCase()}.`,
-      "Epigenética Aplicada": `Factores epigenéticos que pueden influir en la expresión génica relacionada con la nutrición. Modificaciones ambientales y dietéticas que afectan el fenotipo.`,
-      "Medicina Personalizada": `Enfoque personalizado basado en características individuales. Recomendaciones generales adaptables al perfil específico del paciente.`,
-      "Literatura Reciente (2022-2025)": `Resumen de investigaciones actuales en el campo de la nutrigenómica. Tendencias emergentes y avances tecnológicos relevantes para ${query.toLowerCase()}.`,
-      "Panorama Nutrigenómico": `Visión general del campo de la nutrigenómica. Aplicaciones prácticas y limitaciones actuales en el contexto de la consulta.`,
-      "Aplicaciones Clínicas": `Implementación práctica de la nutrigenómica en entornos clínicos. Protocolos y consideraciones de seguridad para la implementación.`,
-      "Tendencias Emergentes": `Nuevas direcciones en investigación nutrigenómica. Tecnologías emergentes y aplicaciones futuras que pueden impactar el campo.`,
-      "Síntesis Integrativa": `Integración de múltiples perspectivas científicas. Enfoque holístico para la toma de decisiones clínicas basada en evidencia.`
-    };
-    
-    return basicInfo[aspect as keyof typeof basicInfo] || `Análisis básico del aspecto ${aspect} relacionado con la consulta sobre ${query.toLowerCase()}.`;
   };
 
   const generateRecommendations = (query: string, researchType: string): string[] => {
@@ -159,17 +188,41 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
   };
 
   const conductRealResearch = async (query: string, researchType: 'depth-first' | 'breadth-first') => {
+    if (!researchService) {
+      const errorMessage: Message = {
+        id: `error-service-${Date.now()}`,
+        type: 'system',
+        content: `❌ **Error: Servicio no disponible**\n\nEl servicio de investigación no está configurado. Verifica que GEMINI_API_KEY esté configurada en Vercel o VITE_GEMINI_API_KEY en tu archivo .env.local.`,
+        timestamp: new Date(),
+        status: 'error'
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      setIsProcessing(false);
+      return;
+    }
+
     try {
-      // Paso 1: Crear plan de investigación con fallback
+      const task = determineTask(query, researchType);
+      
+      // Paso 1: Crear plan de investigación
       let subagents: string[];
       try {
         console.log("[NutrigenomicsResearchAgent] Iniciando creación del plan de investigación...");
         
-        // Simular creación del plan (en lugar de llamar a la API)
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        subagents = generateSubagents(query, researchType);
+        const planResult = await researchService.createNutrigenomicsPlan(query);
+        subagents = Array.isArray(planResult) ? planResult : generateSubagents(query, researchType);
         
         console.log("[NutrigenomicsResearchAgent] Plan de investigación creado:", subagents);
+        
+        const planMessage: Message = {
+          id: `plan-${Date.now()}`,
+          type: 'system',
+          content: `📋 **Plan de Investigación Creado**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
+          timestamp: new Date(),
+          status: 'completed'
+        };
+        setMessages(prev => [...prev, planMessage]);
+        
       } catch (planError) {
         console.error("[NutrigenomicsResearchAgent] Error creando plan:", planError);
         
@@ -210,14 +263,27 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         setMessages(prev => [...prev, progressMessage]);
 
         try {
-          // Simular investigación con timeout
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          // Realizar investigación real del aspecto
+          let aspectResult;
+          
+          if (aspect.includes('Genética') || aspect.includes('Molecular')) {
+            aspectResult = await researchService.analyzeGeneticAspect(aspect, query);
+          } else if (aspect.includes('Metabolismo')) {
+            aspectResult = await researchService.researchMetabolicAspect(aspect, query);
+          } else if (aspect.includes('Epigenética')) {
+            aspectResult = await researchService.studyEpigeneticFactors(aspect, query);
+          } else if (aspect.includes('Literatura')) {
+            aspectResult = await researchService.reviewLiterature(query);
+          } else {
+            // Para aspectos generales, usar análisis genético como base
+            aspectResult = await researchService.analyzeGeneticAspect(aspect, query);
+          }
 
           const result: AspectResult = {
             aspect,
-            content: generateAspectContent(aspect, query, researchType),
+            content: aspectResult.content || `Análisis de ${aspect} completado exitosamente.`,
             status: 'completed',
-            confidence: 0.8
+            confidence: aspectResult.confidenceLevel || 0.8
           };
 
           researchResults.push(result);
@@ -238,7 +304,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           // Agregar resultado simulado como fallback
           const fallbackResult: AspectResult = {
             aspect,
-            content: `⚠️ **${aspect}** - Análisis limitado\n\nDebido a un error en el servicio, se proporciona información básica:\n\n${generateAspectContent(aspect, query, researchType)}`,
+            content: `⚠️ **${aspect}** - Análisis limitado\n\nDebido a un error en el servicio, se proporciona información básica.`,
             status: 'error',
             confidence: 0.5
           };
@@ -261,8 +327,16 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
       try {
         console.log("[NutrigenomicsResearchAgent] Creando reporte final estructurado...");
         
-        // Simular síntesis (en lugar de llamar a la API)
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        // Realizar síntesis clínica real
+        const synthesisResult = await researchService.synthesizeClinicalReport(query, researchResults.map(r => ({
+          title: r.aspect,
+          content: r.content,
+          sources: [],
+          geneAnalysis: [],
+          metabolicPathways: [],
+          epigeneticFactors: [],
+          clinicalRecommendations: []
+        })));
         
         const finalReport: ResearchResult = {
           id: `research-${Date.now()}`,
@@ -270,9 +344,9 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           researchType,
           subagents,
           results: researchResults,
-          summary: `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente. Se analizaron ${subagents.length} aspectos especializados para la consulta sobre ${query.toLowerCase()}.`,
-          recommendations: generateRecommendations(query, researchType),
-          evidenceLevel: researchType === 'depth-first' ? 'Alta (Análisis profundo)' : 'Moderada (Revisión comprehensiva)',
+          summary: synthesisResult.summary ? synthesisResult.summary.join(' ') : `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente. Se analizaron ${subagents.length} aspectos especializados para la consulta sobre ${query.toLowerCase()}.`,
+          recommendations: synthesisResult.clinicalRecommendations ? [synthesisResult.clinicalRecommendations] : generateRecommendations(query, researchType),
+          evidenceLevel: synthesisResult.report ? 'Alta (Análisis real con IA)' : 'Moderada (Análisis con fallbacks)',
           timestamp: new Date()
         };
 
@@ -282,7 +356,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         const finalMessage: Message = {
           id: `final-${Date.now()}`,
           type: 'agent',
-          content: `🎉 **Investigación Completada Exitosamente**\n\nSe ha generado un reporte comprehensivo con ${subagents.length} aspectos analizados. Haz clic en "Ver Reporte" para acceder a los resultados detallados.`,
+          content: `🎉 **Investigación Completada Exitosamente**\n\nSe ha generado un reporte comprehensivo con ${subagents.length} aspectos analizados usando IA real. Haz clic en "Ver Reporte" para acceder a los resultados detallados.`,
           timestamp: new Date(),
           status: 'completed',
           researchType,
@@ -607,19 +681,30 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
             </div>
           </div>
           
-          {currentSubagents.length > 0 && (
-            <div className="mt-4 bg-white/10 rounded-lg p-4">
-              <div className="text-sm font-medium mb-2">Subagentes Nutrigenómicos Activos:</div>
-              <div className="flex flex-wrap gap-2">
-                {currentSubagents.map((subagent, index) => (
-                  <div key={index} className="flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm">
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    {subagent}
-                  </div>
-                ))}
-              </div>
+          {/* Estado del Servicio */}
+          <div className="mt-4 bg-white/10 rounded-lg p-4">
+            <div className="text-sm font-medium mb-2">
+              Estado del Servicio: {researchService ? '✅ Activo' : '❌ No Configurado'}
             </div>
-          )}
+            {!researchService && (
+              <div className="text-xs text-yellow-200">
+                Configura GEMINI_API_KEY en Vercel o VITE_GEMINI_API_KEY en .env.local
+              </div>
+            )}
+            {currentSubagents.length > 0 && (
+              <>
+                <div className="text-sm font-medium mt-2">Subagentes Nutrigenómicos Activos:</div>
+                <div className="flex flex-wrap gap-2">
+                  {currentSubagents.map((subagent, index) => (
+                    <div key={index} className="flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm">
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      {subagent}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Ejemplos de Consulta */}
@@ -631,7 +716,7 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
                 <button
                   key={index}
                   onClick={() => handleExampleClick(example)}
-                  disabled={isProcessing}
+                  disabled={isProcessing || !researchService}
                   className="text-left p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div className="flex items-start gap-3">
@@ -660,6 +745,11 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
             <div className="text-center text-gray-500 py-8">
               <Bot className="w-12 h-12 mx-auto mb-3 text-gray-300" />
               <p>Inicia una investigación para ver los resultados</p>
+              {!researchService && (
+                <p className="text-sm text-red-500 mt-2">
+                  ⚠️ El servicio de IA no está configurado
+                </p>
+              )}
             </div>
           ) : (
             messages.map((message) => (
@@ -725,13 +815,13 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Describe tu consulta nutrigenómica especializada..."
-                disabled={isProcessing}
+                disabled={isProcessing || !researchService}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 disabled:opacity-50"
               />
             </div>
             <button
               type="submit"
-              disabled={!inputValue.trim() || isProcessing}
+              disabled={!inputValue.trim() || isProcessing || !researchService}
               className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
             >
               {isProcessing ? (
@@ -745,6 +835,11 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
           
           <div className="mt-3 text-sm text-gray-500">
             💡 El agente determinará automáticamente si usar investigación en profundidad o amplitud según tu consulta
+            {!researchService && (
+              <span className="text-red-500 ml-2">
+                ⚠️ Servicio de IA no disponible
+              </span>
+            )}
           </div>
         </div>
       </div>
