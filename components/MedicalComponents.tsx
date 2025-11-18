@@ -111,20 +111,21 @@ export const MedicalBadge: React.FC<{
   size = 'md',
   className = ''
 }) => {
-  // Usar las clases profesionales del sistema de diseño
+  const baseClasses = 'inline-flex items-center font-medium rounded-full transition-colors';
+  
   const variantClasses = {
-    primary: 'badge-pro badge-primary',
-    secondary: 'badge-pro bg-gray-100 text-gray-800',
-    success: 'badge-pro badge-success',
-    warning: 'badge-pro badge-warning',
-    error: 'badge-pro badge-error',
-    info: 'badge-pro badge-primary'
+    primary: 'bg-blue-100 text-blue-800 border border-blue-200',
+    secondary: 'bg-gray-100 text-gray-800 border border-gray-200',
+    success: 'bg-green-100 text-green-800 border border-green-200',
+    warning: 'bg-amber-100 text-amber-800 border border-amber-200',
+    error: 'bg-red-100 text-red-800 border border-red-200',
+    info: 'bg-blue-50 text-blue-700 border border-blue-100'
   };
 
   const sizeClasses = {
-    sm: 'text-xs px-2 py-1',
-    md: '',
-    lg: 'text-base px-4 py-2'
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-2.5 py-1.5 text-sm',
+    lg: 'px-3 py-2 text-base'
   };
 
   const classes = `${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
@@ -184,23 +185,24 @@ export const MedicalButton: React.FC<{
   className = '',
   icon
 }) => {
-  // Usar las clases profesionales del sistema de diseño
+  const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+  
   const variantClasses = {
-    primary: 'btn-primary-pro',
-    secondary: 'btn-secondary-pro',
-    outline: 'btn-ghost-pro',
-    success: 'btn-primary-pro bg-gradient-to-r from-green-600 to-green-700',
-    warning: 'btn-primary-pro bg-gradient-to-r from-yellow-600 to-yellow-700',
-    error: 'btn-primary-pro bg-gradient-to-r from-red-600 to-red-700',
+    primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus:ring-blue-500',
+    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300 focus:ring-gray-500',
+    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 active:bg-blue-100 focus:ring-blue-500',
+    success: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus:ring-green-500',
+    warning: 'bg-yellow-600 text-white hover:bg-yellow-700 active:bg-yellow-800 focus:ring-yellow-500',
+    error: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus:ring-red-500',
   };
-
+  
   const sizeClasses = {
-    sm: 'text-sm px-4 py-2',
-    md: '',
-    lg: 'text-lg px-10 py-5',
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-3 text-base',
+    lg: 'px-8 py-4 text-lg',
   };
 
-  const classes = `${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   return (
     <button

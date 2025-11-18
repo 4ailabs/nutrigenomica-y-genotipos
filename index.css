@@ -4,9 +4,6 @@
 /* Importar estilos de animaciones personalizadas */
 @import './styles/animations.css';
 
-/* Importar sistema de diseño profesional */
-@import './styles/professional.css';
-
 /* ===== Reset y Base ===== */
 *,
 *::before,
