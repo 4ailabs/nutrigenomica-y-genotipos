@@ -20,37 +20,37 @@ export const GENOTYPE_RECIPE_METADATA: GenotypeRecipeMetadata[] = [
     id: 1,
     name: 'Hunter',
     count: 12,
-    loadModule: () => import('../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[1] || [] }))
+    loadModule: () => import('../../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[1] || [] }))
   },
   {
     id: 2,
     name: 'Gatherer',
     count: 8,
-    loadModule: () => import('../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[2] || [] }))
+    loadModule: () => import('../../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[2] || [] }))
   },
   {
     id: 3,
     name: 'Master',
     count: 8,
-    loadModule: () => import('../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[3] || [] }))
+    loadModule: () => import('../../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[3] || [] }))
   },
   {
     id: 4,
     name: 'Explorer',
     count: 8,
-    loadModule: () => import('../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[4] || [] }))
+    loadModule: () => import('../../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[4] || [] }))
   },
   {
     id: 5,
     name: 'Warrior',
     count: 8,
-    loadModule: () => import('../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[5] || [] }))
+    loadModule: () => import('../../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[5] || [] }))
   },
   {
     id: 6,
     name: 'Nomad',
     count: 8,
-    loadModule: () => import('../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[6] || [] }))
+    loadModule: () => import('../../../recipeData').then(m => ({ recipes: m.RECIPE_DATA[6] || [] }))
   }
 ];
 
