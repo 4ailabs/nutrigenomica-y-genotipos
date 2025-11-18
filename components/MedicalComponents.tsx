@@ -234,17 +234,18 @@ export const MedicalCard: React.FC<{
   delay = 0,
   onClick
 }) => {
-  const baseClasses = 'bg-white rounded-xl border border-gray-200 shadow-md transition-all duration-300';
+  // Clases base con estilos Tailwind estándar
+  const baseClasses = 'bg-white rounded-xl border border-gray-200 shadow-md transition-all duration-300 p-6';
   
   const variantClasses = {
-    default: 'bg-white',
+    default: '',
     elevated: 'shadow-lg',
     interactive: 'cursor-pointer hover:shadow-xl hover:-translate-y-1',
     highlighted: 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200',
     outline: 'border-2 border-gray-300'
   };
 
-  const hoverClasses = hover ? 'hover:shadow-lg hover:-translate-y-0.5' : '';
+  const hoverClasses = hover && variant !== 'interactive' ? 'hover:shadow-lg hover:-translate-y-0.5' : '';
   
   const animationClasses = {
     fadeIn: 'animate-fadeIn',
@@ -252,7 +253,7 @@ export const MedicalCard: React.FC<{
     slideIn: 'animate-slideIn',
   };
 
-  const classes = `${baseClasses} ${variantClasses[variant]} ${hoverClasses} ${animationClasses[animation]} ${className}`;
+  const classes = `${baseClasses} ${variantClasses[variant]} ${hoverClasses} ${animationClasses[animation]} ${className}`.trim();
 
   return (
     <div
