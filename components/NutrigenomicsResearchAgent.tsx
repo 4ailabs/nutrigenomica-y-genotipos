@@ -200,16 +200,18 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
   };
 
   const conductRealResearch = async (query: string, researchType: 'depth-first' | 'breadth-first') => {
-    // Permitir continuar incluso sin servicio de IA (modo fallback inteligente)
+    // Verificar que el servicio de IA esté disponible
     if (!researchService) {
-      const infoMessage: Message = {
-        id: `info-fallback-${Date.now()}`,
+      const errorMessage: Message = {
+        id: `error-no-service-${Date.now()}`,
         type: 'system',
-        content: `ℹ️ **Modo Inteligente Activado**\n\nEl servicio de IA no está configurado, pero continuaremos con análisis inteligente especializado basado en conocimiento nutrigenómico. Para funcionalidad completa con IA, configura VITE_GEMINI_API_KEY.`,
+        content: `❌ **Servicio de IA No Disponible**\n\nEl servicio de IA no está configurado. Para generar reportes de investigación nutrigenómica, es necesario configurar VITE_GEMINI_API_KEY.\n\n**Configuración requerida:**\n- En desarrollo: Crea un archivo .env.local con VITE_GEMINI_API_KEY=tu_api_key\n- En producción (Vercel): Configura la variable de entorno VITE_GEMINI_API_KEY\n\nSin la API configurada, no se pueden generar reportes de investigación personalizados.`,
         timestamp: new Date(),
-        status: 'completed'
+        status: 'error'
       };
-      setMessages(prev => [...prev, infoMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+      setIsProcessing(false);
+      return;
     }
 
       try {
@@ -253,37 +255,34 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         } catch (planError) {
           console.error("[NutrigenomicsResearchAgent] Error creando plan con IA real:", planError);
           
-          // Detectar si es error de cuota
-          const isQuotaError = planError.toString().includes('429') || planError.toString().includes('quota');
+          const errorMsg = planError?.toString() || 'Error desconocido';
+          const isQuotaError = errorMsg.includes('429') || errorMsg.includes('quota');
+          const isModelError = errorMsg.includes('404') || errorMsg.includes('not found');
           
-          if (isQuotaError) {
-            useRealAPI = false;
-            const quotaMessage: Message = {
-              id: `quota-warning-${Date.now()}`,
-              type: 'system',
-              content: `⚠️ **Cuota de API Excedida**\n\nLa cuota gratuita de Gemini API ha sido excedida. Continuando con análisis inteligente de respaldo que proporciona resultados de alta calidad basados en conocimiento nutrigenómico especializado.`,
-              timestamp: new Date(),
-              status: 'completed'
-            };
-            setMessages(prev => [...prev, quotaMessage]);
-          }
-          
-          // Fallback: usar subagentes predefinidos
-          subagents = generateSubagents(query, researchType);
-          
-          const fallbackMessage: Message = {
-            id: `fallback-plan-${Date.now()}`,
+          const errorMessage: Message = {
+            id: `error-plan-${Date.now()}`,
             type: 'system',
-            content: `📋 **Plan de Investigación Inteligente**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
+            content: `❌ **Error al Crear Plan de Investigación**\n\nNo se pudo crear el plan de investigación con IA.\n\n${isQuotaError ? '**Causa:** Cuota de API excedida. Espera unos minutos o verifica tu plan de Gemini API.' : ''}${isModelError ? '**Causa:** Modelo de IA no disponible. El sistema intentará con modelos alternativos.' : ''}\n\n**Solución:**\n- Verifica que VITE_GEMINI_API_KEY esté configurada correctamente\n- Verifica que tu API key tenga acceso a los modelos de Gemini\n- Si el problema persiste, contacta al administrador\n\nNo se generará un reporte sin análisis real con IA.`,
             timestamp: new Date(),
-            status: 'completed'
+            status: 'error'
           };
-          setMessages(prev => [...prev, fallbackMessage]);
+          setMessages(prev => [...prev, errorMessage]);
+          setIsProcessing(false);
+          return;
         }
 
       if (!subagents || subagents.length === 0) {
-        console.warn("[NutrigenomicsResearchAgent] No se obtuvieron subagentes, usando fallback");
-        subagents = generateSubagents(query, researchType);
+        console.error("[NutrigenomicsResearchAgent] No se obtuvieron subagentes");
+        const errorMessage: Message = {
+          id: `error-no-subagents-${Date.now()}`,
+          type: 'system',
+          content: `❌ **Error: No se pudo crear el plan de investigación**\n\nNo se pudieron identificar aspectos de investigación. Sin un plan válido, no se puede generar un reporte.\n\nPor favor, intenta nuevamente o verifica la configuración de la API.`,
+          timestamp: new Date(),
+          status: 'error'
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        setIsProcessing(false);
+        return;
       }
 
       setCurrentSubagents(subagents);
@@ -366,14 +365,8 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           }
         }
         
-        // Fallback inteligente directo
-        const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
-        return {
-          aspect,
-          content: fallbackResult.content,
-          status: 'completed',
-          confidence: fallbackResult.confidenceLevel || 0.75
-        };
+          // Si no hay API disponible, no generar contenido falso
+          throw new Error('Servicio de IA no disponible');
       };
 
       // OPTIMIZACIÓN: Ejecutar análisis en paralelo (máximo 3 simultáneos para evitar rate limits)
@@ -393,52 +386,66 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
             if (result.status === 'fulfilled') {
               researchResults.push(result.value);
             } else {
-              // Error en el análisis, usar fallback
+              // Error en el análisis - no generar contenido falso
               const aspect = batch[batchIndex];
-              const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
               researchResults.push({
                 aspect,
-                content: fallbackResult.content,
-                status: 'completed',
-                confidence: fallbackResult.confidenceLevel || 0.7
+                content: `❌ Error: No se pudo analizar este aspecto. El servicio de IA no está disponible o falló.`,
+                status: 'error',
+                confidence: 0
               });
             }
           });
         } catch (batchError) {
           console.error(`Error en batch ${i}:`, batchError);
-          // Agregar fallbacks para todo el batch
+          // Agregar errores para todo el batch - no generar contenido falso
           batch.forEach(aspect => {
-            const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
             researchResults.push({
               aspect,
-              content: fallbackResult.content,
-              status: 'completed',
-              confidence: fallbackResult.confidenceLevel || 0.7
+              content: `❌ Error: No se pudo analizar este aspecto. El servicio de IA no está disponible o falló.`,
+              status: 'error',
+              confidence: 0
             });
           });
         }
       }
 
+      // Verificar si hay resultados válidos
+      const validResults = researchResults.filter(r => r.status === 'completed' && r.confidence > 0.5);
+      
+      if (validResults.length === 0) {
+        const errorMessage: Message = {
+          id: `error-no-results-${Date.now()}`,
+          type: 'system',
+          content: `❌ **Error: No se pudieron obtener resultados de investigación**\n\nTodos los aspectos fallaron al analizarse. El servicio de IA no está disponible o ha fallado.\n\n**No se generará un reporte sin análisis real.**\n\nPor favor, verifica:\n- Que VITE_GEMINI_API_KEY esté configurada\n- Que tu API key tenga acceso a los modelos de Gemini\n- Tu conexión a internet`,
+          timestamp: new Date(),
+          status: 'error'
+        };
+        setMessages(prev => [...prev.slice(0, -1), errorMessage]);
+        setIsProcessing(false);
+        return;
+      }
+      
       // Actualizar mensaje de progreso con resultados
       const completedProgressMessage: Message = {
         id: `progress-batch-${Date.now()}`,
         type: 'system',
-        content: `✅ **Investigación Completada**\n\nSe analizaron ${researchResults.length} aspectos especializados:\n\n${researchResults.map((r, i) => `${i + 1}. ${r.aspect} ${r.status === 'completed' ? '✅' : '⚠️'}`).join('\n')}`,
+        content: `✅ **Investigación Completada**\n\nSe analizaron ${validResults.length} de ${researchResults.length} aspectos especializados:\n\n${researchResults.map((r, i) => `${i + 1}. ${r.aspect} ${r.status === 'completed' ? '✅' : '❌'}`).join('\n')}`,
         timestamp: new Date(),
         status: 'completed'
       };
       setMessages(prev => [...prev.slice(0, -1), completedProgressMessage]);
 
-      // Paso 3: Crear reporte final estructurado (OPTIMIZADO)
+      // Paso 3: Crear reporte final estructurado (SOLO si hay resultados válidos con IA)
       console.log("[NutrigenomicsResearchAgent] Creando reporte final estructurado...");
       
       let synthesisResult;
       
-      // Intentar síntesis con IA si está disponible y hay resultados
-      if (useRealAPI && researchService && researchResults.length > 0) {
+      // Intentar síntesis con IA si está disponible y hay resultados válidos
+      if (useRealAPI && researchService && validResults.length > 0) {
         try {
-          // Preparar datos de investigación de forma eficiente
-          const researchData = researchResults.map(r => ({
+          // Preparar datos de investigación de forma eficiente (solo resultados válidos)
+          const researchData = validResults.map(r => ({
             title: r.aspect,
             content: typeof r.content === 'string' ? r.content : JSON.stringify(r.content),
             sources: [],
@@ -450,40 +457,52 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           
           synthesisResult = await researchService.synthesizeClinicalReport(query, researchData);
         } catch (synthesisError: any) {
-          console.warn("[NutrigenomicsResearchAgent] Síntesis con IA falló:", synthesisError?.message);
-          useRealAPI = false;
+          console.error("[NutrigenomicsResearchAgent] Síntesis con IA falló:", synthesisError?.message);
+          const errorMessage: Message = {
+            id: `error-synthesis-${Date.now()}`,
+            type: 'system',
+            content: `❌ **Error al generar síntesis clínica**\n\nNo se pudo generar el reporte final. El servicio de IA falló.\n\n**No se generará un reporte sin análisis completo.**`,
+            timestamp: new Date(),
+            status: 'error'
+          };
+          setMessages(prev => [...prev, errorMessage]);
+          setIsProcessing(false);
+          return;
         }
       }
       
-      // Si no hay síntesis de IA, generar síntesis inteligente
+      // Si no hay síntesis de IA, no generar reporte falso
       if (!synthesisResult) {
-        synthesisResult = generateIntelligentSynthesis(query, researchType, researchResults);
+        const errorMessage: Message = {
+          id: `error-no-synthesis-${Date.now()}`,
+          type: 'system',
+          content: `❌ **Error: No se pudo generar síntesis clínica**\n\nEl servicio de IA no está disponible o falló.\n\n**No se generará un reporte sin análisis real con IA.**`,
+          timestamp: new Date(),
+          status: 'error'
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        setIsProcessing(false);
+        return;
       }
         
-      // Crear reporte final optimizado
-      const summaryText = synthesisResult?.summary 
-        ? (Array.isArray(synthesisResult.summary) 
-            ? synthesisResult.summary.join('\n\n') 
-            : synthesisResult.summary)
-        : `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente. Se analizaron ${researchResults.length} aspectos especializados.`;
+      // Crear reporte final SOLO con resultados reales de IA
+      const summaryText = Array.isArray(synthesisResult.summary) 
+        ? synthesisResult.summary.join('\n\n') 
+        : synthesisResult.summary || `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente. Se analizaron ${validResults.length} aspectos especializados con IA.`;
 
-      const recommendations = synthesisResult?.clinicalRecommendations
-        ? (Array.isArray(synthesisResult.clinicalRecommendations)
-            ? synthesisResult.clinicalRecommendations
-            : [synthesisResult.clinicalRecommendations])
-        : generateRecommendations(query, researchType);
+      const recommendations = Array.isArray(synthesisResult.clinicalRecommendations)
+        ? synthesisResult.clinicalRecommendations
+        : [synthesisResult.clinicalRecommendations];
 
       const finalReport: ResearchResult = {
         id: `research-${Date.now()}`,
         query,
         researchType,
         subagents,
-        results: researchResults,
+        results: validResults, // Solo resultados válidos
         summary: summaryText,
         recommendations,
-        evidenceLevel: useRealAPI 
-          ? `Alta (Análisis con IA - ${researchResults.filter(r => r.confidence > 0.8).length}/${researchResults.length} alta confianza)`
-          : `Alta (Análisis inteligente especializado)`,
+        evidenceLevel: `Alta (Análisis con IA - ${validResults.filter(r => r.confidence > 0.8).length}/${validResults.length} alta confianza)`,
         timestamp: new Date()
       };
 
@@ -493,7 +512,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
       const finalMessage: Message = {
         id: `final-${Date.now()}`,
         type: 'agent',
-        content: `🎉 **Investigación Completada**\n\n✅ ${researchResults.length} aspectos analizados\n📊 Nivel de evidencia: ${finalReport.evidenceLevel}\n💡 ${recommendations.length} recomendaciones clínicas\n\nHaz clic en "Ver Reporte" para acceder a los resultados detallados.`,
+        content: `🎉 **Investigación Completada**\n\n✅ ${validResults.length} aspectos analizados con IA\n📊 Nivel de evidencia: ${finalReport.evidenceLevel}\n💡 ${recommendations.length} recomendaciones clínicas personalizadas\n\nHaz clic en "Ver Reporte" para acceder a los resultados detallados.`,
         timestamp: new Date(),
         status: 'completed',
         researchType,
@@ -505,44 +524,15 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     } catch (error) {
       console.error('Error general en investigación:', error);
       
-      // Fallback completo optimizado
-      const fallbackSubagents = generateSubagents(query, researchType);
-      const fallbackResults: AspectResult[] = fallbackSubagents.map(aspect => {
-        const fallback = generateIntelligentFallback(aspect, query, researchType);
-        return {
-          aspect,
-          content: fallback.content,
-          status: 'completed',
-          confidence: fallback.confidenceLevel || 0.7
-        };
-      });
-
-      const fallbackReport: ResearchResult = {
-        id: `research-error-${Date.now()}`,
-        query,
-        researchType,
-        subagents: fallbackSubagents,
-        results: fallbackResults,
-        summary: `Investigación completada con análisis inteligente especializado. Se analizaron ${fallbackSubagents.length} aspectos.`,
-        recommendations: generateRecommendations(query, researchType),
-        evidenceLevel: 'Alta (Análisis inteligente especializado)',
-        timestamp: new Date()
-      };
-
-      setCurrentResearch(fallbackReport);
-      setShowResults(true);
-
-      const fallbackMessage: Message = {
-        id: `fallback-complete-${Date.now()}`,
-        type: 'agent',
-        content: `✅ **Investigación Completada**\n\nSe generó un reporte comprehensivo usando análisis especializado. Haz clic en "Ver Reporte" para acceder a los resultados.`,
+      const errorMessage: Message = {
+        id: `error-general-${Date.now()}`,
+        type: 'system',
+        content: `❌ **Error en la Investigación**\n\nOcurrió un error durante el proceso de investigación.\n\n**No se generará un reporte sin análisis real con IA.**\n\nPor favor, verifica la configuración de la API e intenta nuevamente.`,
         timestamp: new Date(),
-        status: 'completed',
-        researchType,
-        subagents: fallbackSubagents
+        status: 'error'
       };
       
-      setMessages(prev => [...prev, fallbackMessage]);
+      setMessages(prev => [...prev, errorMessage]);
     }
 
     setCurrentSubagents([]);
@@ -551,35 +541,35 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
   // Función para generar fallbacks inteligentes cuando la API no está disponible
   const generateIntelligentFallback = (aspect: string, query: string, researchType: string) => {
+    const warningPrefix = `⚠️ **ADVERTENCIA: Información General de Respaldo**\n\nEste contenido es información general basada en conocimiento nutrigenómico estándar. NO es un análisis personalizado con IA.\n\n`;
+    
     const intelligentContent = {
-      "Genética Molecular": `Análisis detallado de variantes genéticas relacionadas con ${query.toLowerCase()}. Identificación de polimorfismos relevantes como MTHFR C677T, A1298C, APOE ε2/ε3/ε4, CYP2C9, VKORC1 y su impacto funcional en el metabolismo nutricional. Evaluación de vías metabólicas afectadas y biomarcadores genéticos relevantes para la consulta específica.`,
-      "Metabolismo Nutricional": `Evaluación comprehensiva de la respuesta metabólica a nutrientes específicos. Análisis de macronutrientes (proteínas, carbohidratos, lípidos) y micronutrientes (vitaminas B, D, E, minerales) relevantes para ${query.toLowerCase()}. Optimización de la biodisponibilidad y consideraciones de interacciones nutrigenómicas.`,
-      "Epigenética Aplicada": `Factores epigenéticos que influyen en la expresión génica relacionada con la nutrición. Modificaciones ambientales y dietéticas que afectan el fenotipo, incluyendo patrones de metilación del ADN, modificaciones de histonas y regulación de la expresión génica. Análisis de transmisión transgeneracional de modificaciones epigenéticas.`,
-      "Medicina Personalizada": `Enfoque personalizado basado en características individuales y genotipo específico. Recomendaciones nutricionales adaptables al perfil del paciente, considerando factores genéticos, metabólicos y epigenéticos. Protocolos de seguimiento y monitoreo personalizados.`,
-      "Literatura Reciente (2022-2025)": `Resumen de investigaciones actuales en nutrigenómica, incluyendo estudios de asociación genómica (GWAS), ensayos clínicos controlados y metaanálisis. Tendencias emergentes en medicina personalizada y aplicaciones clínicas de la nutrigenómica.`,
-      "Panorama Nutrigenómico": `Visión general del campo de la nutrigenómica, incluyendo aplicaciones prácticas, limitaciones actuales y perspectivas futuras. Análisis de la evolución del campo y su integración en la práctica clínica moderna.`,
-      "Aplicaciones Clínicas": `Implementación práctica de la nutrigenómica en entornos clínicos, incluyendo protocolos de evaluación, consideraciones de seguridad y estándares de calidad. Análisis de casos clínicos y resultados de implementación.`,
-      "Tendencias Emergentes": `Nuevas direcciones en investigación nutrigenómica, incluyendo tecnologías emergentes como secuenciación de próxima generación, edición genómica y aplicaciones de IA en medicina personalizada.`,
-      "Síntesis Integrativa": `Integración de múltiples perspectivas científicas para la toma de decisiones clínicas basada en evidencia. Enfoque holístico que considera factores genéticos, metabólicos, epigenéticos y ambientales.`
+      "Genética Molecular": `${warningPrefix}Información general sobre variantes genéticas comunes relacionadas con ${query.toLowerCase()}. Los polimorfismos más estudiados incluyen MTHFR C677T, A1298C, APOE ε2/ε3/ε4, CYP2C9, VKORC1. Para análisis personalizado, se requiere acceso a la API de IA.`,
+      "Metabolismo Nutricional": `${warningPrefix}Información general sobre metabolismo nutricional relacionado con ${query.toLowerCase()}. Consideraciones generales sobre macronutrientes y micronutrientes. Para análisis personalizado del paciente, se requiere acceso a la API de IA.`,
+      "Epigenética Aplicada": `${warningPrefix}Información general sobre factores epigenéticos en nutrigenómica. Conceptos básicos sobre metilación del ADN y modificaciones de histonas. Para análisis personalizado, se requiere acceso a la API de IA.`,
+      "Medicina Personalizada": `${warningPrefix}Información general sobre enfoques de medicina personalizada en nutrigenómica. Para recomendaciones personalizadas específicas del paciente, se requiere acceso a la API de IA.`,
+      "Literatura Reciente (2022-2025)": `${warningPrefix}Información general sobre tendencias en investigación nutrigenómica. Para revisión de literatura actualizada y específica, se requiere acceso a la API de IA.`,
+      "Panorama Nutrigenómico": `${warningPrefix}Información general sobre el campo de la nutrigenómica. Visión general de aplicaciones y perspectivas. Para análisis detallado, se requiere acceso a la API de IA.`,
+      "Aplicaciones Clínicas": `${warningPrefix}Información general sobre aplicaciones clínicas de la nutrigenómica. Para protocolos personalizados, se requiere acceso a la API de IA.`,
+      "Tendencias Emergentes": `${warningPrefix}Información general sobre tendencias emergentes en nutrigenómica. Para análisis detallado, se requiere acceso a la API de IA.`,
+      "Síntesis Integrativa": `${warningPrefix}Información general sobre integración de perspectivas en nutrigenómica. Para síntesis personalizada, se requiere acceso a la API de IA.`
     };
     
     return {
-      content: intelligentContent[aspect as keyof typeof intelligentContent] || `Análisis comprehensivo del aspecto ${aspect} relacionado con la consulta sobre ${query.toLowerCase()}, basado en conocimiento especializado en nutrigenómica.`,
-      confidenceLevel: 0.85
+      content: intelligentContent[aspect as keyof typeof intelligentContent] || `${warningPrefix}Información general sobre ${aspect} relacionado con ${query.toLowerCase()}. Para análisis personalizado, se requiere acceso a la API de IA.`,
+      confidenceLevel: 0.3 // Baja confianza para fallbacks
     };
   };
 
   // Función para generar síntesis inteligente cuando la API no está disponible
   const generateIntelligentSynthesis = (query: string, researchType: string, results: AspectResult[]) => {
-    const summary = `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente usando análisis inteligente especializado. Se analizaron ${results.length} aspectos especializados para la consulta sobre ${query.toLowerCase()}, proporcionando insights valiosos para la práctica clínica.`;
+    const summary = `⚠️ **ADVERTENCIA: Reporte de Respaldo**\n\nEl servicio de IA no está disponible. Este reporte contiene información general basada en conocimiento nutrigenómico estándar, pero NO es un análisis personalizado con IA.\n\n**Limitaciones:**\n- No se realizó análisis genético específico del paciente\n- No se procesaron datos personalizados\n- Las recomendaciones son generales, no personalizadas\n- No se analizaron polimorfismos específicos\n- No se generaron protocolos personalizados\n\n**Recomendación:** Configura VITE_GEMINI_API_KEY para obtener análisis completo con IA.`;
     
     const clinicalRecommendations = [
-      "Realizar evaluación genética completa con panel nutrigenómico especializado",
-      "Implementar protocolo nutricional personalizado basado en genotipo identificado",
-      "Establecer monitoreo regular de biomarcadores relevantes y específicos",
-      "Programar seguimiento clínico cada 3-6 meses con evaluación de progreso",
-      "Considerar suplementación personalizada basada en variantes genéticas identificadas",
-      "Implementar estrategias de prevención personalizadas según perfil genético"
+      "⚠️ Este reporte es de respaldo. Para recomendaciones personalizadas, configura la API de Gemini.",
+      "Consulta con un especialista en nutrigenómica para análisis completo.",
+      "Considera realizar pruebas genéticas para obtener información precisa.",
+      "Este análisis NO reemplaza la consulta médica profesional."
     ];
     
     return {

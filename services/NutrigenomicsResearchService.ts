@@ -834,45 +834,92 @@ export class NutrigenomicsResearchService {
   private async callGeminiAPI(model: string, task: NutrigenomicsTask, content: any): Promise<any> {
     const startTime = Date.now();
     
-    try {
-      const prompt = getNutrigenomicsPrompt(task, model, content);
-      
-      const genModel = this.genAI.getGenerativeModel({ model });
-      const result = await genModel.generateContent(prompt);
-      
-      const response = await result.response;
-      const text = response.text();
-      const responseTime = Date.now() - startTime;
-      
-      // Calcular confianza basada en completitud de respuesta
-      const confidence = this.calculateConfidence(text, task);
-      
-      this.performanceMonitor.recordRequest(model, task, true, responseTime, confidence);
-      
-      console.log(`🧬 Nutrigenómica API exitosa: ${model} en ${responseTime}ms (confianza: ${confidence})`);
-      
+    // Lista de modelos a intentar en orden de preferencia (con fallback)
+    const modelsToTry = [
+      model, // Intentar primero el modelo solicitado
+      'gemini-2.0-flash-exp',
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-pro'
+    ];
+    
+    // Eliminar duplicados manteniendo el orden
+    const uniqueModels = Array.from(new Set(modelsToTry));
+    
+    let lastError: any = null;
+    let lastModel = model;
+    
+    for (const modelName of uniqueModels) {
       try {
-        const parsed = JSON.parse(text);
-        return { ...parsed, _meta: { model, responseTime, confidence, task } };
-      } catch (parseError) {
-        return { 
-          content: text, 
-          sources: [], 
-          geneAnalysis: [],
-          metabolicInsights: [],
-          epigeneticFindings: [],
-          clinicalApplications: [],
-          confidenceLevel: confidence,
-          _meta: { model, responseTime, confidence, task }
-        };
+        const prompt = getNutrigenomicsPrompt(task, modelName, content);
+        
+        const genModel = this.genAI.getGenerativeModel({ 
+          model: modelName,
+          generationConfig: {
+            temperature: NUTRIGENOMICS_STRATEGY[task].temperature || 0.3,
+            topK: 40,
+            topP: 0.95,
+          }
+        });
+        
+        const result = await genModel.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        const responseTime = Date.now() - startTime;
+        
+        // Calcular confianza basada en completitud de respuesta
+        const confidence = this.calculateConfidence(text, task);
+        
+        // Registrar con el modelo que funcionó
+        this.performanceMonitor.recordRequest(modelName, task, true, responseTime, confidence);
+        
+        console.log(`🧬 Nutrigenómica API exitosa: ${modelName} (solicitado: ${model}) en ${responseTime}ms (confianza: ${confidence})`);
+        
+        try {
+          const parsed = JSON.parse(text);
+          return { ...parsed, _meta: { model: modelName, originalModel: model, responseTime, confidence, task } };
+        } catch (parseError) {
+          return { 
+            content: text, 
+            sources: [], 
+            geneAnalysis: [],
+            metabolicInsights: [],
+            epigeneticFindings: [],
+            clinicalApplications: [],
+            confidenceLevel: confidence,
+            _meta: { model: modelName, originalModel: model, responseTime, confidence, task }
+          };
+        }
+        
+      } catch (error: any) {
+        lastError = error;
+        lastModel = modelName;
+        
+        const errorMsg = error?.message || error?.toString() || '';
+        
+        // Si es error 404 o modelo no encontrado, intentar siguiente modelo
+        if (errorMsg.includes('404') || 
+            errorMsg.includes('not found') || 
+            errorMsg.includes('is not found') ||
+            errorMsg.includes('not supported')) {
+          console.warn(`🧬 Modelo ${modelName} no disponible, intentando siguiente modelo...`);
+          continue;
+        }
+        
+        // Si es otro tipo de error (cuota, autenticación, etc.), no intentar más modelos
+        console.error(`🧬 Error en Nutrigenómica API con ${modelName}:`, errorMsg);
+        break;
       }
-      
-    } catch (error) {
-      const responseTime = Date.now() - startTime;
-      this.performanceMonitor.recordRequest(model, task, false, responseTime, 0);
-      console.error(`🧬 Error en Nutrigenómica API con ${model}:`, error);
-      throw error;
     }
+    
+    // Si todos los modelos fallaron
+    const responseTime = Date.now() - startTime;
+    this.performanceMonitor.recordRequest(lastModel, task, false, responseTime, 0);
+    
+    const errorMsg = lastError?.message || lastError?.toString() || 'Error desconocido';
+    console.error(`🧬 Todos los modelos fallaron. Último error (${lastModel}):`, errorMsg);
+    
+    throw new Error(`No se pudo encontrar un modelo disponible de Gemini. Modelos intentados: ${uniqueModels.join(', ')}. Error: ${errorMsg}. Verifica que tu API key tenga acceso a los modelos de Gemini.`);
   }
 
   private calculateConfidence(response: string, task: NutrigenomicsTask): number {
