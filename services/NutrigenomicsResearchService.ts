@@ -966,8 +966,24 @@ export class NutrigenomicsResearchService {
           
           return { ...parsed, _meta: { model: modelName, originalModel: model, responseTime, confidence, task } };
         } catch (parseError) {
-          console.warn(`🧬 No se pudo parsear JSON, usando texto plano. Error:`, parseError);
-          // Si no es JSON válido, devolver como texto plano
+          // Si no es JSON válido, es porque pedimos texto legible (Markdown)
+          // Para tareas que no son PLANNING, el texto Markdown es válido
+          if (task !== 'PLANNING') {
+            console.log(`🧬 Respuesta en texto Markdown recibida correctamente (${cleanedText.length} caracteres)`);
+            return { 
+              content: cleanedText, 
+              sources: [], 
+              geneAnalysis: [],
+              metabolicInsights: [],
+              epigeneticFindings: [],
+              clinicalApplications: [],
+              confidenceLevel: confidence,
+              _meta: { model: modelName, originalModel: model, responseTime, confidence, task }
+            };
+          }
+          
+          // Para PLANNING, es un error real
+          console.warn(`🧬 Error al parsear JSON para ${task}. Error:`, parseError);
           return { 
             content: cleanedText, 
             sources: [], 
