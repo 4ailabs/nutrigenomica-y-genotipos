@@ -7,8 +7,8 @@ export default defineConfig(({ mode }) => {
     return {
       plugins: [react()],
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        // Solo exponer VITE_GEMINI_API_KEY (con prefijo VITE_)
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY)
       },
       resolve: {
         alias: {

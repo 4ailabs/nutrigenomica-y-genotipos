@@ -5,6 +5,7 @@ import GenotypeDetail from './components/GenotypeDetail';
 import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
 import ErrorBoundary from './components/ErrorBoundary';
+import TopBar from './components/TopBar';
 import { useNavigation } from './hooks/useNavigation';
 import { ChatProvider } from './contexts/ChatContext';
 
@@ -146,6 +147,16 @@ const App: React.FC = () => {
         <ErrorBoundary>
             <ChatProvider>
                 <div className="bg-white min-h-screen font-sans text-gray-800 antialiased">
+                    <TopBar
+                        currentPage={currentPage}
+                        onNavigateToMain={() => navigateTo('landing')}
+                        onNavigateToPortal={() => navigateTo('portal')}
+                        onNavigateToCalculator={() => navigateTo('calculator')}
+                        onNavigateToPatientView={() => navigateTo('patientView')}
+                        onNavigateToChat={() => navigateTo('chat')}
+                        onNavigateToNutrigenomics={() => navigateTo('nutrigenomics')}
+                        onNavigateToStrengthMeter={() => navigateTo('strengthMeter')}
+                    />
                     <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
                          {renderPage()}
                     </div>

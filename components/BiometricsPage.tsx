@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronLeft, Home, ClipboardList, BarChart3, Target, Clock, Zap, TestTube, Ruler, Fingerprint, Users, Activity, Brain } from 'lucide-react';
+import { ChevronDown, ClipboardList, BarChart3, Target, Clock, Zap, TestTube, Ruler, Fingerprint, Users, Activity, Brain } from 'lucide-react';
 
 interface BiometricsPageProps {
     onBackToPortal: () => void;
@@ -408,18 +408,6 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
              <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
                  {/* Header Mejorado */}
                  <header className="mb-12 text-center">
-                    <div className="flex items-center justify-center mb-6">
-                        <div className="flex items-center space-x-3">
-                            <button onClick={onBackToPortal} className="text-slate-600 hover:text-slate-800 p-2 rounded-full hover:bg-white/80 transition-all duration-200">
-                                <ChevronLeft className="h-6 w-6" />
-                            </button>
-                            {onNavigateToMain && (
-                                <button onClick={onNavigateToMain} className="text-slate-600 hover:text-slate-800 p-2 rounded-full hover:bg-white/80 transition-all duration-200" title="Ir al inicio">
-                                    <Home className="h-6 w-6" />
-                                </button>
-                            )}
-                        </div>
-                    </div>
                     
                     <div className="max-w-3xl mx-auto">
                         <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">

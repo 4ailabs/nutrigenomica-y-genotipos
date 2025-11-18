@@ -14,7 +14,6 @@ import {
     MedicalBadge 
 } from './MedicalComponents';
 import { Info } from 'lucide-react';
-import Breadcrumbs from './Breadcrumbs';
 
 interface AdvancedCalculatorProps {
     onBackToPortal: () => void;
@@ -535,14 +534,6 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
     return (
         <div className="p-4 sm:p-6 md:p-8 min-h-screen">
             <div className="max-w-2xl mx-auto">
-                <Breadcrumbs 
-                    items={[
-                        { label: 'Inicio', onClick: onNavigateToMain || onBackToPortal },
-                        { label: 'Portal', onClick: onBackToPortal },
-                        { label: 'Calculadora Avanzada' }
-                    ]}
-                    className="mb-6"
-                />
                 <header className="text-center mb-6">
                     <MedicalHeading level={3} variant="primary" align="center" className="mb-2">
                         Calculadora Avanzada

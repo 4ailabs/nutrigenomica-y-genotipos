@@ -128,17 +128,8 @@ const GenotypeStrengthMeter: React.FC<GenotypeStrengthMeterProps> = ({ onResultC
                 className="force-show"
             />
 
-            {/* Header con Botón de Regreso */}
+            {/* Header */}
             <div className="relative mb-8">
-                {onBackToPortal && (
-                    <button
-                        onClick={onBackToPortal}
-                        className="absolute left-0 top-0 flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        <span>Regresar al Portal</span>
-                    </button>
-                    )}
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-800 mb-2">
                         Medidor de Fuerza del Genotipo

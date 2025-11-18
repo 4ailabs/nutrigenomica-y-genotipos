@@ -213,7 +213,7 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
     const allTools = [...evaluationTools, ...consultationTools];
 
     return (
-        <div className="min-h-screen bg-white text-gray-800">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-800">
             {/* Botón de Regreso al Inicio */}
             {onNavigateToMain && (
                 <div className="absolute top-6 left-6 z-20">
@@ -221,7 +221,7 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                         variant="secondary"
                         size="sm"
                         onClick={onNavigateToMain}
-                        className="bg-white hover:bg-gray-50 shadow-sm border border-gray-200"
+                        className="bg-white hover:bg-gray-50 shadow-md border border-gray-200"
                     >
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Regresar al Inicio
@@ -229,85 +229,97 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                 </div>
             )}
             
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header Profesional */}
-                <header className="text-center mb-12">
-                    <MedicalBadge variant="info" size="md" className="mb-4">
-                        <Target className="w-4 h-4 mr-2" />
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                {/* Header Profesional Mejorado */}
+                <header className="text-center mb-16">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6">
+                        <Target className="w-4 h-4" />
                         Portal de Evaluación GenoTipo
-                    </MedicalBadge>
+                    </div>
                     
-                    <MedicalHeading level={3} variant="primary" align="center" className="mb-4">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
                         Portal GenoTipo
-                    </MedicalHeading>
+                    </h1>
                     
-                    <MedicalText variant="body" size="base" className="max-w-2xl mx-auto mb-6 text-gray-700">
+                    <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
                         Sistema profesional para evaluación nutrigenómica.
-                    </MedicalText>
+                    </p>
                     
-                    {/* Información médica */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-xl mx-auto">
-                        <p className="text-sm text-blue-800">
-                            <strong>Uso profesional:</strong> Herramientas para evaluación rápida y consultas nutrigenómicas.
-                        </p>
+                    {/* Información médica mejorada */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg p-5 md:p-6 max-w-2xl mx-auto shadow-sm">
+                        <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                <CheckCircle className="w-5 h-5 text-white" />
+                            </div>
+                            <p className="text-base md:text-lg text-blue-900 font-medium">
+                                <strong>Uso profesional:</strong> Herramientas para evaluación rápida y consultas nutrigenómicas.
+                            </p>
+                        </div>
                     </div>
                 </header>
 
-                {/* Sección de GenoTipos - Reorganizada */}
-                <section className="mb-16">
-                    <div className="text-center mb-8">
-                        <MedicalHeading level={4} variant="secondary" align="center" className="mb-3">
+                {/* Sección de GenoTipos - Mejorada */}
+                <section className="mb-20">
+                    <div className="text-center mb-12">
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                             Exploración de GenoTipos
-                        </MedicalHeading>
-                        <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
+                        </h2>
+                        <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
                             Consulta información detallada de cada GenoTipo.
-                        </MedicalText>
+                        </p>
                     </div>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
-                        {genotypes.map((num, index) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
+                        {genotypes.map((num) => (
                             <button
                                 key={num}
                                 onClick={() => onNavigateToGenotype(num)}
-                                className="group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl"
+                                className="group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl transition-all duration-300 hover:scale-105"
                             >
-                                <div className="transform transition-all duration-200 group-hover:scale-105">
-                                    <GenotypeBox number={num} />
-                                </div>
+                                <GenotypeBox number={num} />
                             </button>
                         ))}
                     </div>
                 </section>
                 
-                {/* Sección de Herramientas - Reorganizada */}
-                <section className="mb-16">
-                    <div className="text-center mb-8">
-                        <MedicalBadge variant="success" size="md" className="mb-3">
-                            <Users className="w-4 h-4 mr-2" />
+                {/* Sección de Herramientas - Mejorada */}
+                <section className="mb-20">
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold mb-4">
+                            <Users className="w-4 h-4" />
                             Herramientas Profesionales
-                        </MedicalBadge>
+                        </div>
                         
-                        <MedicalHeading level={4} variant="secondary" align="center" className="mb-3">
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                             Evaluación y Consulta
-                        </MedicalHeading>
+                        </h2>
                         
-                        <MedicalText variant="body" size="sm" className="max-w-2xl mx-auto text-gray-600">
+                        <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
                             Evaluación de genotipos y consultas con IA.
-                        </MedicalText>
+                        </p>
                     </div>
                     
                     {/* Herramientas de Evaluación */}
                     {evaluationTools.length > 0 && (
-                        <div className="mb-8">
-                            <MedicalHeading level={5} variant="muted" align="center" className="mb-4">
-                                Proceso de Evaluación
-                            </MedicalHeading>
-                            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                                {evaluationTools.map((tool) => (
-                                    <ToolCard 
-                                        key={tool.title} 
-                                        {...tool}
-                                    />
+                        <div className="mb-12">
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                                    Proceso de Evaluación
+                                </h3>
+                                <p className="text-sm text-gray-500">
+                                    Sigue estos pasos para evaluar el genotipo de un paciente
+                                </p>
+                            </div>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                                {evaluationTools.map((tool, index) => (
+                                    <div key={tool.title} className="relative">
+                                        {index < evaluationTools.length - 1 && (
+                                            <div className="hidden lg:block absolute top-1/2 right-0 w-6 h-0.5 bg-gray-300 transform -translate-y-1/2 translate-x-3 z-0">
+                                                <ArrowRight className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/2 w-4 h-4 text-gray-400" />
+                                            </div>
+                                        )}
+                                        <ToolCard {...tool} />
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -316,9 +328,14 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                     {/* Herramientas de Consulta */}
                     {consultationTools.length > 0 && (
                         <div>
-                            <MedicalHeading level={5} variant="muted" align="center" className="mb-4">
-                                Herramientas de Consulta
-                            </MedicalHeading>
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                                    Herramientas de Consulta
+                                </h3>
+                                <p className="text-sm text-gray-500">
+                                    Recursos adicionales para consultas y educación
+                                </p>
+                            </div>
                             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                                 {consultationTools.map((tool) => (
                                     <ToolCard 
@@ -326,22 +343,28 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                                         {...tool}
                                     />
                                 ))}
-                                
-
                             </div>
                         </div>
                     )}
                 </section>
 
 
-                {/* Footer Profesional */}
-                <footer className="text-center text-gray-500 text-sm mt-20 py-8 border-t border-gray-200">
-                    <div className="flex items-center justify-center space-x-4 mb-4">
-                        <div className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium">Ciencia Basada en Evidencia</div>
-                        <div className="inline-flex items-center px-2 py-1 bg-green-50 text-green-700 rounded text-xs font-medium">Validado Científicamente</div>
-                        <div className="inline-flex items-center px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs font-medium">Medicina Personalizada</div>
+                {/* Footer Profesional Mejorado */}
+                <footer className="text-center mt-24 py-12 border-t border-gray-200 bg-white rounded-t-3xl">
+                    <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+                        <div className="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold">
+                            Ciencia Basada en Evidencia
+                        </div>
+                        <div className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-semibold">
+                            Validado Científicamente
+                        </div>
+                        <div className="inline-flex items-center px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-xs font-semibold">
+                            Medicina Personalizada
+                        </div>
                     </div>
-                    <p>© {new Date().getFullYear()} Dr. Miguel Ojeda Rios. Todos los derechos reservados.</p>
+                    <p className="text-gray-500 text-sm">
+                        © {new Date().getFullYear()} Dr. Miguel Ojeda Rios. Todos los derechos reservados.
+                    </p>
                 </footer>
             </div>
         </div>

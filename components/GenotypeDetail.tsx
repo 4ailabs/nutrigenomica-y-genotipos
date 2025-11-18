@@ -1,7 +1,7 @@
 import React from 'react';
 import { GENOTYPE_DATA } from '../genotypeData';
 import { GENOTYPE_COLORS, GENOTYPE_NAMES } from '../constants';
-import { ChevronLeft, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { FOOD_GUIDE_DATA } from '../foodData';
 import FoodGuide from './FoodGuide';
 import AIAssistant from './AIAssistant';
@@ -68,13 +68,6 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 </div>
 
                 <div className="container mx-auto px-4 relative">
-                    <button 
-                        onClick={onBack} 
-                        className="absolute top-0 left-4 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 p-3 rounded-full shadow-md hover:shadow-lg"
-                    >
-                        <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    
                     <button 
                         onClick={() => {
                             const pdfData: GenotypePDFData = {
@@ -288,11 +281,14 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 {/* Menús Personalizados */}
                 {foodData && (
                     <Section title="Menús Personalizados" subtitle="Planes de comidas basados en tus alimentos específicos" subtitleColor={theme.textColor} className="bg-gray-50">
-                        <GenotypeMenus 
-                            genotypeId={genotypeId} 
-                            genotypeColor={theme.mainColor} 
-                            genotypeGradient={`${theme.fromColor} ${theme.viaColor} ${theme.toColor}`} 
-                        />
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <GenotypeMenus 
+                                genotypeId={genotypeId} 
+                                genotypeColor={theme.mainColor} 
+                                genotypeGradient={`${theme.fromColor} ${theme.viaColor} ${theme.toColor}`}
+                                hideHeader={true}
+                            />
+                        </div>
                     </Section>
                 )}
 
@@ -343,14 +339,6 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                             Esta información es personalizada según tu perfil genético. Consulta con tu médico para obtener recomendaciones específicas adaptadas a tu situación individual.
                         </p>
                     </div>
-                    
-                    <button 
-                        onClick={onBack} 
-                        className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 font-semibold px-8 py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
-                    >
-                        <ChevronLeft className="w-4 h-4" />
-                        Volver al Portal
-                    </button>
                     
                     <div className="mt-8 pt-8 border-t border-gray-300">
                         <p className="text-sm text-gray-500">

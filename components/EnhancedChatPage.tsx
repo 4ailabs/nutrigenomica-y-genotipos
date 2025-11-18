@@ -152,42 +152,20 @@ const EnhancedChatPage: React.FC<EnhancedChatPageProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={onBackToPortal}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                ← Volver al Portal
-              </button>
-              
-              {onNavigateToMain && (
-                <button
-                  onClick={onNavigateToMain}
-                  className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  🏠 Inicio
-                </button>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setShowSessionManager(!showSessionManager)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Conversaciones
-              </button>
-            </div>
-          </div>
+      {/* Botón de Conversaciones (único elemento que no está en TopBar) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => setShowSessionManager(!showSessionManager)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+          >
+            <MessageSquare className="w-4 h-4" />
+            Conversaciones
+          </button>
         </div>
-      </header>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Panel lateral de sesiones */}
           <div className="lg:col-span-1">

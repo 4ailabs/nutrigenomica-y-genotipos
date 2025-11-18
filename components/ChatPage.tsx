@@ -48,66 +48,21 @@ const ChatPage: React.FC<ChatPageProps> = ({
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
-            {/* Header con navegación */}
-            <div className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-10">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white">
-                                    <Bot className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <MedicalHeading level={5} variant="primary" className="mb-0">
-                                        Asistente Nutrigenómico IA
-                                    </MedicalHeading>
-                                    <MedicalText variant="caption" size="xs" className="text-gray-500">
-                                        Consulta Médica Profesional
-                                    </MedicalText>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Botones de navegación */}
-                        <div className="flex items-center gap-2">
-                            <MedicalButton
-                                variant="secondary"
-                                size="sm"
-                                onClick={onBackToPortal}
-                                className="hidden sm:flex"
-                            >
-                                <ArrowLeft className="w-4 h-4 mr-2" />
-                                Volver al Portal
-                            </MedicalButton>
-                            
-                            {onNavigateToMain && (
-                                <MedicalButton
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={onNavigateToMain}
-                                    className="hidden sm:flex"
-                                >
-                                    <Home className="w-4 h-4 mr-2" />
-                                    Inicio
-                                </MedicalButton>
-                            )}
-                            
-                            {/* Botón para sistema de storage */}
-                            <MedicalButton
-                                variant="primary"
-                                size="sm"
-                                onClick={() => setShowStoragePanel(!showStoragePanel)}
-                                className="hidden sm:flex"
-                            >
-                                <History className="w-4 h-4 mr-2" />
-                                Historial
-                            </MedicalButton>
-                        </div>
-                    </div>
+            {/* Botón de Historial (único elemento que no está en TopBar) */}
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                <div className="flex justify-end mb-4">
+                    <MedicalButton
+                        variant="primary"
+                        size="sm"
+                        onClick={() => setShowStoragePanel(!showStoragePanel)}
+                    >
+                        <History className="w-4 h-4 mr-2" />
+                        Historial
+                    </MedicalButton>
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid lg:grid-cols-4 gap-8">
                         {/* Sidebar con selección de contexto */}

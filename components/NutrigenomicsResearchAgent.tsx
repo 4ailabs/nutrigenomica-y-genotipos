@@ -200,73 +200,86 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
   };
 
   const conductRealResearch = async (query: string, researchType: 'depth-first' | 'breadth-first') => {
+    // Permitir continuar incluso sin servicio de IA (modo fallback inteligente)
     if (!researchService) {
-      const errorMessage: Message = {
-        id: `error-service-${Date.now()}`,
+      const infoMessage: Message = {
+        id: `info-fallback-${Date.now()}`,
         type: 'system',
-        content: `❌ **Error: Servicio no disponible**\n\nEl servicio de investigación no está configurado. Verifica que GEMINI_API_KEY esté configurada en Vercel o VITE_GEMINI_API_KEY en tu archivo .env.local.`,
+        content: `ℹ️ **Modo Inteligente Activado**\n\nEl servicio de IA no está configurado, pero continuaremos con análisis inteligente especializado basado en conocimiento nutrigenómico. Para funcionalidad completa con IA, configura VITE_GEMINI_API_KEY.`,
         timestamp: new Date(),
-        status: 'error'
+        status: 'completed'
       };
-      setMessages(prev => [...prev, errorMessage]);
-      setIsProcessing(false);
-      return;
+      setMessages(prev => [...prev, infoMessage]);
     }
 
-    try {
-      const task = determineTask(query, researchType);
-      
-      // Paso 1: Crear plan de investigación
-      let subagents: string[];
-      let useRealAPI = true;
-      
       try {
-        console.log("[NutrigenomicsResearchAgent] Iniciando creación del plan de investigación...");
+        const task = determineTask(query, researchType);
         
-        const planResult = await researchService.createNutrigenomicsPlan(query);
-        subagents = Array.isArray(planResult) ? planResult : generateSubagents(query, researchType);
+        // Paso 1: Crear plan de investigación
+        let subagents: string[];
+        let useRealAPI = !!researchService; // Solo usar API real si el servicio está disponible
         
-        console.log("[NutrigenomicsResearchAgent] Plan de investigación creado con IA real:", subagents);
-        
-        const planMessage: Message = {
-          id: `plan-${Date.now()}`,
-          type: 'system',
-          content: `📋 **Plan de Investigación Creado con IA Real**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
-          timestamp: new Date(),
-          status: 'completed'
-        };
-        setMessages(prev => [...prev, planMessage]);
-        
-      } catch (planError) {
-        console.error("[NutrigenomicsResearchAgent] Error creando plan con IA real:", planError);
-        
-        // Detectar si es error de cuota
-        const isQuotaError = planError.toString().includes('429') || planError.toString().includes('quota');
-        
-        if (isQuotaError) {
-          useRealAPI = false;
-          const quotaMessage: Message = {
-            id: `quota-warning-${Date.now()}`,
+        try {
+          if (researchService) {
+            console.log("[NutrigenomicsResearchAgent] Iniciando creación del plan de investigación...");
+            
+            const planResult = await researchService.createNutrigenomicsPlan(query);
+            subagents = Array.isArray(planResult) ? planResult : generateSubagents(query, researchType);
+            
+            console.log("[NutrigenomicsResearchAgent] Plan de investigación creado con IA real:", subagents);
+            
+            const planMessage: Message = {
+              id: `plan-${Date.now()}`,
+              type: 'system',
+              content: `📋 **Plan de Investigación Creado con IA Real**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
+              timestamp: new Date(),
+              status: 'completed'
+            };
+            setMessages(prev => [...prev, planMessage]);
+          } else {
+            // Modo fallback: usar subagentes predefinidos
+            subagents = generateSubagents(query, researchType);
+            
+            const fallbackMessage: Message = {
+              id: `fallback-plan-${Date.now()}`,
+              type: 'system',
+              content: `📋 **Plan de Investigación Inteligente**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
+              timestamp: new Date(),
+              status: 'completed'
+            };
+            setMessages(prev => [...prev, fallbackMessage]);
+          }
+          
+        } catch (planError) {
+          console.error("[NutrigenomicsResearchAgent] Error creando plan con IA real:", planError);
+          
+          // Detectar si es error de cuota
+          const isQuotaError = planError.toString().includes('429') || planError.toString().includes('quota');
+          
+          if (isQuotaError) {
+            useRealAPI = false;
+            const quotaMessage: Message = {
+              id: `quota-warning-${Date.now()}`,
+              type: 'system',
+              content: `⚠️ **Cuota de API Excedida**\n\nLa cuota gratuita de Gemini API ha sido excedida. Continuando con análisis inteligente de respaldo que proporciona resultados de alta calidad basados en conocimiento nutrigenómico especializado.`,
+              timestamp: new Date(),
+              status: 'completed'
+            };
+            setMessages(prev => [...prev, quotaMessage]);
+          }
+          
+          // Fallback: usar subagentes predefinidos
+          subagents = generateSubagents(query, researchType);
+          
+          const fallbackMessage: Message = {
+            id: `fallback-plan-${Date.now()}`,
             type: 'system',
-            content: `⚠️ **Cuota de API Excedida**\n\nLa cuota gratuita de Gemini API ha sido excedida. Continuando con análisis inteligente de respaldo que proporciona resultados de alta calidad basados en conocimiento nutrigenómico especializado.`,
+            content: `📋 **Plan de Investigación Inteligente**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
             timestamp: new Date(),
             status: 'completed'
           };
-          setMessages(prev => [...prev, quotaMessage]);
+          setMessages(prev => [...prev, fallbackMessage]);
         }
-        
-        // Fallback: usar subagentes predefinidos
-        subagents = generateSubagents(query, researchType);
-        
-        const fallbackMessage: Message = {
-          id: `fallback-plan-${Date.now()}`,
-          type: 'system',
-          content: `📋 **Plan de Investigación Inteligente**\n\nSe han identificado ${subagents.length} aspectos especializados para analizar:\n\n${subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
-          timestamp: new Date(),
-          status: 'completed'
-        };
-        setMessages(prev => [...prev, fallbackMessage]);
-      }
 
       if (!subagents || subagents.length === 0) {
         console.warn("[NutrigenomicsResearchAgent] No se obtuvieron subagentes, usando fallback");
@@ -812,7 +825,7 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
                 <button
                   key={index}
                   onClick={() => handleExampleClick(example)}
-                  disabled={isProcessing || !researchService}
+                  disabled={isProcessing}
                   className="text-left p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div className="flex items-start gap-3">
@@ -911,13 +924,13 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Describe tu consulta nutrigenómica especializada..."
-                disabled={isProcessing || !researchService}
+                disabled={isProcessing}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 disabled:opacity-50"
               />
             </div>
             <button
               type="submit"
-              disabled={!inputValue.trim() || isProcessing || !researchService}
+              disabled={!inputValue.trim() || isProcessing}
               className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
             >
               {isProcessing ? (
@@ -932,8 +945,8 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
           <div className="mt-3 text-sm text-gray-500">
             💡 El agente determinará automáticamente si usar investigación en profundidad o amplitud según tu consulta
             {!researchService && (
-              <span className="text-red-500 ml-2">
-                ⚠️ Servicio de IA no disponible
+              <span className="text-amber-600 ml-2">
+                ℹ️ Funcionando en modo inteligente (sin IA). Para funcionalidad completa, configura VITE_GEMINI_API_KEY
               </span>
             )}
           </div>

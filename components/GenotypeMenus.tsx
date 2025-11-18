@@ -7,6 +7,7 @@ interface GenotypeMenusProps {
     genotypeId: number;
     genotypeColor: string;
     genotypeGradient: string;
+    hideHeader?: boolean;
 }
 
 interface MenuOption {
@@ -23,7 +24,7 @@ interface MealPlan {
     cenas: MenuOption[];
 }
 
-const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor, genotypeGradient }) => {
+const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor, genotypeGradient, hideHeader = false }) => {
     const [selectedMeal, setSelectedMeal] = useState<'desayunos' | 'almuerzos' | 'comidas' | 'cenas'>('desayunos');
     const foodData = FOOD_GUIDE_DATA[genotypeId];
 
@@ -135,10 +136,74 @@ const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor
     }
 
     const mealIcons = {
-        desayunos: { icon: Sun, color: 'yellow' },
-        almuerzos: { icon: Coffee, color: 'green' },
-        comidas: { icon: Utensils, color: 'orange' },
-        cenas: { icon: Moon, color: 'purple' }
+        desayunos: { 
+            icon: Sun, 
+            color: 'yellow',
+            classes: {
+                bg100: 'bg-yellow-100',
+                bg50: 'bg-yellow-50',
+                bg200: 'bg-yellow-200',
+                text700: 'text-yellow-700',
+                text800: 'text-yellow-800',
+                text600: 'text-yellow-600',
+                text500: 'text-yellow-500',
+                border200: 'border-yellow-200',
+                border100: 'border-yellow-100',
+                bg400: 'bg-yellow-400',
+                hoverBg100: 'hover:bg-yellow-100'
+            }
+        },
+        almuerzos: { 
+            icon: Coffee, 
+            color: 'green',
+            classes: {
+                bg100: 'bg-green-100',
+                bg50: 'bg-green-50',
+                bg200: 'bg-green-200',
+                text700: 'text-green-700',
+                text800: 'text-green-800',
+                text600: 'text-green-600',
+                text500: 'text-green-500',
+                border200: 'border-green-200',
+                border100: 'border-green-100',
+                bg400: 'bg-green-400',
+                hoverBg100: 'hover:bg-green-100'
+            }
+        },
+        comidas: { 
+            icon: Utensils, 
+            color: 'orange',
+            classes: {
+                bg100: 'bg-orange-100',
+                bg50: 'bg-orange-50',
+                bg200: 'bg-orange-200',
+                text700: 'text-orange-700',
+                text800: 'text-orange-800',
+                text600: 'text-orange-600',
+                text500: 'text-orange-500',
+                border200: 'border-orange-200',
+                border100: 'border-orange-100',
+                bg400: 'bg-orange-400',
+                hoverBg100: 'hover:bg-orange-100'
+            }
+        },
+        cenas: { 
+            icon: Moon, 
+            color: 'purple',
+            classes: {
+                bg100: 'bg-purple-100',
+                bg50: 'bg-purple-50',
+                bg200: 'bg-purple-200',
+                text700: 'text-purple-700',
+                text800: 'text-purple-800',
+                text600: 'text-purple-600',
+                text500: 'text-purple-500',
+                border200: 'border-purple-200',
+                border100: 'border-purple-100',
+                bg400: 'bg-purple-400',
+                hoverBg100: 'hover:bg-purple-100'
+            }
+        }
     };
 
     const mealLabels = {
@@ -149,44 +214,46 @@ const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor
     };
 
     return (
-        <div className="space-y-6">
-            {/* Header de Menús */}
-            <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                    <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
-                </div>
-                <div className="relative">
-                    <div className="flex items-center gap-3 mb-4">
-                        <ChefHat className="w-8 h-8" />
-                        <h2 className="text-2xl md:text-3xl font-bold">Menús Personalizados</h2>
+        <div className="w-full max-w-7xl mx-auto space-y-6 md:space-y-8">
+            {/* Header de Menús - Solo se muestra si hideHeader es false */}
+            {!hideHeader && (
+                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden w-full`}>
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
+                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
                     </div>
-                    <p className="text-lg md:text-xl opacity-90 mb-2">
-                        Planes de comidas basados en tus alimentos específicos
-                    </p>
-                    <p className="text-base opacity-80">
-                        Cada menú utiliza los superalimentos y alimentos compatibles de tu genotipo
-                    </p>
+                    <div className="relative">
+                        <div className="flex items-center gap-3 mb-3">
+                            <ChefHat className="w-7 h-7 md:w-8 md:h-8" />
+                            <h2 className="text-xl md:text-2xl font-bold">Menús Personalizados</h2>
+                        </div>
+                        <p className="text-base md:text-lg opacity-95 mb-2 font-medium">
+                            Planes de comidas basados en tus alimentos específicos
+                        </p>
+                        <p className="text-sm md:text-base opacity-85">
+                            Cada menú utiliza los superalimentos y alimentos compatibles de tu genotipo
+                        </p>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Selector de Comidas */}
-            <div className="flex flex-wrap gap-2 md:gap-4 justify-center bg-white p-4 rounded-xl shadow-sm">
+            <div className="w-full flex flex-wrap gap-3 md:gap-4 justify-center bg-white p-5 md:p-6 rounded-xl shadow-md border border-gray-100">
                 {(Object.keys(mealLabels) as Array<keyof typeof mealLabels>).map((meal) => {
-                    const { icon: Icon, color } = mealIcons[meal];
+                    const { icon: Icon, classes } = mealIcons[meal];
                     const isSelected = selectedMeal === meal;
                     
                     return (
                         <button
                             key={meal}
                             onClick={() => setSelectedMeal(meal)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm md:text-base transition-all duration-200 ${
                                 isSelected
-                                    ? `bg-${color}-100 text-${color}-700 shadow-md`
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    ? `${classes.bg100} ${classes.text700} shadow-md scale-105`
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-sm'
                             }`}
                         >
-                            <Icon className="w-4 h-4" />
+                            <Icon className="w-4 h-4 md:w-5 md:h-5" />
                             <span>{mealLabels[meal]}</span>
                         </button>
                     );
@@ -194,53 +261,56 @@ const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor
             </div>
 
             {/* Opciones de Menú */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
                 {menuPlans[selectedMeal].map((option, index) => {
-                    const { color } = mealIcons[selectedMeal];
+                    const { classes } = mealIcons[selectedMeal];
                     const isSuperFood = option.category === 'superalimento';
                     
                     return (
                         <div 
                             key={index}
-                            className={`bg-white rounded-2xl shadow-lg border-2 transition-all hover:shadow-xl ${
-                                isSuperFood ? `border-${color}-200` : 'border-gray-200'
+                            className={`w-full bg-white rounded-2xl shadow-md border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                                isSuperFood ? classes.border200 : 'border-gray-200'
                             }`}
                         >
-                            <div className={`bg-${color}-50 p-4 rounded-t-2xl border-b border-${color}-100`}>
-                                <div className="flex items-start justify-between mb-2">
-                                    <h3 className={`text-lg font-bold text-${color}-800`}>
+                            <div className={`${classes.bg50} p-5 rounded-t-2xl border-b-2 ${classes.border100}`}>
+                                <div className="flex items-start justify-between gap-3 mb-3">
+                                    <h3 className={`text-base md:text-lg font-bold ${classes.text800} flex-1`}>
                                         {option.title}
                                     </h3>
                                     {isSuperFood && (
-                                        <span className={`bg-${color}-200 text-${color}-800 text-xs font-bold px-2 py-1 rounded-full`}>
+                                        <span className={`${classes.bg200} ${classes.text800} text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0`}>
                                             ÓPTIMO
                                         </span>
                                     )}
                                 </div>
-                                <p className={`text-sm text-${color}-600`}>
+                                <p className={`text-sm ${classes.text600} leading-relaxed`}>
                                     {option.description}
                                 </p>
                             </div>
                             
-                            <div className="p-4">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <Clock className={`w-4 h-4 text-${color}-500`} />
-                                    <span className={`text-sm font-medium text-${color}-700`}>
+                            <div className="p-5">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <Clock className={`w-4 h-4 ${classes.text500} flex-shrink-0`} />
+                                    <span className={`text-sm font-semibold ${classes.text700}`}>
                                         Ingredientes principales:
                                     </span>
                                 </div>
-                                <ul className="space-y-2">
-                                    {option.foods.map((food, foodIndex) => (
-                                        <li 
-                                            key={foodIndex}
-                                            className={`flex items-center gap-2 text-sm p-2 rounded-lg ${
-                                                isSuperFood ? `bg-${color}-50` : 'bg-gray-50'
-                                            }`}
-                                        >
-                                            <div className={`w-2 h-2 rounded-full bg-${color}-400`}></div>
-                                            <span className="text-gray-700">{food}</span>
-                                        </li>
-                                    ))}
+                                <ul className="space-y-2.5">
+                                    {option.foods.map((food, foodIndex) => {
+                                        const bgClass = isSuperFood ? classes.bg50 : 'bg-gray-50';
+                                        const hoverClass = isSuperFood ? classes.hoverBg100 : 'hover:bg-gray-100';
+                                        
+                                        return (
+                                            <li 
+                                                key={foodIndex}
+                                                className={`flex items-start gap-3 text-sm p-2.5 rounded-lg transition-colors ${bgClass} ${hoverClass}`}
+                                            >
+                                                <div className={`w-2 h-2 rounded-full ${classes.bg400} mt-1.5 flex-shrink-0`}></div>
+                                                <span className="text-gray-700 leading-relaxed">{food}</span>
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                         </div>
@@ -249,16 +319,16 @@ const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor
             </div>
 
             {/* Nota informativa */}
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-xl">
-                <div className="flex items-start gap-3">
+            <div className="w-full bg-blue-50 border-l-4 border-blue-400 p-5 md:p-6 rounded-r-xl shadow-sm">
+                <div className="flex items-start gap-4">
                     <div className="flex-shrink-0">
-                        <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span className="text-blue-600 font-bold text-sm">i</span>
+                        <div className="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span className="text-blue-600 font-bold text-base">i</span>
                         </div>
                     </div>
-                    <div>
-                        <h4 className="text-blue-800 font-semibold mb-1">Sobre estos menús</h4>
-                        <p className="text-blue-700 text-sm">
+                    <div className="flex-1">
+                        <h4 className="text-blue-800 font-semibold mb-2 text-base md:text-lg">Sobre estos menús</h4>
+                        <p className="text-blue-700 text-sm md:text-base leading-relaxed">
                             Estos menús están generados automáticamente basándose en los alimentos de tu genotipo. 
                             Los marcados como "ÓPTIMO" utilizan principalmente tus superalimentos. 
                             Para recetas detalladas y porciones específicas, consulta con el asistente IA o tu profesional de la salud.
