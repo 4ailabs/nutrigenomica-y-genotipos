@@ -156,16 +156,40 @@ Asegúrate de que cada comida use SOLO alimentos de la lista de superalimentos y
     try {
       const response = await withRetry(
         async () => {
-          const model = genAI.getGenerativeModel({ 
-            model: 'gemini-pro',
-            generationConfig: {
-              temperature: 0.5,
-              topK: 40,
-              topP: 0.95,
+          // Intentar con modelos disponibles, en orden de preferencia (más recientes primero)
+          const modelsToTry = ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro'];
+          let lastError: any = null;
+          
+          for (const modelName of modelsToTry) {
+            try {
+              const model = genAI.getGenerativeModel({ 
+                model: modelName,
+                generationConfig: {
+                  temperature: 0.5,
+                  topK: 40,
+                  topP: 0.95,
+                }
+              });
+              const result = await model.generateContent(fullPrompt);
+              return result.response;
+            } catch (error: any) {
+              lastError = error;
+              const errorMsg = error?.message || error?.toString() || '';
+              // Si es error 404 o modelo no encontrado, intentar siguiente modelo
+              if (errorMsg.includes('404') || 
+                  errorMsg.includes('not found') || 
+                  errorMsg.includes('is not found') ||
+                  errorMsg.includes('not supported')) {
+                console.warn(`[Gemini] Modelo ${modelName} no disponible:`, errorMsg);
+                continue;
+              }
+              // Si es otro error, lanzarlo
+              throw error;
             }
-          });
-          const result = await model.generateContent(fullPrompt);
-          return result.response;
+          }
+          // Si todos los modelos fallaron, lanzar error descriptivo
+          const errorMsg = lastError?.message || lastError?.toString() || 'Error desconocido';
+          throw new Error(`No se pudo encontrar un modelo disponible de Gemini. Modelos intentados: ${modelsToTry.join(', ')}. Error: ${errorMsg}. Verifica que tu API key tenga acceso a los modelos de Gemini.`);
         },
         {
           maxRetries: 3,
@@ -293,16 +317,39 @@ export async function generateChatResponse(
     try {
         const response = await withRetry(
           async () => {
-            const model = genAI.getGenerativeModel({ 
-              model: 'gemini-pro',
-              generationConfig: {
-                temperature: 0.3, // Más bajo para respuestas más consistentes
-                topK: 40,
-                topP: 0.8,
+            // Intentar con modelos disponibles, en orden de preferencia (más recientes primero)
+            const modelsToTry = ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro'];
+            let lastError: any = null;
+            
+            for (const modelName of modelsToTry) {
+              try {
+                const model = genAI.getGenerativeModel({ 
+                  model: modelName,
+                  generationConfig: {
+                    temperature: 0.3, // Más bajo para respuestas más consistentes
+                    topK: 40,
+                    topP: 0.8,
+                  }
+                });
+                const result = await model.generateContent(fullPrompt);
+                return result.response;
+              } catch (error: any) {
+                lastError = error;
+                const errorMsg = error?.message || error?.toString() || '';
+                // Si es error 404 o modelo no encontrado, intentar siguiente modelo
+                if (errorMsg.includes('404') || 
+                    errorMsg.includes('not found') || 
+                    errorMsg.includes('is not found') ||
+                    errorMsg.includes('not supported')) {
+                  console.warn(`[Gemini] Modelo ${modelName} no disponible:`, errorMsg);
+                  continue;
+                }
+                // Si es otro error, lanzarlo
+                throw error;
               }
-            });
-            const result = await model.generateContent(fullPrompt);
-            return result.response;
+            }
+            // Si todos los modelos fallaron, lanzar el último error
+            throw lastError || new Error('No se pudo encontrar un modelo disponible');
           },
           {
             maxRetries: 3,
