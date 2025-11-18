@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { FoodGuideData, AIPersonalData, ChatMessage } from '../types';
 import { FOOD_GUIDE_DATA } from '../foodData';
 import { getGeminiApiKey } from './env';
@@ -11,7 +11,7 @@ if (!apiKey) {
   console.warn("[Gemini] Falta la API key. Define VITE_GEMINI_API_KEY en .env.local (desarrollo) o en Vercel (producción).");
 }
 
-const ai = new GoogleGenAI({ apiKey: apiKey || '' });
+const genAI = new GoogleGenerativeAI(apiKey || '');
 
 function getFoodLists(foodData: FoodGuideData) {
     const superfoods: string[] = [];
@@ -156,15 +156,16 @@ Asegúrate de que cada comida use SOLO alimentos de la lista de superalimentos y
     try {
       const response = await withRetry(
         async () => {
-          return await (ai as any).models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: fullPrompt,
-            config: {
-                temperature: 0.5,
-                topK: 40,
-                topP: 0.95,
+          const model = genAI.getGenerativeModel({ 
+            model: 'gemini-1.5-flash',
+            generationConfig: {
+              temperature: 0.5,
+              topK: 40,
+              topP: 0.95,
             }
           });
+          const result = await model.generateContent(fullPrompt);
+          return result.response;
         },
         {
           maxRetries: 3,
@@ -292,15 +293,16 @@ export async function generateChatResponse(
     try {
         const response = await withRetry(
           async () => {
-            return await (ai as any).models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: fullPrompt,
-                config: {
-                    temperature: 0.3, // Más bajo para respuestas más consistentes
-                    topK: 40,
-                    topP: 0.8,
-                }
+            const model = genAI.getGenerativeModel({ 
+              model: 'gemini-1.5-flash',
+              generationConfig: {
+                temperature: 0.3, // Más bajo para respuestas más consistentes
+                topK: 40,
+                topP: 0.8,
+              }
             });
+            const result = await model.generateContent(fullPrompt);
+            return result.response;
           },
           {
             maxRetries: 3,
