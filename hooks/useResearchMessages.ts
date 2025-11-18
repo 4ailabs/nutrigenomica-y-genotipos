@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export interface Message {
   id: string;
@@ -14,7 +14,7 @@ export function useResearchMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const addMessage = (message: Omit<Message, 'id' | 'timestamp'>) => {
+  const addMessage = React.useCallback((message: Omit<Message, 'id' | 'timestamp'>) => {
     const newMessage: Message = {
       ...message,
       id: `${message.type}-${Date.now()}-${Math.random()}`,
@@ -22,7 +22,7 @@ export function useResearchMessages() {
     };
     setMessages(prev => [...prev, newMessage]);
     return newMessage.id;
-  };
+  }, []);
 
   const updateMessage = (id: string, updates: Partial<Message>) => {
     setMessages(prev =>

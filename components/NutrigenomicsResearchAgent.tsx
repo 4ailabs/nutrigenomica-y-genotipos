@@ -109,7 +109,11 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     setInputValue('');
     clearResearch();
     setCurrentQuery(query);
-    reportCreatedRef.current = null; // Resetear referencia al cambiar consulta
+    
+    // Resetear todas las referencias para evitar bloqueos
+    reportCreatedRef.current = null;
+    planMessageRef.current = null;
+    errorMessageRef.current = null;
 
     // Ejecutar investigación
     const result = await executeResearch(query, researchType, genotypeId);
@@ -137,7 +141,11 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
     clearResearch();
     setCurrentQuery(example.query);
-    reportCreatedRef.current = null; // Resetear referencia al cambiar consulta
+    
+    // Resetear todas las referencias para evitar bloqueos
+    reportCreatedRef.current = null;
+    planMessageRef.current = null;
+    errorMessageRef.current = null;
 
     const result = await executeResearch(example.query, example.type, genotypeId);
 
@@ -151,14 +159,21 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     }
   };
 
+  // Prevenir mensaje de servicio duplicado
+  const serviceErrorShownRef = React.useRef(false);
+
   // Mostrar mensaje de error de servicio si no está disponible
   React.useEffect(() => {
-    if (serviceError && messages.length === 0) {
+    if (serviceError && messages.length === 0 && !serviceErrorShownRef.current) {
+      serviceErrorShownRef.current = true;
       addMessage({
         type: 'system',
         content: `⚠️ **API Key No Configurada**\n\nPara usar la funcionalidad completa de IA:\n\n**En desarrollo local:** Crea un archivo .env.local con VITE_GEMINI_API_KEY=tu_api_key\n**En Vercel:** Configura la variable de entorno VITE_GEMINI_API_KEY\n\nSin la API configurada, no se pueden generar reportes de investigación personalizados.`,
         status: 'error',
       });
+    } else if (!serviceError) {
+      // Resetear cuando el servicio esté disponible
+      serviceErrorShownRef.current = false;
     }
   }, [serviceError, messages.length, addMessage]);
 
@@ -195,9 +210,20 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     }
   }, [synthesis, currentPlan, results, isProcessing, currentQuery, createResearchResult, setResearch, addMessage]);
 
+  // Prevenir mensajes duplicados del plan
+  const planMessageRef = React.useRef<string | null>(null);
+
   // Actualizar mensajes cuando cambia el plan
   React.useEffect(() => {
     if (currentPlan && isProcessing) {
+      const planKey = `${currentPlan.subagents.join(',')}-${currentPlan.researchType}`;
+      
+      // Evitar mensajes duplicados
+      if (planMessageRef.current === planKey) {
+        return;
+      }
+      
+      planMessageRef.current = planKey;
       addMessage({
         type: 'system',
         content: `📋 **Plan de Investigación Creado**\n\nSe han identificado ${currentPlan.subagents.length} aspectos especializados para analizar:\n\n${currentPlan.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
@@ -208,9 +234,18 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     }
   }, [currentPlan, isProcessing, addMessage]);
 
+  // Prevenir mensajes de error duplicados
+  const errorMessageRef = React.useRef<string | null>(null);
+
   // Mostrar error si hay
   React.useEffect(() => {
     if (executionError && !isProcessing) {
+      // Evitar mensajes de error duplicados
+      if (errorMessageRef.current === executionError) {
+        return;
+      }
+      
+      errorMessageRef.current = executionError;
       const errorMsg = ResearchErrorHandler.createErrorMessage(
         new Error(executionError),
         'Error en la Investigación'

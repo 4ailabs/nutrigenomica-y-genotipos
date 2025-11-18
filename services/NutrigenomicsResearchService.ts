@@ -48,7 +48,7 @@ export interface NutrigenomicsFinalReport {
 export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStrategy> = {
   PLANNING: {
     primary: 'gemini-1.5-flash',
-    fallback: 'gemini-1.5-pro',
+    fallback: 'gemini-2.0-flash-exp',
     reason: 'Planificación rápida de investigación nutrigenómica',
     maxTokens: 4096,
     temperature: 0.3,
@@ -56,7 +56,7 @@ export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStra
   },
   
   GENETIC_ANALYSIS: {
-    primary: 'gemini-1.5-pro',
+    primary: 'gemini-2.0-flash-exp',
     fallback: 'gemini-1.5-flash',
     reason: 'Análisis genético profundo con contexto extenso',
     maxTokens: 16384,
@@ -65,7 +65,7 @@ export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStra
   },
   
   METABOLIC_RESEARCH: {
-    primary: 'gemini-1.5-pro',
+    primary: 'gemini-2.0-flash-exp',
     fallback: 'gemini-1.5-flash',
     reason: 'Investigación metabólica con razonamiento avanzado',
     maxTokens: 12288,
@@ -74,7 +74,7 @@ export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStra
   },
   
   EPIGENETIC_STUDY: {
-    primary: 'gemini-1.5-pro',
+    primary: 'gemini-2.0-flash-exp',
     fallback: 'gemini-1.5-flash',
     reason: 'Análisis epigenético con máximo contexto',
     maxTokens: 16384,
@@ -83,7 +83,7 @@ export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStra
   },
   
   CLINICAL_SYNTHESIS: {
-    primary: 'gemini-1.5-pro',
+    primary: 'gemini-2.0-flash-exp',
     fallback: 'gemini-1.5-flash',
     reason: 'Síntesis clínica con razonamiento médico',
     maxTokens: 8192,
@@ -93,7 +93,7 @@ export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStra
   
   LITERATURE_REVIEW: {
     primary: 'gemini-1.5-flash',
-    fallback: 'gemini-1.5-pro',
+    fallback: 'gemini-2.0-flash-exp',
     reason: 'Revisión rápida de literatura actualizada',
     maxTokens: 6144,
     temperature: 0.4,
