@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ClipboardList, BarChart3, Target, Clock, Zap, TestTube, Ruler, Fingerprint, Users, Activity, Brain } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface BiometricsPageProps {
     onBackToPortal: () => void;
@@ -103,16 +105,63 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
     };
 
     // Función para exportar a PDF
-    const exportToPDF = () => {
-        const dataStr = JSON.stringify(formData, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'biomediciones_paciente.json';
-        link.click();
-        URL.revokeObjectURL(url);
-        alert('Datos exportados como JSON (simulando PDF)');
+    const exportToPDF = async () => {
+        try {
+            // Obtener el elemento del formulario
+            const element = document.getElementById('biometrics-form');
+            if (!element) {
+                alert('No se pudo encontrar el formulario para exportar');
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            const loadingAlert = document.createElement('div');
+            loadingAlert.textContent = 'Generando PDF...';
+            loadingAlert.style.cssText = 'position:fixed;top:20px;right:20px;background:#4CAF50;color:white;padding:15px 20px;border-radius:8px;z-index:9999;box-shadow:0 4px 6px rgba(0,0,0,0.1);';
+            document.body.appendChild(loadingAlert);
+
+            // Capturar el elemento como imagen
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            });
+
+            // Crear PDF
+            const imgWidth = 210; // A4 width in mm
+            const pageHeight = 297; // A4 height in mm
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgData = canvas.toDataURL('image/png');
+
+            // Agregar imagen al PDF, paginando si es necesario
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            // Guardar el PDF
+            const fileName = `biomediciones_paciente_${new Date().toISOString().split('T')[0]}.pdf`;
+            pdf.save(fileName);
+
+            // Remover mensaje de carga
+            document.body.removeChild(loadingAlert);
+            
+            // Mostrar mensaje de éxito
+            alert('PDF generado exitosamente');
+        } catch (error) {
+            console.error('Error al generar PDF:', error);
+            alert('Error al generar el PDF. Por favor, intenta nuevamente.');
+        }
     };
 
     // Función para exportar a JSON
@@ -456,7 +505,7 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                          <p className="text-slate-600 text-base">Registra tus mediciones para calcular tu genotipo nutricional</p>
                      </div>
                      
-                     <form className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 sm:p-10 space-y-14 border border-white/20">
+                     <form id="biometrics-form" className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 sm:p-10 space-y-14 border border-white/20">
                          
                         {/* 1. PROP */}
                         <fieldset className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
