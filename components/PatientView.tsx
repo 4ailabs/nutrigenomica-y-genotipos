@@ -47,7 +47,6 @@ import type { FoodGuideData } from '../types';
 import GenotypeMenus from './GenotypeMenus';
 import GenotypeRecipes from './GenotypeRecipes';
 import DesktopSidebar from './DesktopSidebar';
-import TableOfContents from './TableOfContents';
 
 
 interface PatientViewProps {
@@ -80,22 +79,6 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         });
     };
 
-    // Datos para la tabla de contenidos
-    const tocSections = useMemo(() => {
-        if (!selectedGenotype || activeTab !== 'genotype') return [];
-        
-        const genotype = GENOTYPE_DATA[selectedGenotype];
-        if (!genotype) return [];
-
-        return [
-            { id: 'essence', title: genotype.essence.title, isOpen: openSections.has('essence') },
-            { id: 'characteristics1', title: 'Características Principales', isOpen: openSections.has('characteristics1') },
-            { id: 'characteristics2', title: 'Características Secundarias', isOpen: openSections.has('characteristics2') },
-            { id: 'physical', title: 'Características Físicas y Metabólicas', isOpen: openSections.has('physical') },
-            { id: 'foodPlan', title: genotype.foodPlan.title, isOpen: openSections.has('foodPlan') },
-            { id: 'foodsToAvoid', title: genotype.foodsToAvoid.title, isOpen: openSections.has('foodsToAvoid') }
-        ];
-    }, [selectedGenotype, activeTab, openSections]);
 
     const getFoodData = (): FoodGuideData | null => {
         if (!selectedGenotype) return null;
@@ -776,15 +759,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         genotypeGradient={getGenotypeGradient(selectedGenotype)}
                     />
 
-                    {/* Tabla de contenidos para desktop */}
-                    <TableOfContents
-                        sections={tocSections}
-                        onSectionClick={toggleSection}
-                        activeTab={activeTab}
-                    />
-
-                    {/* Contenido principal con márgenes para sidebar */}
-                    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 lg:ml-72 xl:ml-80 lg:mr-72 xl:mr-80 py-4 md:py-8 transition-all duration-300">
+                    {/* Contenido principal con margen solo para sidebar izquierdo */}
+                    <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 lg:ml-80 py-4 md:py-8 transition-all duration-300">
                     {/* Header del Genotipo Seleccionado Mejorado */}
                     <div className={`bg-gradient-to-r ${getGenotypeGradient(selectedGenotype)} rounded-3xl shadow-xl p-6 md:p-8 mb-8 text-white relative overflow-hidden`}>
                         <div className="absolute inset-0 opacity-20">
