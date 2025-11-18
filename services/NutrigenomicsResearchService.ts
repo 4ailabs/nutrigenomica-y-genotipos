@@ -453,37 +453,43 @@ REQUISITOS DEL ANÁLISIS GENÉTICO:
    - Estrategias de monitoreo y biomarcadores relevantes
    - Consideraciones de seguridad y contraindicaciones
 
-FORMATO JSON ESTRICTO:
-{
-  "content": "Análisis genético completo y detallado en formato narrativo (mínimo 500 palabras, máximo 2000 palabras). Debe incluir introducción, análisis de cada gen/polimorfismo, impacto metabólico, y conclusiones clínicas.",
-  "geneAnalysis": [
-    {
-      "gene": "Nombre del gen (símbolo oficial HGNC)",
-      "polymorphism": "SNP rsID o variante (ej: rs1801133, C677T)",
-      "function": "Función biológica del gen y proteína codificada",
-      "impact": "Impacto funcional específico del polimorfismo",
-      "alleleFrequency": "Frecuencia alélica poblacional si está disponible",
-      "clinicalSignificance": "Significado clínico y relevancia nutrigenómica"
-    }
-  ],
-  "metabolicInsights": [
-    "Insight metabólico 1: Descripción específica de cómo afecta el metabolismo",
-    "Insight metabólico 2: Vías enzimáticas o procesos afectados"
-  ],
-  "epigeneticFindings": [
-    "Hallazgo epigenético 1: Modificaciones epigenéticas relacionadas si aplica",
-    "Hallazgo epigenético 2: Influencia de nutrientes en expresión génica"
-  ],
-  "clinicalApplications": [
-    "Aplicación clínica 1: Recomendación específica y accionable",
-    "Aplicación clínica 2: Protocolo de intervención o monitoreo"
-  ],
-  "sources": [
-    {"uri": "URL o DOI", "title": "Título del estudio o referencia", "type": "tipo (estudio clínico, revisión, metaanálisis, etc.)"}
-  ],
-  "confidenceLevel": 0.85,
-  "evidenceLevel": "Nivel de evidencia (Alto/Medio/Bajo) basado en calidad de estudios disponibles"
-}`;
+FORMATO DE RESPUESTA (TEXTO LEGIBLE, NO JSON):
+Debes responder en formato de texto legible y organizado, NO en JSON. Estructura tu respuesta de la siguiente manera:
+
+## Análisis Genético Completo
+
+Escribe un análisis genético completo y detallado en formato narrativo (mínimo 500 palabras, máximo 2000 palabras). Debe incluir introducción, análisis de cada gen/polimorfismo, impacto metabólico, y conclusiones clínicas.
+
+## Genes y Polimorfismos Analizados
+
+Para cada gen relevante, incluye:
+- Gen: Nombre del gen (símbolo oficial HGNC)
+- Polimorfismo: SNP rsID o variante (ej: rs1801133, C677T)
+- Función: Función biológica del gen y proteína codificada
+- Impacto: Impacto funcional específico del polimorfismo
+- Frecuencia Alélica: Frecuencia alélica poblacional si está disponible
+- Significado Clínico: Significado clínico y relevancia nutrigenómica
+
+## Insights Metabólicos
+
+1. Descripción específica de cómo afecta el metabolismo
+2. Vías enzimáticas o procesos afectados
+
+## Hallazgos Epigenéticos
+
+1. Modificaciones epigenéticas relacionadas si aplica
+2. Influencia de nutrientes en expresión génica
+
+## Aplicaciones Clínicas
+
+1. Recomendación específica y accionable
+2. Protocolo de intervención o monitoreo
+
+## Referencias
+
+- Título del estudio o referencia - URL o DOI - Tipo: estudio clínico, revisión, metaanálisis, etc.
+
+Nivel de Evidencia: Alto/Medio/Bajo basado en calidad de estudios disponibles`;
 
     case 'METABOLIC_RESEARCH':
       const metabolicAspect = typeof content === 'string' ? content : content.aspect;
@@ -534,36 +540,42 @@ REQUISITOS DE LA INVESTIGACIÓN METABÓLICA:
    - Consideraciones de timing nutricional (crononutrición)
    - Intervenciones dietéticas personalizadas
 
-FORMATO JSON ESTRICTO:
-{
-  "content": "Investigación metabólica completa y detallada en formato narrativo (mínimo 600 palabras, máximo 2500 palabras). Debe incluir descripción de vías, regulación, efectos nutricionales y aplicaciones clínicas.",
-  "geneAnalysis": [
-    {
-      "gene": "Gen relacionado con la vía metabólica",
-      "polymorphism": "Variantes genéticas relevantes si aplica",
-      "function": "Función en la vía metabólica",
-      "impact": "Impacto en el metabolismo nutricional"
-    }
-  ],
-  "metabolicInsights": [
-    "Insight 1: Descripción detallada de vía metabólica específica y su regulación",
-    "Insight 2: Efectos de nutrientes en enzimas y cofactores",
-    "Insight 3: Puntos de regulación y control metabólico",
-    "Insight 4: Biomarcadores y evaluación funcional"
-  ],
-  "epigeneticFindings": [
-    "Hallazgo 1: Regulación epigenética de vías metabólicas si aplica"
-  ],
-  "clinicalApplications": [
-    "Aplicación 1: Estrategia nutricional específica con dosis y protocolo",
-    "Aplicación 2: Protocolo de monitoreo y seguimiento"
-  ],
-  "sources": [
-    {"uri": "URL o DOI", "title": "Título del estudio", "type": "tipo de estudio"}
-  ],
-  "confidenceLevel": 0.85,
-  "evidenceLevel": "Nivel de evidencia (Alto/Medio/Bajo)"
-}`;
+FORMATO DE RESPUESTA (TEXTO LEGIBLE, NO JSON):
+Debes responder en formato de texto legible y organizado, NO en JSON. Estructura tu respuesta de la siguiente manera:
+
+## Investigación Metabólica Completa
+
+Escribe una investigación metabólica completa y detallada en formato narrativo (mínimo 600 palabras, máximo 2500 palabras). Debe incluir descripción de vías, regulación, efectos nutricionales y aplicaciones clínicas.
+
+## Genes y Vías Metabólicas
+
+Para cada gen relevante:
+- Gen: Nombre del gen relacionado con la vía metabólica
+- Variantes: Variantes genéticas relevantes si aplica
+- Función: Función en la vía metabólica
+- Impacto: Impacto en el metabolismo nutricional
+
+## Insights Metabólicos
+
+1. Descripción detallada de vía metabólica específica y su regulación
+2. Efectos de nutrientes en enzimas y cofactores
+3. Puntos de regulación y control metabólico
+4. Biomarcadores y evaluación funcional
+
+## Hallazgos Epigenéticos
+
+1. Regulación epigenética de vías metabólicas si aplica
+
+## Aplicaciones Clínicas
+
+1. Estrategia nutricional específica con dosis y protocolo
+2. Protocolo de monitoreo y seguimiento
+
+## Referencias
+
+- Título del estudio - URL o DOI - Tipo de estudio
+
+Nivel de Evidencia: Alto/Medio/Bajo`;
 
     case 'EPIGENETIC_STUDY':
       const epigeneticAspect = typeof content === 'string' ? content : content.aspect;
@@ -614,36 +626,42 @@ REQUISITOS DEL ESTUDIO EPIGENÉTICO:
    - Consideraciones de timing y duración de intervenciones
    - Biomarcadores epigenéticos para monitoreo
 
-FORMATO JSON ESTRICTO:
-{
-  "content": "Estudio epigenético completo y detallado en formato narrativo (mínimo 600 palabras, máximo 2500 palabras). Debe incluir mecanismos, influencia nutricional, factores ambientales y aplicaciones clínicas.",
-  "geneAnalysis": [
-    {
-      "gene": "Gen con regulación epigenética relevante",
-      "polymorphism": "Variantes que afectan susceptibilidad epigenética si aplica",
-      "function": "Función del gen y su regulación epigenética",
-      "impact": "Impacto de modificaciones epigenéticas en expresión y función"
-    }
-  ],
-  "metabolicInsights": [
-    "Insight 1: Vías metabólicas afectadas por cambios epigenéticos"
-  ],
-  "epigeneticFindings": [
-    "Hallazgo 1: Modificaciones epigenéticas específicas identificadas (tipo, ubicación, genes afectados)",
-    "Hallazgo 2: Nutrientes que modulan estas modificaciones",
-    "Hallazgo 3: Factores ambientales y de estilo de vida relevantes",
-    "Hallazgo 4: Potencial de reversión y estrategias de intervención"
-  ],
-  "clinicalApplications": [
-    "Aplicación 1: Protocolo nutricional específico para modulación epigenética",
-    "Aplicación 2: Estrategia de monitoreo y evaluación de cambios epigenéticos"
-  ],
-  "sources": [
-    {"uri": "URL o DOI", "title": "Título del estudio", "type": "tipo de estudio"}
-  ],
-  "confidenceLevel": 0.85,
-  "evidenceLevel": "Nivel de evidencia (Alto/Medio/Bajo)"
-}`;
+FORMATO DE RESPUESTA (TEXTO LEGIBLE, NO JSON):
+Debes responder en formato de texto legible y organizado, NO en JSON. Estructura tu respuesta de la siguiente manera:
+
+## Estudio Epigenético Completo
+
+Escribe un estudio epigenético completo y detallado en formato narrativo (mínimo 600 palabras, máximo 2500 palabras). Debe incluir mecanismos, influencia nutricional, factores ambientales y aplicaciones clínicas.
+
+## Genes con Regulación Epigenética
+
+Para cada gen relevante:
+- Gen: Nombre del gen con regulación epigenética relevante
+- Variantes: Variantes que afectan susceptibilidad epigenética si aplica
+- Función: Función del gen y su regulación epigenética
+- Impacto: Impacto de modificaciones epigenéticas en expresión y función
+
+## Vías Metabólicas Afectadas
+
+1. Vías metabólicas afectadas por cambios epigenéticos
+
+## Hallazgos Epigenéticos
+
+1. Modificaciones epigenéticas específicas identificadas (tipo, ubicación, genes afectados)
+2. Nutrientes que modulan estas modificaciones
+3. Factores ambientales y de estilo de vida relevantes
+4. Potencial de reversión y estrategias de intervención
+
+## Aplicaciones Clínicas
+
+1. Protocolo nutricional específico para modulación epigenética
+2. Estrategia de monitoreo y evaluación de cambios epigenéticos
+
+## Referencias
+
+- Título del estudio - URL o DOI - Tipo de estudio
+
+Nivel de Evidencia: Alto/Medio/Bajo`;
 
     case 'CLINICAL_SYNTHESIS':
       const synthesisTopic = typeof content === 'string' ? content : content.topic;
@@ -712,22 +730,53 @@ REQUISITOS DE LA SÍNTESIS CLÍNICA:
    - Identifica áreas con evidencia limitada
    - Sugiere áreas que requieren más investigación
 
-FORMATO JSON ESTRICTO:
-{
-  "summary": [
-    "Punto clave 1: Resumen ejecutivo de hallazgo principal (máximo 2 líneas)",
-    "Punto clave 2: Hallazgo secundario importante",
-    "Punto clave 3: Recomendación principal",
-    "Punto clave 4-6: Otros puntos críticos"
-  ],
-  "geneticProfile": "Perfil genético integrado completo (300-500 palabras). Debe resumir todas las variantes genéticas relevantes, sus interacciones, y el significado clínico integrado.",
-  "metabolicAnalysis": "Análisis metabólico conjunto completo (300-500 palabras). Debe integrar todas las vías metabólicas, requerimientos nutricionales, y estado metabólico inferido.",
-  "epigeneticFactors": "Factores epigenéticos relevantes integrados (200-400 palabras). Debe resumir modificaciones epigenéticas, influencia nutricional, y potencial de modulación.",
-  "clinicalRecommendations": "Recomendaciones clínicas específicas y accionables (400-600 palabras). Debe incluir:\n- Dieta específica con alimentos prioritarios y a evitar\n- Protocolo de suplementación con dosis y formas activas\n- Timing nutricional si es relevante\n- Consideraciones de seguridad\n- Alineación con genotipo del sistema GenoTipos",
-  "report": "Reporte clínico completo en formato Markdown profesional (mínimo 1000 palabras). Debe incluir:\n- Resumen ejecutivo\n- Introducción al caso\n- Análisis genético integrado\n- Análisis metabólico integrado\n- Factores epigenéticos\n- Recomendaciones clínicas detalladas\n- Protocolo de intervención paso a paso\n- Monitoreo y seguimiento\n- Contraindicaciones y precauciones\n- Referencias y nivel de evidencia\n- Notas profesionales para el médico",
-  "confidenceScore": 0.90,
-  "evidenceLevel": "Nivel de evidencia general (Alto/Medio/Bajo) basado en calidad de toda la evidencia integrada"
-}`;
+FORMATO DE RESPUESTA (TEXTO LEGIBLE, NO JSON):
+Debes responder en formato de texto legible y organizado, NO en JSON. Estructura tu respuesta de la siguiente manera:
+
+## Resumen Ejecutivo
+
+1. Punto clave 1: Resumen ejecutivo de hallazgo principal (máximo 2 líneas)
+2. Punto clave 2: Hallazgo secundario importante
+3. Punto clave 3: Recomendación principal
+4. Punto clave 4-6: Otros puntos críticos
+
+## Perfil Genético Integrado
+
+Escribe un perfil genético integrado completo (300-500 palabras). Debe resumir todas las variantes genéticas relevantes, sus interacciones, y el significado clínico integrado.
+
+## Análisis Metabólico Conjunto
+
+Escribe un análisis metabólico conjunto completo (300-500 palabras). Debe integrar todas las vías metabólicas, requerimientos nutricionales, y estado metabólico inferido.
+
+## Factores Epigenéticos
+
+Escribe sobre factores epigenéticos relevantes integrados (200-400 palabras). Debe resumir modificaciones epigenéticas, influencia nutricional, y potencial de modulación.
+
+## Recomendaciones Clínicas
+
+Escribe recomendaciones clínicas específicas y accionables (400-600 palabras). Debe incluir:
+- Dieta específica con alimentos prioritarios y a evitar
+- Protocolo de suplementación con dosis y formas activas
+- Timing nutricional si es relevante
+- Consideraciones de seguridad
+- Alineación con genotipo del sistema GenoTipos
+
+## Reporte Clínico Completo
+
+Escribe un reporte clínico completo en formato Markdown profesional (mínimo 1000 palabras). Debe incluir:
+- Resumen ejecutivo
+- Introducción al caso
+- Análisis genético integrado
+- Análisis metabólico integrado
+- Factores epigenéticos
+- Recomendaciones clínicas detalladas
+- Protocolo de intervención paso a paso
+- Monitoreo y seguimiento
+- Contraindicaciones y precauciones
+- Referencias y nivel de evidencia
+- Notas profesionales para el médico
+
+Nivel de Evidencia: Alto/Medio/Bajo basado en calidad de toda la evidencia integrada`;
 
     case 'LITERATURE_REVIEW':
       const reviewTopic = typeof content === 'string' ? content : content.topic;
@@ -777,41 +826,53 @@ REQUISITOS DE LA REVISIÓN DE LITERATURA:
    - Sugiere áreas que requieren más investigación
    - Proporciona contexto para toma de decisiones clínicas
 
-FORMATO JSON ESTRICTO:
-{
-  "content": "Revisión de literatura completa y crítica (mínimo 800 palabras, máximo 3000 palabras). Debe incluir:\n- Introducción al tema\n- Resumen de estudios clave (mínimo 5-10 estudios relevantes)\n- Evaluación crítica de evidencia\n- Síntesis de hallazgos principales\n- Consensos y controversias\n- Aplicaciones clínicas\n- Brechas en el conocimiento\n- Conclusiones y recomendaciones",
-  "geneAnalysis": [
-    {
-      "gene": "Gen relevante identificado en la literatura",
-      "polymorphism": "Polimorfismos mencionados en estudios",
-      "function": "Función según evidencia científica",
-      "impact": "Impacto clínico según estudios revisados"
-    }
-  ],
-  "metabolicInsights": [
-    "Insight 1: Hallazgo metabólico principal de la literatura",
-    "Insight 2: Consenso o controversia identificada"
-  ],
-  "epigeneticFindings": [
-    "Hallazgo 1: Evidencia epigenética encontrada en la literatura"
-  ],
-  "clinicalApplications": [
-    "Aplicación 1: Aplicación clínica basada en evidencia revisada"
-  ],
-  "sources": [
-    {
-      "uri": "DOI o URL del estudio",
-      "title": "Título completo del estudio",
-      "type": "Tipo de estudio (metaanálisis, RCT, GWAS, cohorte, etc.)",
-      "year": "Año de publicación",
-      "authors": "Autores principales (opcional)",
-      "quality": "Evaluación de calidad (Alta/Media/Baja)"
-    }
-  ],
-  "confidenceLevel": 0.85,
-  "evidenceLevel": "Nivel de evidencia general basado en calidad de estudios revisados (Alto/Medio/Bajo)",
-  "consensusLevel": "Nivel de consenso en la literatura (Alto/Medio/Bajo/Controvertido)"
-}`;
+FORMATO DE RESPUESTA (TEXTO LEGIBLE, NO JSON):
+Debes responder en formato de texto legible y organizado, NO en JSON. Estructura tu respuesta de la siguiente manera:
+
+## Revisión de Literatura Completa
+
+Escribe una revisión de literatura completa y crítica (mínimo 800 palabras, máximo 3000 palabras). Debe incluir:
+- Introducción al tema
+- Resumen de estudios clave (mínimo 5-10 estudios relevantes)
+- Evaluación crítica de evidencia
+- Síntesis de hallazgos principales
+- Consensos y controversias
+- Aplicaciones clínicas
+- Brechas en el conocimiento
+- Conclusiones y recomendaciones
+
+## Genes Relevantes Identificados
+
+Para cada gen relevante:
+- Gen: Nombre del gen relevante identificado en la literatura
+- Polimorfismos: Polimorfismos mencionados en estudios
+- Función: Función según evidencia científica
+- Impacto: Impacto clínico según estudios revisados
+
+## Insights Metabólicos
+
+1. Hallazgo metabólico principal de la literatura
+2. Consenso o controversia identificada
+
+## Hallazgos Epigenéticos
+
+1. Evidencia epigenética encontrada en la literatura
+
+## Aplicaciones Clínicas
+
+1. Aplicación clínica basada en evidencia revisada
+
+## Referencias
+
+Para cada estudio:
+- Título completo del estudio - DOI o URL
+- Tipo: Tipo de estudio (metaanálisis, RCT, GWAS, cohorte, etc.)
+- Año: Año de publicación
+- Autores: Autores principales (opcional)
+- Calidad: Evaluación de calidad (Alta/Media/Baja)
+
+Nivel de Evidencia: Alto/Medio/Bajo basado en calidad de estudios revisados
+Nivel de Consenso: Alto/Medio/Bajo/Controvertido en la literatura`;
 
     default:
       return `Analiza el siguiente contenido nutrigenómico: ${JSON.stringify(content)}`;
@@ -875,10 +936,19 @@ export class NutrigenomicsResearchService {
         
         console.log(`🧬 Nutrigenómica API exitosa: ${modelName} (solicitado: ${model}) en ${responseTime}ms (confianza: ${confidence})`);
         
+        // Intentar parsear JSON, pero mantener el texto original si falla
         try {
           const parsed = JSON.parse(text);
+          
+          // Extraer contenido de texto del JSON si existe
+          // Si el contenido es un objeto complejo, convertirlo a texto legible
+          if (parsed.content && typeof parsed.content === 'object') {
+            parsed.content = JSON.stringify(parsed.content, null, 2);
+          }
+          
           return { ...parsed, _meta: { model: modelName, originalModel: model, responseTime, confidence, task } };
         } catch (parseError) {
+          // Si no es JSON válido, devolver como texto plano
           return { 
             content: text, 
             sources: [], 

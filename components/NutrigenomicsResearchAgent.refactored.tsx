@@ -109,7 +109,6 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     setInputValue('');
     clearResearch();
     setCurrentQuery(query);
-    reportCreatedRef.current = null; // Resetear referencia al cambiar consulta
 
     // Ejecutar investigación
     const result = await executeResearch(query, researchType, genotypeId);
@@ -137,7 +136,6 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
     clearResearch();
     setCurrentQuery(example.query);
-    reportCreatedRef.current = null; // Resetear referencia al cambiar consulta
 
     const result = await executeResearch(example.query, example.type, genotypeId);
 
@@ -162,28 +160,17 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     }
   }, [serviceError, messages.length, addMessage]);
 
-  // Prevenir creación múltiple de reportes
-  const reportCreatedRef = React.useRef<string | null>(null);
-
   // Crear reporte cuando synthesis esté disponible
   React.useEffect(() => {
-    if (synthesis && currentPlan && results.length > 0 && !isProcessing && currentQuery) {
-      const reportKey = `${currentQuery}-${currentPlan.subagents.join(',')}-${results.length}`;
-      
-      // Evitar crear el mismo reporte múltiples veces
-      if (reportCreatedRef.current === reportKey) {
-        return;
-      }
-
+    if (synthesis && currentPlan && results.length > 0 && !isProcessing) {
       const researchResult = createResearchResult(
-        currentQuery,
+        '', // Se obtendrá del último mensaje de usuario
         currentPlan.researchType,
         currentPlan.subagents,
         results,
         synthesis
       );
       setResearch(researchResult);
-      reportCreatedRef.current = reportKey;
 
       addMessage({
         type: 'agent',
@@ -193,7 +180,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
         subagents: currentPlan.subagents,
       });
     }
-  }, [synthesis, currentPlan, results, isProcessing, currentQuery, createResearchResult, setResearch, addMessage]);
+  }, [synthesis, currentPlan, results, isProcessing, createResearchResult, setResearch, addMessage]);
 
   // Actualizar mensajes cuando cambia el plan
   React.useEffect(() => {
