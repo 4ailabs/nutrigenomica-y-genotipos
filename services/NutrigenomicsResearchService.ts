@@ -394,7 +394,7 @@ CONTEXTO CIENTÍFICO:
 - Prioriza evidencia científica de alta calidad (ensayos clínicos, metaanálisis, estudios de asociación genómica)
 
 REQUISITOS DEL PLAN:
-- Genera 5-7 aspectos específicos de investigación nutrigenómica
+- Genera EXACTAMENTE 5-7 aspectos específicos de investigación nutrigenómica
 - Cada aspecto debe ser:
   * Específico y accionable
   * Basado en evidencia científica
@@ -408,8 +408,12 @@ REQUISITOS DEL PLAN:
 - Considera interacciones gen-gen, gen-nutriente y gen-ambiente
 - Enfócate en aplicaciones clínicas prácticas y protocolos de intervención
 
-FORMATO: Array JSON de strings, cada string debe ser un aspecto de investigación específico y bien definido.
-Ejemplo: ["Análisis de polimorfismos MTHFR C677T y A1298C y su impacto en requerimientos de folato y B12", ...]`;
+FORMATO REQUERIDO - IMPORTANTE:
+Responde ÚNICAMENTE con un array JSON válido de strings. No agregues texto adicional, explicaciones o formato markdown.
+La respuesta debe ser SOLO el array JSON, sin código de bloques, sin backticks, sin prefijos.
+
+Ejemplo del formato EXACTO que debes seguir:
+["Análisis de polimorfismos MTHFR C677T y A1298C y su impacto en requerimientos de folato y B12", "Investigación de metabolismo lipídico y variantes APOE en relación con ácidos grasos omega-3", "Estudio de modificaciones epigenéticas inducidas por dieta", "Síntesis clínica de protocolos de intervención nutricional personalizada"]`;
       
     case 'GENETIC_ANALYSIS':
       const geneticAspect = typeof content === 'string' ? content : content.aspect;
@@ -936,9 +940,23 @@ export class NutrigenomicsResearchService {
         
         console.log(`🧬 Nutrigenómica API exitosa: ${modelName} (solicitado: ${model}) en ${responseTime}ms (confianza: ${confidence})`);
         
+        // Limpiar la respuesta de formato markdown si existe
+        let cleanedText = text.trim();
+        
+        // Remover bloques de código markdown (```json...```)
+        if (cleanedText.startsWith('```')) {
+          cleanedText = cleanedText.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/,'');
+        }
+        
         // Intentar parsear JSON, pero mantener el texto original si falla
         try {
-          const parsed = JSON.parse(text);
+          const parsed = JSON.parse(cleanedText);
+          
+          // Si es un array (como en PLANNING), devolverlo directamente
+          if (Array.isArray(parsed)) {
+            console.log(`🧬 Array parseado exitosamente con ${parsed.length} elementos`);
+            return parsed;
+          }
           
           // Extraer contenido de texto del JSON si existe
           // Si el contenido es un objeto complejo, convertirlo a texto legible
@@ -948,9 +966,10 @@ export class NutrigenomicsResearchService {
           
           return { ...parsed, _meta: { model: modelName, originalModel: model, responseTime, confidence, task } };
         } catch (parseError) {
+          console.warn(`🧬 No se pudo parsear JSON, usando texto plano. Error:`, parseError);
           // Si no es JSON válido, devolver como texto plano
           return { 
-            content: text, 
+            content: cleanedText, 
             sources: [], 
             geneAnalysis: [],
             metabolicInsights: [],
@@ -1018,8 +1037,27 @@ export class NutrigenomicsResearchService {
     
     const result = await this.callGeminiAPI(model, task, { query, genotypeId });
     
-    await this.cache.setCachedResponse(cacheKey, result, model, result._meta?.confidence, !!genotypeId);
-    return Array.isArray(result) ? result : result.content || [];
+    // El resultado debería ser un array directamente
+    let planArray: string[] = [];
+    if (Array.isArray(result)) {
+      planArray = result;
+    } else if (result.content) {
+      // Si por alguna razón viene en result.content, intentar parsearlo
+      if (Array.isArray(result.content)) {
+        planArray = result.content;
+      } else if (typeof result.content === 'string') {
+        try {
+          const parsed = JSON.parse(result.content);
+          planArray = Array.isArray(parsed) ? parsed : [];
+        } catch {
+          planArray = [];
+        }
+      }
+    }
+    
+    // Guardar en caché con confianza alta para planes
+    await this.cache.setCachedResponse(cacheKey, planArray, model, 0.9, !!genotypeId);
+    return planArray;
   }
 
   async analyzeGeneticAspect(aspect: string, mainTopic: string, genotypeId?: number): Promise<NutrigenomicsResult> {
