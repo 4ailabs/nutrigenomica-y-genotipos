@@ -48,8 +48,8 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ activeTab, onTabChange,
   ];
 
   return (
-    <aside className="hidden lg:block lg:fixed lg:left-8 lg:top-40 lg:w-64 xl:w-72 space-y-3 z-10">
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4 sticky top-24">
+    <aside className="hidden lg:block fixed left-8 top-24 w-64 xl:w-72 space-y-3 z-50">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4">
         <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 px-2">
           Navegación
         </h3>
