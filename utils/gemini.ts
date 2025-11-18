@@ -157,7 +157,7 @@ Asegúrate de que cada comida use SOLO alimentos de la lista de superalimentos y
       const response = await withRetry(
         async () => {
           const model = genAI.getGenerativeModel({ 
-            model: 'gemini-1.5-flash',
+            model: 'gemini-pro',
             generationConfig: {
               temperature: 0.5,
               topK: 40,
@@ -294,7 +294,7 @@ export async function generateChatResponse(
         const response = await withRetry(
           async () => {
             const model = genAI.getGenerativeModel({ 
-              model: 'gemini-1.5-flash',
+              model: 'gemini-pro',
               generationConfig: {
                 temperature: 0.3, // Más bajo para respuestas más consistentes
                 topK: 40,
