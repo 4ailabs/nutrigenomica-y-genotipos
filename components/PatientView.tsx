@@ -46,6 +46,8 @@ import { GENOTYPE_COLORS } from '../constants';
 import type { FoodGuideData } from '../types';
 import GenotypeMenus from './GenotypeMenus';
 import GenotypeRecipes from './GenotypeRecipes';
+import DesktopSidebar from './DesktopSidebar';
+import TableOfContents from './TableOfContents';
 
 
 interface PatientViewProps {
@@ -57,6 +59,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(null);
     const [activeTab, setActiveTab] = useState<'genotype' | 'foods' | 'menus' | 'recipes'>('genotype');
     const [openSections, setOpenSections] = useState<Set<string>>(new Set(['essence'])); // Por defecto solo la esencia está abierta
+    const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
     const handleGenotypeSelect = (genotypeId: number) => {
         setSelectedGenotype(genotypeId);
@@ -76,6 +79,23 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
             return newSet;
         });
     };
+
+    // Datos para la tabla de contenidos
+    const tocSections = useMemo(() => {
+        if (!selectedGenotype || activeTab !== 'genotype') return [];
+        
+        const genotype = GENOTYPE_DATA[selectedGenotype];
+        if (!genotype) return [];
+
+        return [
+            { id: 'essence', title: genotype.essence.title, isOpen: openSections.has('essence') },
+            { id: 'characteristics1', title: 'Características Principales', isOpen: openSections.has('characteristics1') },
+            { id: 'characteristics2', title: 'Características Secundarias', isOpen: openSections.has('characteristics2') },
+            { id: 'physical', title: 'Características Físicas y Metabólicas', isOpen: openSections.has('physical') },
+            { id: 'foodPlan', title: genotype.foodPlan.title, isOpen: openSections.has('foodPlan') },
+            { id: 'foodsToAvoid', title: genotype.foodsToAvoid.title, isOpen: openSections.has('foodsToAvoid') }
+        ];
+    }, [selectedGenotype, activeTab, openSections]);
 
     const getFoodData = (): FoodGuideData | null => {
         if (!selectedGenotype) return null;
@@ -177,10 +197,14 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
             <div className="space-y-6 md:space-y-8">
                 {/* Acordeón de Características Mejorado */}
                 {/* Esencia del Genotipo */}
-                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
+                <div 
+                    className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl hover:border-blue-200 transition-all duration-300 relative z-0"
+                    onMouseEnter={() => setHoveredSection('essence')}
+                    onMouseLeave={() => setHoveredSection(null)}
+                >
                         <button
                             onClick={() => toggleSection('essence')}
-                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-blue-50/50 transition-all duration-200"
+                            className="w-full p-5 md:p-7 lg:p-8 text-left flex items-center justify-between hover:bg-blue-50/50 transition-all duration-200"
                         >
                             <div className="flex items-center space-x-4">
                                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -652,7 +676,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 overflow-x-hidden">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -744,7 +768,23 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
             {/* Información del Genotipo Seleccionado */}
             {selectedGenotype && (
-                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 md:py-8">
+                <div className="relative">
+                    {/* Sidebar de navegación para desktop */}
+                    <DesktopSidebar 
+                        activeTab={activeTab}
+                        onTabChange={(tab) => setActiveTab(tab as any)}
+                        genotypeGradient={getGenotypeGradient(selectedGenotype)}
+                    />
+
+                    {/* Tabla de contenidos para desktop */}
+                    <TableOfContents
+                        sections={tocSections}
+                        onSectionClick={toggleSection}
+                        activeTab={activeTab}
+                    />
+
+                    {/* Contenido principal con márgenes para sidebar */}
+                    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 lg:ml-72 xl:ml-80 lg:mr-72 xl:mr-80 py-4 md:py-8 transition-all duration-300">
                     {/* Header del Genotipo Seleccionado Mejorado */}
                     <div className={`bg-gradient-to-r ${getGenotypeGradient(selectedGenotype)} rounded-3xl shadow-xl p-6 md:p-8 mb-8 text-white relative overflow-hidden`}>
                         <div className="absolute inset-0 opacity-20">
@@ -824,11 +864,14 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     </div>
 
                     {/* Contenido de las Pestañas */}
-                    {activeTab === 'genotype' && renderGenotypeInfo()}
-                    {activeTab === 'foods' && renderFoodGuide()}
-                    {activeTab === 'menus' && renderMenus()}
-                    {activeTab === 'recipes' && renderRecipes()}
+                    <div className="lg:space-y-8">
+                        {activeTab === 'genotype' && renderGenotypeInfo()}
+                        {activeTab === 'foods' && renderFoodGuide()}
+                        {activeTab === 'menus' && renderMenus()}
+                        {activeTab === 'recipes' && renderRecipes()}
+                    </div>
 
+                </div>
                 </div>
             )}
             
