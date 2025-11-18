@@ -125,12 +125,12 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     // Función para obtener el icono del marcador especial
     const getSpecialMarkerIcon = (marcador: string) => {
         if (marcador.includes('Activador Metabólico') || marcador.includes('◊') || marcador.includes('diamante_')) {
-            return <div className="w-4 h-4 bg-yellow-500 rounded-lg flex items-center justify-center">
+            return <div className="w-4 h-4 bg-gray-500 rounded-lg flex items-center justify-center">
                 <span className="text-white text-sm font-bold">◊</span>
             </div>;
         }
         if (marcador.includes('Evitar 60 Días') || marcador.includes('•') || marcador.includes('punto_negro')) {
-            return <div className="w-3 h-3 bg-orange-400 rounded-full flex items-center justify-center">
+            return <div className="w-3 h-3 bg-gray-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">•</span>
             </div>;
         }
@@ -140,17 +140,17 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
     // Función para obtener el símbolo visual correcto
     const getSymbolDisplay = (symbol: string) => {
         if (symbol.includes('diamante_')) {
-            return <div className="w-6 h-6 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <span className="text-yellow-600 font-bold text-lg">◊</span>
+            return <div className="w-6 h-6 bg-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-700 font-bold text-lg">◊</span>
             </div>;
         }
         if (symbol.includes('punto_negro')) {
-            return <div className="w-6 h-6 bg-orange-100 rounded-lg flex items-center justify-center">
-                <span className="text-orange-600 font-bold text-lg">•</span>
+            return <div className="w-6 h-6 bg-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-700 font-bold text-lg">•</span>
             </div>;
         }
-        return <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
-            <span className="text-blue-600 font-bold text-sm">{symbol}</span>
+        return <div className="w-6 h-6 bg-gray-200 rounded-lg flex items-center justify-center">
+            <span className="text-gray-700 font-bold text-sm">{symbol}</span>
         </div>;
     };
 
@@ -178,77 +178,77 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
         return (
             <div className="space-y-4">
-                {/* Header del Genotipo */}
-                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
+                {/* Header del Genotipo Mejorado */}
+                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-xl mb-8`}>
                     <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-2 md:top-4 right-2 md:right-4 w-16 md:w-32 h-16 md:h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 w-12 md:w-24 h-12 md:h-24 rounded-full bg-white"></div>
+                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
+                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
                     </div>
                     <div className="relative">
-                        <h2 className="text-3xl md:text-3xl font-bold mb-2">{genotype.title}</h2>
-                        <p className="text-xl md:text-xl opacity-90">{genotype.tagline}</p>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-3">{genotype.title}</h2>
+                        <p className="text-xl md:text-2xl opacity-95 leading-relaxed">{genotype.tagline}</p>
                     </div>
                 </div>
 
-                {/* Acordeón de Características */}
-                <div className="space-y-3">
+                {/* Acordeón de Características Mejorado */}
+                <div className="space-y-4 md:space-y-6">
                     {/* Esencia del Genotipo */}
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <button
                             onClick={() => toggleSection('essence')}
-                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-blue-50/50 transition-all duration-200"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
-                                    <Target className="w-4 h-4 text-blue-600" />
+                            <div className="flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <Target className="w-6 h-6 text-white" />
                                 </div>
                                 <h3 className="text-xl md:text-2xl font-bold text-gray-900">{genotype.essence.title}</h3>
                             </div>
                             <ChevronDown 
-                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
                                     openSections.has('essence') ? 'rotate-180' : ''
                                 }`} 
                             />
                         </button>
                         {openSections.has('essence') && (
-                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
-                                <blockquote className="text-lg md:text-lg italic text-gray-700 mb-4 border-l-4 border-blue-500 pl-4">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-blue-50/30">
+                                <blockquote className="text-xl md:text-2xl italic text-gray-800 mb-5 border-l-4 border-blue-500 pl-5 py-2 font-medium">
                                     "{genotype.essence.quote}"
                                 </blockquote>
-                                <p className="text-gray-600 text-base md:text-base">{genotype.essence.description}</p>
+                                <p className="text-gray-700 text-base md:text-lg leading-relaxed">{genotype.essence.description}</p>
                             </div>
                         )}
                     </div>
 
-                    {/* Características Principales */}
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    {/* Características Principales Mejoradas */}
+                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <button
                             onClick={() => toggleSection('characteristics1')}
-                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-gray-50 transition-all duration-200"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
-                                    <Target className="w-4 h-4 text-blue-600" />
+                            <div className="flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <Target className="w-6 h-6 text-white" />
                                 </div>
-                                <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Principales</h4>
+                                <h4 className="text-xl md:text-2xl font-bold text-gray-900">Características Principales</h4>
                             </div>
                             <ChevronDown 
-                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
                                     openSections.has('characteristics1') ? 'rotate-180' : ''
                                 }`} 
                             />
                         </button>
                         {openSections.has('characteristics1') && (
-                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
-                                <div className="space-y-4">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-indigo-50/30">
+                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.characteristics1.map((char, index) => (
-                                        <div key={index} className="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors duration-200">
-                                            <div className="flex items-start space-x-3">
-                                                <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
-                                                    <char.icon className="w-5 h-5 text-white" />
+                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-gray-100 hover:border-indigo-200 hover:shadow-md transition-all duration-200">
+                                            <div className="flex items-start space-x-4">
+                                                <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                                    <char.icon className="w-6 h-6 text-white" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h5 className="font-bold text-gray-900 text-base md:text-lg mb-1">{char.title}</h5>
+                                                    <h5 className="font-bold text-gray-900 text-lg md:text-xl mb-2">{char.title}</h5>
                                                     <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
                                                 </div>
                                             </div>
@@ -259,35 +259,35 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Características Secundarias */}
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    {/* Características Secundarias Mejoradas */}
+                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <button
                             onClick={() => toggleSection('characteristics2')}
-                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-slate-50/50 transition-all duration-200"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
-                                    <Leaf className="w-4 h-4 text-purple-600" />
+                            <div className="flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <Leaf className="w-6 h-6 text-white" />
                                 </div>
-                                <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Secundarias</h4>
+                                <h4 className="text-xl md:text-2xl font-bold text-gray-900">Características Secundarias</h4>
                             </div>
                             <ChevronDown 
-                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
                                     openSections.has('characteristics2') ? 'rotate-180' : ''
                                 }`} 
                             />
                         </button>
                         {openSections.has('characteristics2') && (
-                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
-                                <div className="space-y-4">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-slate-50/30">
+                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.characteristics2.map((char, index) => (
-                                        <div key={index} className="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors duration-200">
-                                            <div className="flex items-start space-x-3">
-                                                <div className={`w-10 h-10 ${char.iconBgColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
-                                                    <char.icon className="w-5 h-5 text-white" />
+                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-gray-100 hover:border-slate-200 hover:shadow-md transition-all duration-200">
+                                            <div className="flex items-start space-x-4">
+                                                <div className="w-12 h-12 bg-gradient-to-br from-slate-400 to-slate-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                                    <char.icon className="w-6 h-6 text-white" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h5 className="font-bold text-gray-900 text-base md:text-lg mb-1">{char.title}</h5>
+                                                    <h5 className="font-bold text-gray-900 text-lg md:text-xl mb-2">{char.title}</h5>
                                                     <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
                                                 </div>
                                             </div>
@@ -298,37 +298,37 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Características Físicas y Metabólicas */}
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    {/* Características Físicas y Metabólicas Mejoradas */}
+                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <button
                             onClick={() => toggleSection('physical')}
-                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-cyan-50/50 transition-all duration-200"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
-                                    <Activity className="w-4 h-4 text-green-600" />
+                            <div className="flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <Activity className="w-6 h-6 text-white" />
                                 </div>
-                                <h4 className="text-xl md:text-xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
+                                <h4 className="text-xl md:text-2xl font-bold text-gray-900">Características Físicas y Metabólicas</h4>
                             </div>
                             <ChevronDown 
-                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
                                     openSections.has('physical') ? 'rotate-180' : ''
                                 }`} 
                             />
                         </button>
                         {openSections.has('physical') && (
-                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
-                                <div className="space-y-4">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-cyan-50/30">
+                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.physicalAndMetabolic.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
-                                            <h5 className="font-bold text-gray-900 mb-3 text-base md:text-lg flex items-center space-x-2">
-                                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-cyan-100 shadow-md">
+                                            <h5 className="font-bold text-gray-900 mb-4 text-lg md:text-xl flex items-center space-x-3">
+                                                <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
                                                 <span>{section.title}</span>
                                             </h5>
                                             <ul className="space-y-3">
                                                 {section.points.map((point, pointIndex) => (
-                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-white rounded-lg p-3 shadow-sm">
-                                                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-cyan-50/50 rounded-lg p-3 border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                                                        <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0"></div>
                                                         <span className="text-sm md:text-base text-gray-700 leading-relaxed">{point}</span>
                                                     </li>
                                                 ))}
@@ -340,38 +340,38 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Plan Alimentario */}
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    {/* Plan Alimentario Mejorado */}
+                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <button
                             onClick={() => toggleSection('foodPlan')}
-                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-teal-50/50 transition-all duration-200"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center">
-                                    <Apple className="w-4 h-4 text-emerald-600" />
+                            <div className="flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <Apple className="w-6 h-6 text-white" />
                                 </div>
-                                <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
+                                <h4 className="text-xl md:text-2xl font-bold text-gray-900">{genotype.foodPlan.title}</h4>
                             </div>
                             <ChevronDown 
-                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
                                     openSections.has('foodPlan') ? 'rotate-180' : ''
                                 }`} 
                             />
                         </button>
                         {openSections.has('foodPlan') && (
-                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
-                                <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-emerald-50 p-3 rounded-lg border border-emerald-200">{genotype.foodPlan.description}</p>
-                                <div className="space-y-4">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-teal-50/30">
+                                <p className="text-gray-700 mb-6 text-base md:text-lg leading-relaxed bg-teal-50/50 p-5 rounded-xl border-l-4 border-teal-500 font-medium">{genotype.foodPlan.description}</p>
+                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.foodPlan.sections.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
-                                            <h5 className="font-bold text-emerald-800 mb-3 text-base md:text-lg flex items-center space-x-2">
-                                                <CheckCircle className="w-4 h-4 text-emerald-600" />
+                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-teal-100 shadow-md">
+                                            <h5 className="font-bold text-gray-800 mb-4 text-lg md:text-xl flex items-center space-x-3">
+                                                <CheckCircle className="w-5 h-5 text-teal-600" />
                                                 <span>{section.title}</span>
                                             </h5>
                                             <ul className="space-y-3">
                                                 {section.points.map((point, pointIndex) => (
-                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-white rounded-lg p-3 shadow-sm">
-                                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-teal-50/50 rounded-lg p-3 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">
+                                                        <CheckCircle className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
                                                         <span className="text-sm md:text-base text-gray-700 leading-relaxed">{point}</span>
                                                     </li>
                                                 ))}
@@ -383,38 +383,38 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Alimentos a Evitar */}
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    {/* Alimentos a Evitar Mejorados */}
+                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <button
                             onClick={() => toggleSection('foodsToAvoid')}
-                            className="w-full p-4 md:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-rose-50/50 transition-all duration-200"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center">
-                                    <XCircle className="w-4 h-4 text-red-600" />
+                            <div className="flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <XCircle className="w-6 h-6 text-white" />
                                 </div>
-                                <h4 className="text-xl md:text-xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
+                                <h4 className="text-xl md:text-2xl font-bold text-gray-900">{genotype.foodsToAvoid.title}</h4>
                             </div>
                             <ChevronDown 
-                                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                                className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
                                     openSections.has('foodsToAvoid') ? 'rotate-180' : ''
                                 }`} 
                             />
                         </button>
                         {openSections.has('foodsToAvoid') && (
-                            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100">
-                                <p className="text-gray-600 mb-4 text-base md:text-base leading-relaxed bg-red-50 p-3 rounded-lg border border-red-200">{genotype.foodsToAvoid.description}</p>
-                                <div className="space-y-4">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-rose-50/30">
+                                <p className="text-gray-700 mb-6 text-base md:text-lg leading-relaxed bg-rose-50/50 p-5 rounded-xl border-l-4 border-rose-500 font-medium">{genotype.foodsToAvoid.description}</p>
+                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.foodsToAvoid.sections.map((section, index) => (
-                                        <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-4 border border-red-200">
-                                            <h5 className="font-bold text-red-800 mb-3 text-base md:text-lg flex items-center space-x-2">
-                                                <XCircle className="w-4 h-4 text-red-600" />
+                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-rose-100 shadow-md">
+                                            <h5 className="font-bold text-gray-800 mb-4 text-lg md:text-xl flex items-center space-x-3">
+                                                <XCircle className="w-5 h-5 text-rose-600" />
                                                 <span>{section.title}</span>
                                             </h5>
                                             <ul className="space-y-3">
                                                 {section.points.map((point, pointIndex) => (
-                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-white rounded-lg p-3 shadow-sm">
-                                                        <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-rose-50/50 rounded-lg p-3 border border-rose-100 shadow-sm hover:shadow-md transition-shadow">
+                                                        <XCircle className="w-5 h-5 text-rose-500 mt-0.5 flex-shrink-0" />
                                                         <span className="text-sm md:text-base text-gray-700 leading-relaxed">{point}</span>
                                                     </li>
                                                 ))}
@@ -438,16 +438,16 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
         return (
             <div className="space-y-4 md:space-y-6">
-                {/* Header de la Guía Alimentaria */}
-                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
+                {/* Header de la Guía Alimentaria Mejorado */}
+                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-xl mb-8`}>
                     <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-2 md:top-4 right-2 md:right-4 w-16 md:w-32 h-16 md:h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 w-12 md:w-24 h-12 md:h-24 rounded-full bg-white"></div>
+                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
+                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
                     </div>
                     <div className="relative">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-2">Guía Alimentaria Personalizada</h2>
-                        <p className="text-lg md:text-xl opacity-90">{foodData.genotipo_info.nombre}</p>
-                        <p className="text-base md:text-lg opacity-80 mt-2">{foodData.genotipo_info.descripcion}</p>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-3">Guía Alimentaria Personalizada</h2>
+                        <p className="text-xl md:text-2xl opacity-95 mb-2">{foodData.genotipo_info.nombre}</p>
+                        <p className="text-base md:text-lg opacity-90 leading-relaxed">{foodData.genotipo_info.descripcion}</p>
                     </div>
                 </div>
 
@@ -494,7 +494,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         <div key={categoryName} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6">
                             {/* Header de la Categoría */}
                             <div className="flex items-center space-x-3 mb-4 p-3 bg-gray-50 rounded-xl">
-                                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <div className="w-10 h-10 bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
                                     {getCategoryIcon(categoryName)}
                                 </div>
                                 <div>
@@ -509,33 +509,33 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             {foods.filter(food => food.estado === "Superalimento").length > 0 && (
                                 <div className="mb-4 md:mb-6">
                                     <div className="flex items-center space-x-2 mb-3">
-                                        <CheckCircle className="w-5 h-5 text-green-600" />
-                                        <h5 className="font-semibold text-green-700 text-base md:text-lg">Superalimentos</h5>
-                                        <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                                        <CheckCircle className="w-5 h-5 text-teal-600" />
+                                        <h5 className="font-semibold text-teal-700 text-base md:text-lg">Superalimentos</h5>
+                                        <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full">
                                             {foods.filter(food => food.estado === "Superalimento").length}
                                         </span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                                         {foods.filter(food => food.estado === "Superalimento").map((food, index) => (
-                                            <div key={index} className="flex items-center space-x-2 p-2 md:p-3 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition-colors duration-200">
-                                                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                            <div key={index} className="flex items-center space-x-2 p-2 md:p-3 bg-teal-50/50 rounded-lg border border-teal-200 hover:bg-teal-100 transition-colors duration-200">
+                                                <CheckCircle className="w-4 h-4 text-teal-600 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <span className="font-medium text-green-800 text-sm md:text-base block truncate">{food.nombre}</span>
+                                                    <span className="font-medium text-teal-800 text-sm md:text-base block truncate">{food.nombre}</span>
                                                     {food.marcador_especial && food.marcador_especial.includes('Activador Metabólico') && (
-                                                        <div className="flex items-center space-x-2 mt-2 p-2 bg-green-100 rounded-lg border border-green-200">
+                                                        <div className="flex items-center space-x-2 mt-2 p-2 bg-teal-100 rounded-lg border border-teal-200">
                                                             {getSpecialMarkerIcon(food.marcador_especial)}
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="text-xs font-semibold text-green-700">
+                                                                <div className="text-xs font-semibold text-teal-700">
                                                                     Activador Metabólico
                                                                 </div>
-                                                                <div className="text-xs text-green-600 mt-1">
+                                                                <div className="text-xs text-teal-600 mt-1">
                                                                     Potencia pérdida de peso y ganancia muscular
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     )}
                                                     {food.notas && (
-                                                        <div className="text-xs text-green-700 mt-1 bg-green-100 px-2 py-1 rounded">
+                                                        <div className="text-xs text-teal-700 mt-1 bg-teal-100 px-2 py-1 rounded">
                                                             {food.notas}
                                                         </div>
                                                     )}
@@ -550,26 +550,26 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             {foods.filter(food => food.estado === "Toxina").length > 0 && (
                                 <div>
                                     <div className="flex items-center space-x-2 mb-3">
-                                        <XCircle className="w-5 h-5 text-red-600" />
-                                        <h5 className="font-semibold text-red-700 text-base md:text-lg">Alimentos a Evitar</h5>
-                                        <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                                        <XCircle className="w-5 h-5 text-rose-600" />
+                                        <h5 className="font-semibold text-rose-700 text-base md:text-lg">Alimentos a Evitar</h5>
+                                        <span className="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded-full">
                                             {foods.filter(food => food.estado === "Toxina").length}
                                         </span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                                         {foods.filter(food => food.estado === "Toxina").map((food, index) => (
-                                            <div key={index} className="flex items-center space-x-2 p-2 md:p-3 bg-red-50 rounded-lg border border-red-200 hover:bg-red-100 transition-colors duration-200">
-                                                <XCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                                            <div key={index} className="flex items-center space-x-2 p-2 md:p-3 bg-rose-50/50 rounded-lg border border-rose-200 hover:bg-rose-100 transition-colors duration-200">
+                                                <XCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <span className="font-medium text-red-800 text-sm md:text-base block truncate">{food.nombre}</span>
+                                                    <span className="font-medium text-rose-800 text-sm md:text-base block truncate">{food.nombre}</span>
                                                     {food.marcador_especial && (
-                                                        <div className="flex items-center space-x-2 mt-2 p-2 bg-red-100 rounded-lg border border-red-200">
+                                                        <div className="flex items-center space-x-2 mt-2 p-2 bg-rose-100 rounded-lg border border-rose-200">
                                                             {getSpecialMarkerIcon(food.marcador_especial)}
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="text-xs font-semibold text-red-700">
+                                                                <div className="text-xs font-semibold text-rose-700">
                                                                     {food.marcador_especial.includes('Activador Metabólico') ? 'Activador Metabólico' : 'Marcador Especial'}
                                                                 </div>
-                                                                <div className="text-xs text-red-600 mt-1">
+                                                                <div className="text-xs text-rose-600 mt-1">
                                                                     {food.marcador_especial.includes('Activador Metabólico') 
                                                                         ? 'Potencia pérdida de peso y ganancia muscular'
                                                                         : food.marcador_especial.includes('Evitar 60 Días') 
@@ -581,7 +581,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                                         </div>
                                                     )}
                                                     {food.notas && (
-                                                        <div className="text-xs text-red-700 mt-1 bg-red-100 px-2 py-1 rounded">
+                                                        <div className="text-xs text-rose-700 mt-1 bg-rose-100 px-2 py-1 rounded">
                                                             {food.notas}
                                                         </div>
                                                     )}
@@ -596,33 +596,33 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             {foods.filter(food => food.estado !== "Superalimento" && food.estado !== "Toxina").length > 0 && (
                                 <div className="mt-4 md:mt-6">
                                     <div className="flex items-center space-x-2 mb-3">
-                                        <Info className="w-5 h-5 text-blue-600" />
-                                        <h5 className="font-semibold text-blue-700 text-base md:text-lg">Alimentos Neutros</h5>
-                                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                                        <Info className="w-5 h-5 text-slate-600" />
+                                        <h5 className="font-semibold text-slate-700 text-base md:text-lg">Alimentos Neutros</h5>
+                                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">
                                             {foods.filter(food => food.estado !== "Superalimento" && food.estado !== "Toxina").length}
                                         </span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                                         {foods.filter(food => food.estado !== "Superalimento" && food.estado !== "Toxina").map((food, index) => (
-                                            <div key={index} className="flex items-center space-x-2 p-2 md:p-3 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors duration-200">
-                                                <Info className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                                            <div key={index} className="flex items-center space-x-2 p-2 md:p-3 bg-slate-50/50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors duration-200">
+                                                <Info className="w-4 h-4 text-slate-600 flex-shrink-0" />
                                                 <div className="flex-1 min-w-0">
-                                                    <span className="font-medium text-blue-800 text-sm md:text-base block truncate">{food.nombre}</span>
+                                                    <span className="font-medium text-slate-800 text-sm md:text-base block truncate">{food.nombre}</span>
                                                     {food.marcador_especial && food.marcador_especial.includes('Activador Metabólico') && (
-                                                        <div className="flex items-center space-x-2 mt-2 p-2 bg-blue-100 rounded-lg border border-blue-200">
+                                                        <div className="flex items-center space-x-2 mt-2 p-2 bg-slate-100 rounded-lg border border-slate-200">
                                                             {getSpecialMarkerIcon(food.marcador_especial)}
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="text-xs font-semibold text-blue-700">
+                                                                <div className="text-xs font-semibold text-slate-700">
                                                                     Activador Metabólico
                                                                 </div>
-                                                                <div className="text-xs text-blue-600 mt-1">
+                                                                <div className="text-xs text-slate-600 mt-1">
                                                                     Potencia pérdida de peso y ganancia muscular
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     )}
                                                     {food.notas && (
-                                                        <div className="text-xs text-blue-700 mt-1 bg-blue-100 px-2 py-1 rounded">
+                                                        <div className="text-xs text-slate-700 mt-1 bg-slate-100 px-2 py-1 rounded">
                                                             {food.notas}
                                                         </div>
                                                     )}
@@ -766,81 +766,80 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
             {/* Información del Genotipo Seleccionado */}
             {selectedGenotype && (
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 md:py-8">
-                    {/* Header del Genotipo Seleccionado */}
-                    <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-6 md:mb-8">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
-                            <div className="flex items-center space-x-3">
-                                <div className={`p-3 rounded-xl bg-gradient-to-r ${getGenotypeGradient(selectedGenotype)}`}>
+                    {/* Header del Genotipo Seleccionado Mejorado */}
+                    <div className={`bg-gradient-to-r ${getGenotypeGradient(selectedGenotype)} rounded-3xl shadow-xl p-6 md:p-8 mb-8 text-white relative overflow-hidden`}>
+                        <div className="absolute inset-0 opacity-10">
+                            <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
+                            <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
+                        </div>
+                        <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+                            <div className="flex items-center space-x-4">
+                                <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
                                     {getGenotypeIcon(selectedGenotype)}
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl md:text-2xl font-bold text-gray-900">
+                                    <h2 className="text-3xl md:text-4xl font-bold mb-2">
                                         {GENOTYPE_DATA[selectedGenotype]?.name || `Genotipo ${selectedGenotype}`}
                                     </h2>
-                                    <p className="text-base md:text-base text-gray-600">Tu información personalizada</p>
+                                    <p className="text-lg md:text-xl opacity-90">Tu información personalizada</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setSelectedGenotype(null)}
-                                className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-base md:text-base"
+                                className="px-6 py-3 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
                             >
                                 Cambiar Genotipo
                             </button>
                         </div>
                     </div>
 
-                    {/* Pestañas de Navegación */}
-                    <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-6 md:mb-8">
-                        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    {/* Pestañas de Navegación Mejoradas */}
+                    <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-8 border border-gray-100">
+                        <div className="flex flex-wrap gap-3 justify-center">
                             <button
                                 onClick={() => setActiveTab('genotype')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
+                                className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-200 text-sm md:text-base ${
                                     activeTab === 'genotype'
-                                        ? 'bg-green-100 text-green-700 shadow-md'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg scale-105'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-blue-50 hover:shadow-md'
                                 }`}
                             >
-                                <Target className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
-                                <span className="hidden sm:inline">Características</span>
-                                <span className="sm:hidden">Info</span>
+                                <Target className="w-4 h-4 md:w-5 md:h-5" />
+                                <span>Características</span>
                             </button>
                             <button
                                 onClick={() => setActiveTab('foods')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
+                                className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-200 text-sm md:text-base ${
                                     activeTab === 'foods'
-                                        ? 'bg-green-100 text-green-700 shadow-md'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg scale-105'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-teal-50 hover:shadow-md'
                                 }`}
                             >
-                                <Apple className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
-                                <span className="hidden sm:inline">Alimentos</span>
-                                <span className="sm:hidden">Alimentos</span>
+                                <Apple className="w-4 h-4 md:w-5 md:h-5" />
+                                <span>Alimentos</span>
                             </button>
                             <button
                                 onClick={() => setActiveTab('menus')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
+                                className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-200 text-sm md:text-base ${
                                     activeTab === 'menus'
-                                        ? 'bg-green-100 text-green-700 shadow-md'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-gradient-to-r from-indigo-500 to-indigo-600 text-white shadow-lg scale-105'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-indigo-50 hover:shadow-md'
                                 }`}
                             >
-                                <Utensils className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
-                                <span className="hidden sm:inline">Menús</span>
-                                <span className="sm:hidden">Menús</span>
+                                <Utensils className="w-4 h-4 md:w-5 md:h-5" />
+                                <span>Menús</span>
                             </button>
                             <button
                                 onClick={() => setActiveTab('recipes')}
-                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base md:text-base ${
+                                className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-200 text-sm md:text-base ${
                                     activeTab === 'recipes'
-                                        ? 'bg-green-100 text-green-700 shadow-md'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-gradient-to-r from-slate-500 to-slate-600 text-white shadow-lg scale-105'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-slate-50 hover:shadow-md'
                                 }`}
                             >
-                                <ChefHat className="w-3 h-3 md:w-4 md:h-4 inline mr-1 md:mr-2" />
-                                <span className="hidden sm:inline">Recetas</span>
-                                <span className="sm:hidden">Recetas</span>
+                                <ChefHat className="w-4 h-4 md:w-5 md:h-5" />
+                                <span>Recetas</span>
                             </button>
-
                         </div>
                     </div>
 
