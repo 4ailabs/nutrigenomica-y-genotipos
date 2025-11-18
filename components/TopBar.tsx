@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Menu, X, Users, Bot, Atom, Target } from 'lucide-react';
+import { Home, Menu, X, Users, Bot, Atom, Target, FileSearch } from 'lucide-react';
 
 interface TopBarProps {
     currentPage: string;
@@ -10,6 +10,7 @@ interface TopBarProps {
     onNavigateToChat?: () => void;
     onNavigateToNutrigenomics?: () => void;
     onNavigateToStrengthMeter?: () => void;
+    onNavigateToResearchPrompt?: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({
@@ -20,7 +21,8 @@ const TopBar: React.FC<TopBarProps> = ({
     onNavigateToPatientView,
     onNavigateToChat,
     onNavigateToNutrigenomics,
-    onNavigateToStrengthMeter
+    onNavigateToStrengthMeter,
+    onNavigateToResearchPrompt
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -29,7 +31,8 @@ const TopBar: React.FC<TopBarProps> = ({
         { label: 'Portal', icon: Target, onClick: onNavigateToPortal, show: currentPage !== 'landing' },
         { label: 'Mi Genotipo', icon: Users, onClick: onNavigateToPatientView, show: !!onNavigateToPatientView },
         { label: 'Asistente IA', icon: Bot, onClick: onNavigateToChat, show: !!onNavigateToChat },
-        { label: 'Nutrigenómica', icon: Atom, onClick: onNavigateToNutrigenomics, show: !!onNavigateToNutrigenomics }
+        { label: 'Nutrigenómica', icon: Atom, onClick: onNavigateToNutrigenomics, show: !!onNavigateToNutrigenomics },
+        { label: 'Investigación', icon: FileSearch, onClick: onNavigateToResearchPrompt, show: !!onNavigateToResearchPrompt }
     ].filter(item => item.show);
 
     return (

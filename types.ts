@@ -200,3 +200,58 @@ export interface ChatMessage {
     role: 'user' | 'model';
     content: string;
 }
+
+// Research Prompt Generator Types
+export interface ResearchPatientCase {
+    id: string;
+    timestamp: Date;
+    
+    // Datos básicos
+    patientName?: string;
+    age?: string;
+    sex?: 'masculino' | 'femenino' | 'otro';
+    
+    // Genotipos
+    genotypeId?: number;
+    genotypeName?: string;
+    
+    // Biometría
+    height?: string;
+    weight?: string;
+    bmi?: number;
+    bodyComposition?: string;
+    
+    // Historial médico
+    medicalHistory?: string;
+    symptoms?: string;
+    currentMedications?: string;
+    allergies?: string;
+    chronicConditions?: string;
+    familyHistory?: string;
+    
+    // Dieta actual
+    currentDiet?: string;
+    dietaryRestrictions?: string;
+    
+    // Área de profundización
+    researchFocus?: string;
+    specificQuestions?: string;
+    
+    // Laboratorios (opcional)
+    labResults?: string;
+}
+
+export interface GeneratedResearchPrompt {
+    id: string;
+    caseId: string;
+    timestamp: Date;
+    promptText: string;
+    targetPlatform: 'gemini-deep-research' | 'claude';
+    patientSummary: string;
+}
+
+export interface ResearchPromptHistory {
+    cases: ResearchPatientCase[];
+    prompts: GeneratedResearchPrompt[];
+    lastUpdated: Date;
+}

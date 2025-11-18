@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ChefHat, Filter, Search, Clock, Users, Utensils, Sparkles } from 'lucide-react';
-import { getRecipesByGenotype, getRecipesByMealType } from '../recipeData';
+import { getRecipesByGenotype as getRecipesSync, getRecipesByMealType } from '../recipeData';
+import { getRecipesByGenotype as getRecipesAsync } from '../src/data/recipes';
 import type { Recipe } from '../recipeData';
 import type { FoodGuideData } from '../types';
 import RecipeCard from './RecipeCard';
@@ -21,11 +22,41 @@ const GenotypeRecipes: React.FC<GenotypeRecipesProps> = ({ genotypeId, genotypeC
     const [searchTerm, setSearchTerm] = useState('');
     const [expandedRecipe, setExpandedRecipe] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'recetas' | 'ia'>('recetas');
+    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+    const [isLoadingRecipes, setIsLoadingRecipes] = useState(true);
     
     const { isPremium, isLoading, authenticatePremium, logout, getRemainingTime } = usePremiumAuth();
 
-    const allRecipes = useMemo(() => {
-        return getRecipesByGenotype(genotypeId);
+    // Cargar recetas con lazy loading
+    useEffect(() => {
+        let isMounted = true;
+        
+        const loadRecipes = async () => {
+            setIsLoadingRecipes(true);
+            try {
+                // Intentar lazy loading primero (eficiente)
+                const recipes = await getRecipesAsync(genotypeId);
+                if (isMounted) {
+                    setAllRecipes(recipes);
+                }
+            } catch (error) {
+                // Fallback a carga síncrona si falla
+                console.warn('Lazy loading failed, using sync fallback:', error);
+                if (isMounted) {
+                    setAllRecipes(getRecipesSync(genotypeId));
+                }
+            } finally {
+                if (isMounted) {
+                    setIsLoadingRecipes(false);
+                }
+            }
+        };
+
+        loadRecipes();
+
+        return () => {
+            isMounted = false;
+        };
     }, [genotypeId]);
 
     const filteredRecipes = useMemo(() => {
@@ -72,6 +103,19 @@ const GenotypeRecipes: React.FC<GenotypeRecipesProps> = ({ genotypeId, genotypeC
         setExpandedRecipe(expandedRecipe === recipeId ? null : recipeId);
     };
 
+    // Mostrar loading mientras se cargan las recetas
+    if (isLoadingRecipes) {
+        return (
+            <div className="text-center py-12">
+                <div className="w-20 h-20 bg-gradient-to-r bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <ChefHat className="w-10 h-10 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Cargando recetas...</h3>
+                <p className="text-gray-600">Preparando tu recetario personalizado</p>
+            </div>
+        );
+    }
+
     if (allRecipes.length === 0) {
         return (
             <div className="text-center py-12">
@@ -90,45 +134,42 @@ const GenotypeRecipes: React.FC<GenotypeRecipesProps> = ({ genotypeId, genotypeC
     return (
         <div className="space-y-6">
             {/* Header de Recetas con Pestañas */}
-            <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden`}>
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                    <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
+            <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-6 md:p-8">
+                <div className={`inline-block px-4 py-2 bg-gradient-to-r ${genotypeGradient} text-white rounded-full text-sm font-semibold mb-4`}>
+                    Genotipo {genotypeId}
                 </div>
-                <div className="relative">
-                    <div className="flex items-center gap-3 mb-4">
-                        <ChefHat className="w-8 h-8" />
-                        <h2 className="text-2xl md:text-3xl font-bold">Recetas Especializadas</h2>
-                    </div>
-                    <p className="text-lg md:text-xl opacity-90 mb-4">
-                        Recetas curadas usando tus superalimentos específicos
-                    </p>
-                    
-                    {/* Pestañas */}
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => setActiveTab('recetas')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                activeTab === 'recetas'
-                                    ? 'bg-white text-gray-800 shadow-lg'
-                                    : 'bg-white/20 text-white/90 hover:bg-white/30'
-                            }`}
-                        >
-                            <ChefHat className="w-4 h-4 inline mr-2" />
-                            Recetas Base
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('ia')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                activeTab === 'ia'
-                                    ? 'bg-white text-gray-800 shadow-lg'
-                                    : 'bg-white/20 text-white/90 hover:bg-white/30'
-                            }`}
-                        >
-                            <Sparkles className="w-4 h-4 inline mr-2" />
-                            IA Premium
-                        </button>
-                    </div>
+                <div className="flex items-center gap-3 mb-4">
+                    <ChefHat className="w-8 h-8 text-gray-700" />
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Recetas Especializadas</h2>
+                </div>
+                <p className="text-lg md:text-xl text-gray-600 mb-4">
+                    Recetas curadas usando tus superalimentos específicos
+                </p>
+                
+                {/* Pestañas */}
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setActiveTab('recetas')}
+                        className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                            activeTab === 'recetas'
+                                ? `bg-gradient-to-r ${genotypeGradient} text-white shadow-lg`
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        <ChefHat className="w-4 h-4 inline mr-2" />
+                        Recetas Base
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('ia')}
+                        className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                            activeTab === 'ia'
+                                ? `bg-gradient-to-r ${genotypeGradient} text-white shadow-lg`
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        <Sparkles className="w-4 h-4 inline mr-2" />
+                        IA Premium
+                    </button>
                 </div>
             </div>
 

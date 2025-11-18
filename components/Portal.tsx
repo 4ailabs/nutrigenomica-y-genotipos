@@ -10,7 +10,7 @@ import {
     GenotypeCard,
     MedicalAlertCard
 } from './MedicalComponents';
-import { Target, Calculator, Users, Award, Clock, ArrowRight, CheckCircle, Home, ArrowLeft, Bot, Atom } from 'lucide-react';
+import { Target, Calculator, Users, Award, Clock, ArrowRight, CheckCircle, Home, ArrowLeft, Bot, Atom, FileSearch } from 'lucide-react';
 
 interface PortalProps {
     onNavigateToCalculator: () => void;
@@ -20,6 +20,7 @@ interface PortalProps {
     onNavigateToMain?: () => void;
     onNavigateToChat?: () => void;
     onNavigateToNutrigenomics?: () => void;
+    onNavigateToResearchPrompt?: () => void;
 }
 
 interface ToolCardProps {
@@ -71,6 +72,13 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
                     icon: "bg-purple-100 text-purple-600",
                     button: "bg-purple-500 hover:bg-purple-600 active:bg-purple-700 text-white"
                 };
+            case 'research':
+                return {
+                    header: "bg-indigo-50 border-indigo-200",
+                    badge: "bg-indigo-100 text-indigo-700",
+                    icon: "bg-indigo-100 text-indigo-600",
+                    button: "bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white"
+                };
 
             default:
                 return {
@@ -92,6 +100,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
             case 'strength': return <Award className="w-8 h-8" />;
             case 'chat': return <Bot className="w-8 h-8" />;
             case 'nutrigenomics': return <Atom className="w-8 h-8" />;
+            case 'research': return <FileSearch className="w-8 h-8" />;
 
             default: return <Target className="w-8 h-8" />;
         }
@@ -133,7 +142,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
     );
 };
 
-const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToStrengthMeter, onNavigateToMain, onNavigateToChat, onNavigateToNutrigenomics }) => {
+const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGenotype, onNavigateToBiometrics, onNavigateToStrengthMeter, onNavigateToMain, onNavigateToChat, onNavigateToNutrigenomics, onNavigateToResearchPrompt }) => {
     const genotypes = [1, 2, 3, 4, 5, 6];
     
     // Colores médicos para cada genotipo
@@ -205,6 +214,17 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
                 "Educación especializada"
             ],
             onClick: onNavigateToNutrigenomics,
+            category: 'consultation' as const
+        }] : []),
+        ...(onNavigateToResearchPrompt ? [{
+            type: "research",
+            title: "Generador de Prompts de Investigación",
+            description: "Crea prompts profesionales para investigación nutrigenómica profunda",
+            features: [
+                "Optimizado para IA",
+                "Historial de casos"
+            ],
+            onClick: onNavigateToResearchPrompt,
             category: 'consultation' as const
         }] : [])
     ];

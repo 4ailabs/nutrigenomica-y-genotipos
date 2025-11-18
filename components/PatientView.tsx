@@ -173,27 +173,11 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
         const genotype = GENOTYPE_DATA[selectedGenotype];
         if (!genotype) return null;
 
-        const genotypeColor = getGenotypeColor(selectedGenotype);
-        const genotypeGradient = getGenotypeGradient(selectedGenotype);
-
         return (
-            <div className="space-y-4">
-                {/* Header del Genotipo Mejorado */}
-                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-xl mb-8`}>
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
-                    </div>
-                    <div className="relative">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-3">{genotype.title}</h2>
-                        <p className="text-xl md:text-2xl opacity-95 leading-relaxed">{genotype.tagline}</p>
-                    </div>
-                </div>
-
+            <div className="space-y-6 md:space-y-8">
                 {/* Acordeón de Características Mejorado */}
-                <div className="space-y-4 md:space-y-6">
-                    {/* Esencia del Genotipo */}
-                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                {/* Esencia del Genotipo */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
                         <button
                             onClick={() => toggleSection('essence')}
                             className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-blue-50/50 transition-all duration-200"
@@ -220,8 +204,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Características Principales Mejoradas */}
-                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                {/* Características Principales Mejoradas */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
                         <button
                             onClick={() => toggleSection('characteristics1')}
                             className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-gray-50 transition-all duration-200"
@@ -259,8 +243,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Características Secundarias Mejoradas */}
-                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                {/* Características Secundarias Mejoradas */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
                         <button
                             onClick={() => toggleSection('characteristics2')}
                             className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-slate-50/50 transition-all duration-200"
@@ -298,8 +282,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Características Físicas y Metabólicas Mejoradas */}
-                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                {/* Características Físicas y Metabólicas Mejoradas */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
                         <button
                             onClick={() => toggleSection('physical')}
                             className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-cyan-50/50 transition-all duration-200"
@@ -340,8 +324,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Plan Alimentario Mejorado */}
-                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                {/* Plan Alimentario Mejorado */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
                         <button
                             onClick={() => toggleSection('foodPlan')}
                             className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-teal-50/50 transition-all duration-200"
@@ -383,8 +367,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         )}
                     </div>
 
-                    {/* Alimentos a Evitar Mejorados */}
-                    <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                {/* Alimentos a Evitar Mejorados */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 relative z-0">
                         <button
                             onClick={() => toggleSection('foodsToAvoid')}
                             className="w-full p-5 md:p-7 text-left flex items-center justify-between hover:bg-rose-50/50 transition-all duration-200"
@@ -425,7 +409,6 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             </div>
                         )}
                     </div>
-                </div>
             </div>
         );
     };
@@ -438,17 +421,13 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
         return (
             <div className="space-y-4 md:space-y-6">
-                {/* Header de la Guía Alimentaria Mejorado */}
-                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-xl mb-8`}>
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
+                {/* Header de la Guía Alimentaria Simplificado */}
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-6 md:p-8 mb-8">
+                    <div className={`inline-block px-4 py-2 bg-gradient-to-r ${genotypeGradient} text-white rounded-full text-sm font-semibold mb-4`}>
+                        {foodData.genotipo_info.nombre}
                     </div>
-                    <div className="relative">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-3">Guía Alimentaria Personalizada</h2>
-                        <p className="text-xl md:text-2xl opacity-95 mb-2">{foodData.genotipo_info.nombre}</p>
-                        <p className="text-base md:text-lg opacity-90 leading-relaxed">{foodData.genotipo_info.descripcion}</p>
-                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Guía Alimentaria Personalizada</h2>
+                    <p className="text-base md:text-lg text-gray-600 leading-relaxed">{foodData.genotipo_info.descripcion}</p>
                 </div>
 
                 {/* Información del Genotipo */}
@@ -768,9 +747,10 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 md:py-8">
                     {/* Header del Genotipo Seleccionado Mejorado */}
                     <div className={`bg-gradient-to-r ${getGenotypeGradient(selectedGenotype)} rounded-3xl shadow-xl p-6 md:p-8 mb-8 text-white relative overflow-hidden`}>
-                        <div className="absolute inset-0 opacity-10">
-                            <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                            <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
+                        <div className="absolute inset-0 opacity-20">
+                            <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white blur-2xl"></div>
+                            <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white blur-xl"></div>
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-white blur-3xl"></div>
                         </div>
                         <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
                             <div className="flex items-center space-x-4">

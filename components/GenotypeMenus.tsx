@@ -217,23 +217,20 @@ const GenotypeMenus: React.FC<GenotypeMenusProps> = ({ genotypeId, genotypeColor
         <div className="w-full max-w-7xl mx-auto space-y-6 md:space-y-8">
             {/* Header de Menús - Solo se muestra si hideHeader es false */}
             {!hideHeader && (
-                <div className={`bg-gradient-to-r ${genotypeGradient} rounded-2xl p-6 md:p-8 text-white relative overflow-hidden w-full`}>
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-                        <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
+                <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-6 md:p-8 w-full">
+                    <div className={`inline-block px-4 py-2 bg-gradient-to-r ${genotypeGradient} text-white rounded-full text-sm font-semibold mb-4`}>
+                        Genotipo {genotypeId}
                     </div>
-                    <div className="relative">
-                        <div className="flex items-center gap-3 mb-3">
-                            <ChefHat className="w-7 h-7 md:w-8 md:h-8" />
-                            <h2 className="text-xl md:text-2xl font-bold">Menús Personalizados</h2>
-                        </div>
-                        <p className="text-base md:text-lg opacity-95 mb-2 font-medium">
-                            Planes de comidas basados en tus alimentos específicos
-                        </p>
-                        <p className="text-sm md:text-base opacity-85">
-                            Cada menú utiliza los superalimentos y alimentos compatibles de tu genotipo
-                        </p>
+                    <div className="flex items-center gap-3 mb-3">
+                        <ChefHat className="w-7 h-7 md:w-8 md:h-8 text-gray-700" />
+                        <h2 className="text-xl md:text-2xl font-bold text-gray-800">Menús Personalizados</h2>
                     </div>
+                    <p className="text-base md:text-lg text-gray-600 mb-2">
+                        Planes de comidas basados en tus alimentos específicos
+                    </p>
+                    <p className="text-sm md:text-base text-gray-500">
+                        Cada menú utiliza los superalimentos y alimentos compatibles de tu genotipo
+                    </p>
                 </div>
             )}
 

@@ -14,6 +14,7 @@ const ChatPage = lazy(() => import('./components/ChatPage'));
 const PatientView = lazy(() => import('./components/PatientView'));
 const GenotypeStrengthMeter = lazy(() => import('./components/GenotypeStrengthMeter'));
 const NutrigenomicsPage = lazy(() => import('./components/NutrigenomicsPage'));
+const ResearchPromptGenerator = lazy(() => import('./components/ResearchPromptGenerator'));
 
 // Componente de carga para Suspense
 const LoadingFallback: React.FC = () => (
@@ -25,7 +26,7 @@ const LoadingFallback: React.FC = () => (
   </div>
 );
 
-type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter' | 'nutrigenomics';
+type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter' | 'nutrigenomics' | 'researchPrompt';
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -89,6 +90,7 @@ const App: React.FC = () => {
                     onNavigateToMain={() => navigateTo('landing')}
                     onNavigateToChat={() => navigateTo('chat')}
                     onNavigateToNutrigenomics={() => navigateTo('nutrigenomics')}
+                    onNavigateToResearchPrompt={() => navigateTo('researchPrompt')}
                 />;
             case 'calculator':
                 return <AdvancedCalculator 
@@ -138,6 +140,15 @@ const App: React.FC = () => {
                         />
                     </Suspense>
                 );
+            case 'researchPrompt':
+                return (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ResearchPromptGenerator 
+                            onBackToPortal={() => navigateTo('portal')}
+                            onNavigateToMain={() => navigateTo('landing')}
+                        />
+                    </Suspense>
+                );
             default:
                 return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} onNavigateToPatientView={() => navigateTo('patientView')} />;
         }
@@ -156,6 +167,7 @@ const App: React.FC = () => {
                         onNavigateToChat={() => navigateTo('chat')}
                         onNavigateToNutrigenomics={() => navigateTo('nutrigenomics')}
                         onNavigateToStrengthMeter={() => navigateTo('strengthMeter')}
+                        onNavigateToResearchPrompt={() => navigateTo('researchPrompt')}
                     />
                     <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
                          {renderPage()}

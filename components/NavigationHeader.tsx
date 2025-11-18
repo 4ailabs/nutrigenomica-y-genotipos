@@ -27,7 +27,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'gradient':
-        return 'bg-gradient-to-r from-purple-600 to-indigo-700 text-white';
+        return 'bg-gradient-to-r from-slate-700 to-slate-800 text-white';
       case 'simple':
         return 'bg-white border-b border-gray-200 text-gray-800';
       default:
