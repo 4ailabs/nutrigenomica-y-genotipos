@@ -105,30 +105,29 @@ export const MedicalBadge: React.FC<{
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
-}> = ({ 
-  children, 
+}> = ({
+  children,
   variant = 'primary',
   size = 'md',
   className = ''
 }) => {
-  const baseClasses = 'inline-flex items-center font-medium rounded-full transition-colors';
-  
+  // Usar las clases profesionales del sistema de diseño
   const variantClasses = {
-    primary: 'bg-blue-100 text-blue-800 border border-blue-200',
-    secondary: 'bg-gray-100 text-gray-800 border border-gray-200',
-    success: 'bg-green-100 text-green-800 border border-green-200',
-    warning: 'bg-amber-100 text-amber-800 border border-amber-200',
-    error: 'bg-red-100 text-red-800 border border-red-200',
-    info: 'bg-blue-50 text-blue-700 border border-blue-100'
+    primary: 'badge-pro badge-primary',
+    secondary: 'badge-pro bg-gray-100 text-gray-800',
+    success: 'badge-pro badge-success',
+    warning: 'badge-pro badge-warning',
+    error: 'badge-pro badge-error',
+    info: 'badge-pro badge-primary'
   };
 
   const sizeClasses = {
-    sm: 'px-2 py-1 text-xs',
-    md: 'px-2.5 py-1.5 text-sm',
-    lg: 'px-3 py-2 text-base'
+    sm: 'text-xs px-2 py-1',
+    md: '',
+    lg: 'text-base px-4 py-2'
   };
 
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const classes = `${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   return <span className={classes}>{children}</span>;
 };
@@ -167,7 +166,7 @@ export const MedicalSection: React.FC<{
   );
 };
 
-// Botón médico principal
+// Botón médico principal con sistema de diseño profesional
 export const MedicalButton: React.FC<{
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'success' | 'warning' | 'error';
@@ -176,36 +175,35 @@ export const MedicalButton: React.FC<{
   disabled?: boolean;
   className?: string;
   icon?: React.ReactNode;
-}> = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
-  onClick, 
-  disabled = false, 
+}> = ({
+  children,
+  variant = 'primary',
+  size = 'md',
+  onClick,
+  disabled = false,
   className = '',
-  icon 
+  icon
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-  
+  // Usar las clases profesionales del sistema de diseño
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus:ring-blue-500',
-    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300 focus:ring-gray-500',
-    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 active:bg-blue-100 focus:ring-blue-500',
-    success: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus:ring-green-500',
-    warning: 'bg-yellow-600 text-white hover:bg-yellow-700 active:bg-yellow-800 focus:ring-yellow-500',
-    error: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus:ring-red-500',
+    primary: 'btn-primary-pro',
+    secondary: 'btn-secondary-pro',
+    outline: 'btn-ghost-pro',
+    success: 'btn-primary-pro bg-gradient-to-r from-green-600 to-green-700',
+    warning: 'btn-primary-pro bg-gradient-to-r from-yellow-600 to-yellow-700',
+    error: 'btn-primary-pro bg-gradient-to-r from-red-600 to-red-700',
   };
-  
+
   const sizeClasses = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    sm: 'text-sm px-4 py-2',
+    md: '',
+    lg: 'text-lg px-10 py-5',
   };
-  
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
-  
+
+  const classes = `${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
   return (
-    <button 
+    <button
       className={classes}
       onClick={onClick}
       disabled={disabled}
@@ -216,7 +214,7 @@ export const MedicalButton: React.FC<{
   );
 };
 
-// Tarjeta médica con animaciones profesionales
+// Tarjeta médica con animaciones profesionales y sistema de diseño
 export const MedicalCard: React.FC<{
   children: React.ReactNode;
   className?: string;
@@ -225,51 +223,50 @@ export const MedicalCard: React.FC<{
   animation?: 'fadeIn' | 'slideUp' | 'slideIn';
   delay?: number;
   onClick?: () => void;
-}> = ({ 
-  children, 
-  className = '', 
+}> = ({
+  children,
+  className = '',
   variant = 'default',
-  hover = true, 
+  hover = true,
   animation = 'fadeIn',
   delay = 0,
   onClick
 }) => {
-  const baseClasses = 'bg-white rounded-2xl transition-all duration-300 ease-out';
-  
+  // Usar las clases profesionales del sistema de diseño
   const variantClasses = {
-    default: 'shadow-sm border border-gray-100/50',
-    elevated: 'shadow-lg border border-gray-100/30',
-    interactive: 'shadow-md border border-gray-100/50 cursor-pointer',
-    highlighted: 'shadow-lg border-2 border-blue-100 bg-gradient-to-br from-white to-blue-50/30',
-    outline: 'shadow-sm border-2 border-gray-200 bg-gray-50/30'
+    default: 'card-pro',
+    elevated: 'card-pro elevation-3',
+    interactive: 'card-pro hover-lift cursor-pointer',
+    highlighted: 'card-pro-gradient',
+    outline: 'card-pro border-2 border-gray-200'
   };
-  
-  const hoverClasses = hover ? {
-    default: 'hover:shadow-md hover:border-gray-200/60 hover:-translate-y-0.5',
-    elevated: 'hover:shadow-xl hover:border-gray-200/50 hover:-translate-y-1',
-    interactive: 'hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 hover:scale-[1.02]',
-    highlighted: 'hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 hover:from-white hover:to-blue-50/50',
-    outline: 'hover:shadow-md hover:border-blue-300 hover:bg-blue-50/20 hover:-translate-y-0.5'
-  }[variant] : '';
-  
+
+  const hoverClass = hover ? 'hover-lift' : '';
+
   const animationClasses = {
     fadeIn: 'animate-fadeIn',
     slideUp: 'animate-slideUp',
     slideIn: 'animate-slideIn',
   };
-  
-  const classes = `${baseClasses} ${variantClasses[variant]} ${hoverClasses} ${animationClasses[animation]} ${className}`;
-  
+
+  const classes = `${variantClasses[variant]} ${hoverClass} ${animationClasses[animation]} ${className}`;
+
   return (
-    <div 
+    <div
       className={classes}
       onClick={onClick}
-      style={{ 
+      style={{
         animationDelay: `${delay}ms`,
         animationFillMode: 'both'
       }}
     >
-      {children}
+      {variant === 'highlighted' ? (
+        <div className="card-pro-gradient-content">
+          {children}
+        </div>
+      ) : (
+        children
+      )}
     </div>
   );
 };
