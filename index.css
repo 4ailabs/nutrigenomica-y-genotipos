@@ -1,4 +1,6 @@
-/* Estilos base de la aplicación */
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
 /* Importar estilos de animaciones personalizadas */
 @import './styles/animations.css';
 

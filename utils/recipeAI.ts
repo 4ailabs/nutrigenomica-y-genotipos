@@ -1,8 +1,10 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { FoodGuideData, FoodItem } from '../types';
 import type { Recipe } from '../recipeData';
+import { getGeminiApiKey } from './env';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const apiKey = getGeminiApiKey();
+const genAI = new GoogleGenerativeAI(apiKey || '');
 
 interface RecipeRequest {
   genotypeId: number;

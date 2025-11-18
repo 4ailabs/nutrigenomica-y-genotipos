@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import type { FoodGuideData, AIPersonalData, ChatMessage } from '../types';
 import { FOOD_GUIDE_DATA } from '../foodData';
 import { getGeminiApiKey } from './env';
+import { withRetry, getErrorMessage, logError } from './errorHandler';
 
 // Obtener API Key de forma segura y centralizada
 const apiKey = getGeminiApiKey();
@@ -153,19 +154,30 @@ Asegúrate de que cada comida use SOLO alimentos de la lista de superalimentos y
     `;
     
     try {
-      const response = await (ai as any).models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: fullPrompt,
-        config: {
-            temperature: 0.5,
-            topK: 40,
-            topP: 0.95,
+      const response = await withRetry(
+        async () => {
+          return await (ai as any).models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: fullPrompt,
+            config: {
+                temperature: 0.5,
+                topK: 40,
+                topP: 0.95,
+            }
+          });
+        },
+        {
+          maxRetries: 3,
+          retryDelay: 1000,
+          onRetry: (attempt, error) => {
+            console.log(`Reintentando llamada a Gemini (intento ${attempt}/3)...`, error);
+          }
         }
-      });
+      );
       return extractText(response);
     } catch (error) {
-        console.error("Error calling Gemini API:", error);
-        return "Lo siento, ha ocurrido un error al generar la recomendación. Por favor, inténtalo de nuevo más tarde.";
+        logError(error, 'generateAiResponse');
+        return getErrorMessage(error) || "Lo siento, ha ocurrido un error al generar la recomendación. Por favor, inténtalo de nuevo más tarde.";
     }
 }
 
@@ -278,18 +290,29 @@ export async function generateChatResponse(
     `;
 
     try {
-        const response = await (ai as any).models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: fullPrompt,
-            config: {
-                temperature: 0.3, // Más bajo para respuestas más consistentes
-                topK: 40,
-                topP: 0.8,
+        const response = await withRetry(
+          async () => {
+            return await (ai as any).models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: fullPrompt,
+                config: {
+                    temperature: 0.3, // Más bajo para respuestas más consistentes
+                    topK: 40,
+                    topP: 0.8,
+                }
+            });
+          },
+          {
+            maxRetries: 3,
+            retryDelay: 1000,
+            onRetry: (attempt, error) => {
+              console.log(`Reintentando chat con Gemini (intento ${attempt}/3)...`, error);
             }
-        });
+          }
+        );
         return extractText(response);
     } catch (error) {
-        console.error("Error calling Gemini API for chat:", error);
-        return "Lo siento, tuve un problema para procesar tu pregunta. Por favor, intenta de nuevo.";
+        logError(error, 'generateChatResponse');
+        return getErrorMessage(error) || "Lo siento, tuve un problema para procesar tu pregunta. Por favor, intenta de nuevo.";
     }
 }

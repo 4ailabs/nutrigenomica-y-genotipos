@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import type { BodyMeasurements, CalculatedProportions, FingerRelation, BloodType, RhFactor, SecretorStatus, Sex } from '../types';
 import { DATOS_GENOTIPOS, GENOTYPE_NAMES } from '../constants';
 import GenotypeBox from './GenotypeBox';
 import GenotypeDetail from './GenotypeDetail';
+import { useCalculatorStorage } from '../hooks/useCalculatorStorage';
 import { 
     MedicalHeading, 
     MedicalText, 
@@ -39,12 +40,35 @@ const TabButton: React.FC<{ label: string; isActive: boolean; onClick: () => voi
 
 const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal, onNavigateToMain }) => {
     const [activeTab, setActiveTab] = useState<Tab>('measurements');
+    const calculatorStorage = useCalculatorStorage();
     
-    const [measurements, setMeasurements] = useState<Partial<BodyMeasurements>>({});
-    const [bloodType, setBloodType] = useState<BloodType | null>(null);
-    const [rhFactor, setRhFactor] = useState<RhFactor | null>(null);
-    const [secretorStatus, setSecretorStatus] = useState<SecretorStatus | null>(null);
-    const [sex, setSex] = useState<Sex | null>(null);
+    // Inicializar estado con datos guardados si existen
+    const [measurements, setMeasurements] = useState<Partial<BodyMeasurements>>(
+        calculatorStorage.data?.measurements || {}
+    );
+    const [bloodType, setBloodType] = useState<BloodType | null>(
+        calculatorStorage.data?.bloodType || null
+    );
+    const [rhFactor, setRhFactor] = useState<RhFactor | null>(
+        calculatorStorage.data?.rhFactor || null
+    );
+    const [secretorStatus, setSecretorStatus] = useState<SecretorStatus | null>(
+        calculatorStorage.data?.secretorStatus || null
+    );
+    const [sex, setSex] = useState<Sex | null>(
+        calculatorStorage.data?.sex || null
+    );
+    
+    // Actualizar estado cuando se carguen datos del storage
+    useEffect(() => {
+        if (calculatorStorage.data) {
+            setMeasurements(calculatorStorage.data.measurements);
+            setBloodType(calculatorStorage.data.bloodType);
+            setRhFactor(calculatorStorage.data.rhFactor);
+            setSecretorStatus(calculatorStorage.data.secretorStatus);
+            setSex(calculatorStorage.data.sex);
+        }
+    }, [calculatorStorage.data]);
 
     const [proportions, setProportions] = useState<CalculatedProportions | null>(null);
     const [results, setResults] = useState<{line: string, genotypes: number[] } | null>(null);
@@ -53,7 +77,30 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
 
     const handleMeasurementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setMeasurements(prev => ({ ...prev, [name]: value ? parseFloat(value) : undefined }));
+        const newMeasurements = { ...measurements, [name]: value ? parseFloat(value) : undefined };
+        setMeasurements(newMeasurements);
+        // Guardar automáticamente en localStorage
+        calculatorStorage.updateMeasurements(newMeasurements);
+    };
+
+    const handleBloodTypeChange = (type: BloodType) => {
+        setBloodType(type);
+        calculatorStorage.updateBloodData(type, rhFactor, secretorStatus, sex);
+    };
+
+    const handleRhFactorChange = (rh: RhFactor) => {
+        setRhFactor(rh);
+        calculatorStorage.updateBloodData(bloodType, rh, secretorStatus, sex);
+    };
+
+    const handleSecretorStatusChange = (status: SecretorStatus) => {
+        setSecretorStatus(status);
+        calculatorStorage.updateBloodData(bloodType, rhFactor, status, sex);
+    };
+
+    const handleSexChange = (s: Sex) => {
+        setSex(s);
+        calculatorStorage.updateBloodData(bloodType, rhFactor, secretorStatus, s);
     };
 
     const calculateProportions = useCallback(() => {
@@ -197,7 +244,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                             <MedicalButton 
                                 key={type} 
                                 variant={bloodType === type ? "primary" : "secondary"}
-                                onClick={() => setBloodType(type)}
+                                onClick={() => handleBloodTypeChange(type)}
                                 size="sm"
                                 className="w-full"
                             >
@@ -214,7 +261,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                             <MedicalButton 
                                 key={rh} 
                                 variant={rhFactor === rh ? "primary" : "secondary"}
-                                onClick={() => setRhFactor(rh)}
+                                onClick={() => handleRhFactorChange(rh)}
                                 size="sm"
                                 className="w-full"
                             >
@@ -231,7 +278,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                             <MedicalButton 
                                 key={status} 
                                 variant={secretorStatus === status ? "primary" : "secondary"}
-                                onClick={() => setSecretorStatus(status)}
+                                onClick={() => handleSecretorStatusChange(status)}
                                 size="sm"
                                 className="w-full"
                             >
@@ -289,7 +336,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                         <MedicalButton 
                             key={s} 
                             variant={sex === s ? "primary" : "secondary"}
-                            onClick={() => setSex(s)}
+                            onClick={() => handleSexChange(s)}
                             size="sm"
                             className="w-full"
                         >

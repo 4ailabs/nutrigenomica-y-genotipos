@@ -1,15 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Portal from './components/Portal';
 import AdvancedCalculator from './components/AdvancedCalculator';
 import GenotypeDetail from './components/GenotypeDetail';
 import LandingPage from './components/LandingPage';
 import BiometricsPage from './components/BiometricsPage';
-import ChatPage from './components/ChatPage';
-import PatientView from './components/PatientView';
-import GenotypeStrengthMeter from './components/GenotypeStrengthMeter';
-import NutrigenomicsPage from './components/NutrigenomicsPage';
+import ErrorBoundary from './components/ErrorBoundary';
 import { useNavigation } from './hooks/useNavigation';
 import { ChatProvider } from './contexts/ChatContext';
+
+// Lazy loading de componentes grandes
+const ChatPage = lazy(() => import('./components/ChatPage'));
+const PatientView = lazy(() => import('./components/PatientView'));
+const GenotypeStrengthMeter = lazy(() => import('./components/GenotypeStrengthMeter'));
+const NutrigenomicsPage = lazy(() => import('./components/NutrigenomicsPage'));
+
+// Componente de carga para Suspense
+const LoadingFallback: React.FC = () => (
+  <div className="min-h-screen bg-white flex items-center justify-center">
+    <div className="text-center">
+      <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <p className="text-gray-600">Cargando...</p>
+    </div>
+  </div>
+);
 
 type Page = 'landing' | 'portal' | 'calculator' | 'biometrics' | 'chat' | 'patientView' | 'strengthMeter' | 'nutrigenomics';
 
@@ -87,40 +100,58 @@ const App: React.FC = () => {
                     onNavigateToMain={() => navigateTo('landing')}
                 />;
             case 'chat':
-                return <ChatPage 
-                    onBackToPortal={() => navigateTo('portal')} 
-                    onNavigateToMain={() => navigateTo('landing')}
-                    contextGenotypeId={viewingGenotype}
-                />;
+                return (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ChatPage 
+                            onBackToPortal={() => navigateTo('portal')} 
+                            onNavigateToMain={() => navigateTo('landing')}
+                            contextGenotypeId={viewingGenotype}
+                        />
+                    </Suspense>
+                );
             case 'strengthMeter':
-                return <GenotypeStrengthMeter 
-                    onResultChange={(result) => {
-                        console.log('Resultado del medidor de fuerza:', result);
-                    }}
-                    onBackToPortal={() => navigateTo('portal')}
-                />;
+                return (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <GenotypeStrengthMeter 
+                            onResultChange={(result) => {
+                                console.log('Resultado del medidor de fuerza:', result);
+                            }}
+                            onBackToPortal={() => navigateTo('portal')}
+                        />
+                    </Suspense>
+                );
             case 'patientView':
-                return <PatientView 
-                    onBackToMain={() => navigateTo('landing')}
-                />;
+                return (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PatientView 
+                            onBackToMain={() => navigateTo('landing')}
+                        />
+                    </Suspense>
+                );
             case 'nutrigenomics':
-                return <NutrigenomicsPage 
-                    onBackToPortal={() => navigateTo('portal')}
-                    onNavigateToMain={() => navigateTo('landing')}
-                />;
+                return (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <NutrigenomicsPage 
+                            onBackToPortal={() => navigateTo('portal')}
+                            onNavigateToMain={() => navigateTo('landing')}
+                        />
+                    </Suspense>
+                );
             default:
                 return <LandingPage onNavigateToCalculators={() => navigateTo('portal')} onNavigateToPatientView={() => navigateTo('patientView')} />;
         }
     }
 
     return (
-        <ChatProvider>
-            <div className="bg-white min-h-screen font-sans text-gray-800 antialiased">
-                <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
-                     {renderPage()}
+        <ErrorBoundary>
+            <ChatProvider>
+                <div className="bg-white min-h-screen font-sans text-gray-800 antialiased">
+                    <div key={currentPage + (viewingGenotype || '')} className="animate-fadeIn">
+                         {renderPage()}
+                    </div>
                 </div>
-            </div>
-        </ChatProvider>
+            </ChatProvider>
+        </ErrorBoundary>
     );
 };
 
