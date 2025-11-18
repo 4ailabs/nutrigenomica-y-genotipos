@@ -123,33 +123,36 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
     return (
         <div className="bg-white">
             <main>
-                {/* Hero Section Profesional para Médicos */}
-                <section className="relative text-center py-20 md:py-28 lg:py-32 bg-white">
+                {/* Hero Section Profesional Mejorado */}
+                <section className="relative text-center py-24 md:py-32 lg:py-40 bg-gradient-to-b from-white via-blue-50/30 to-white">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                        {/* Badge de Programa de Salud */}
-                        <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium mb-6">
-                            <Shield className="w-4 h-4 mr-2" />
+                        {/* Badge de Programa de Salud Mejorado */}
+                        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-8 shadow-sm">
+                            <Shield className="w-4 h-4" />
                             Programa de salud basado en GenoTipos
                         </div>
                         
-                        {/* Título Principal */}
-                        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                        {/* Título Principal Mejorado */}
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
                             Nutrigenomics <span className="text-blue-600">GenoType Algorithm</span>
                         </h1>
                         
-                        {/* Descripción Profesional */}
-                        <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed">
+                        {/* Descripción Profesional Mejorada */}
+                        <p className="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto mb-12 leading-relaxed font-light">
                             Sistema de evaluación nutrigenómica basado en evidencia científica para personalización nutricional en práctica clínica.
                         </p>
                         
-                        {/* Información Científica */}
-                        <div className="max-w-2xl mx-auto mb-8">
-                            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                        {/* Información Científica Mejorada */}
+                        <div className="max-w-3xl mx-auto mb-12">
+                            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 md:p-10 border border-gray-200 shadow-lg">
                                 <div className="text-center">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                                    <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <Shield className="w-8 h-8 text-white" />
+                                    </div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
                                         Evidencia Científica
                                     </h3>
-                                    <p className="text-gray-700 leading-relaxed">
+                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed">
                                         Metodología validada que integra mediciones antropométricas, análisis de laboratorio y algoritmos computacionales para determinar perfiles genotípicos nutricionales.
                                     </p>
                                 </div>
@@ -157,42 +160,36 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                         </div>
                         
                         {/* Botones de Acción Mejorados */}
-                        <div className="max-w-4xl mx-auto">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="max-w-5xl mx-auto mb-16">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                                 {/* Botón Principal - Acceder al Sistema */}
                                 <div className="group cursor-pointer h-full" onClick={onNavigateToCalculators}>
-                                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 h-full flex flex-col justify-center">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-700/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 md:p-10 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 border-2 border-blue-500/30 h-full flex flex-col justify-center">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-700/90 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                         <div className="relative z-10">
-                                            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                                                <Target className="w-10 h-10 text-white" />
+                                            <div className="w-24 h-24 mx-auto mb-5 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
+                                                <Target className="w-12 h-12 text-white" />
                                             </div>
-                                            <h3 className="text-xl font-bold mb-2">Acceder al Sistema</h3>
-                                            <p className="text-blue-100 text-sm opacity-90">
+                                            <h3 className="text-2xl font-bold mb-3">Acceder al Sistema</h3>
+                                            <p className="text-blue-100 text-base opacity-95">
                                                 Evaluación nutrigenómica completa
                                             </p>
-                                        </div>
-                                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Botón Secundario - Mi Genotipo */}
                                 <div className="group cursor-pointer h-full" onClick={onNavigateToPatientView}>
-                                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-8 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/25 border border-emerald-500/20 h-full flex flex-col justify-center">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/90 to-teal-600/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl p-8 md:p-10 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/30 border-2 border-emerald-500/30 h-full flex flex-col justify-center">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/90 to-teal-600/90 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                         <div className="relative z-10">
-                                            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                                                <Users className="w-10 h-10 text-white" />
+                                            <div className="w-24 h-24 mx-auto mb-5 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
+                                                <Users className="w-12 h-12 text-white" />
                                             </div>
-                                            <h3 className="text-xl font-bold mb-2">Mi Genotipo</h3>
-                                            <p className="text-emerald-100 text-sm opacity-90">
+                                            <h3 className="text-2xl font-bold mb-3">Mi Genotipo</h3>
+                                            <p className="text-emerald-100 text-base opacity-95">
                                                 Ver características y alimentos
                                             </p>
-                                        </div>
-                                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -205,19 +202,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                                         rel="noopener noreferrer"
                                         className="block h-full"
                                     >
-                                        <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 text-gray-700 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/25 border border-gray-300/20 h-full flex flex-col justify-center">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-gray-100/90 to-gray-200/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-8 md:p-10 text-gray-700 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/30 border-2 border-gray-300/30 h-full flex flex-col justify-center">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-gray-100/90 to-gray-200/90 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                             <div className="relative z-10">
-                                                <div className="w-20 h-20 mx-auto mb-4 bg-green-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-green-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                                <div className="w-24 h-24 mx-auto mb-5 bg-green-500/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-green-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                                 </div>
-                                                <h3 className="text-xl font-bold mb-2">Consulta Médica</h3>
-                                                <p className="text-gray-600 text-sm opacity-90">
+                                                <h3 className="text-2xl font-bold mb-3">Consulta Médica</h3>
+                                                <p className="text-gray-600 text-base opacity-95">
                                                     Contacto directo vía WhatsApp
                                                 </p>
-                                            </div>
-                                            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                                             </div>
                                         </div>
                                     </a>
@@ -225,24 +219,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                             </div>
                         </div>
                         
-                        {/* Indicador de Scroll */}
-                        <div className="mt-12">
-                            <a href="#nutricion" className="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors">
-                                <span className="text-sm mr-2">Ver más información</span>
-                                <ChevronDown className="w-4 h-4" />
+                        {/* Indicador de Scroll Mejorado */}
+                        <div className="mt-16">
+                            <a href="#nutricion" className="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors group">
+                                <span className="text-base font-medium">Ver más información</span>
+                                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
                             </a>
                         </div>
                     </div>
                 </section>
 
-                {/* Nutrition Section Profesional */}
-                <Section id="nutricion">
-                     <div className="text-center max-w-3xl mx-auto mb-16">
-                         <div className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium mb-4">
+                {/* Nutrition Section Profesional Mejorada */}
+                <Section id="nutricion" className="bg-white">
+                     <div className="text-center max-w-4xl mx-auto mb-20">
+                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold mb-6">
                             Sistema de Evaluación Nutrigenómica
                          </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Metodología Clínica Validada</h2>
-                        <p className="text-gray-600 mt-4 text-lg leading-relaxed">Protocolo estandarizado de evaluación nutrigenómica para implementación en práctica clínica con evidencia científica.</p>
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Metodología Clínica Validada</h2>
+                        <p className="text-gray-600 text-lg md:text-xl leading-relaxed">Protocolo estandarizado de evaluación nutrigenómica para implementación en práctica clínica con evidencia científica.</p>
                     </div>
                     
                     <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -258,14 +252,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                     </div>
                 </Section>
 
-                {/* Why Choose Section Profesional */}
-                <Section className="bg-gray-50" id="mas-informacion">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                         <div className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
+                {/* Why Choose Section Profesional Mejorada */}
+                <Section className="bg-gradient-to-b from-gray-50 to-white" id="mas-informacion">
+                    <div className="text-center max-w-4xl mx-auto mb-20">
+                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6">
                             Beneficios Clínicos Documentados
                          </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Ventajas del Sistema GenoTipo</h2>
-                        <p className="text-gray-600 mt-4 text-lg leading-relaxed">Implementación clínica con resultados medibles y protocolos estandarizados para práctica médica.</p>
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Ventajas del Sistema GenoTipo</h2>
+                        <p className="text-gray-600 text-lg md:text-xl leading-relaxed">Implementación clínica con resultados medibles y protocolos estandarizados para práctica médica.</p>
                     </div>
                     
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -284,13 +278,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                 </Section>
                 
                  {/* Our Focus Section Mejorado */}
-                <Section>
-                    <div className="text-center max-w-3xl mx-auto mb-16 animate-slideUp">
-                         <MedicalBadge variant="success" size="lg" className="mb-4">
+                <Section className="bg-white">
+                    <div className="text-center max-w-4xl mx-auto mb-20 animate-slideUp">
+                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold mb-6">
                             Metodología Científica
-                         </MedicalBadge>
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Nuestro Enfoque</h2>
-                        <p className="text-gray-600 mt-4 text-lg leading-relaxed">En lugar de aplicar dietas genéricas, analizamos la expresión de tu ADN para construir un plan nutricional adaptado a tu biología única.</p>
+                         </div>
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Nuestro Enfoque</h2>
+                        <p className="text-gray-600 text-lg md:text-xl leading-relaxed">En lugar de aplicar dietas genéricas, analizamos la expresión de tu ADN para construir un plan nutricional adaptado a tu biología única.</p>
                     </div>
                     
                     <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto stagger-children">
