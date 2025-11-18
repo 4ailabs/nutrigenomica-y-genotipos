@@ -223,17 +223,17 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('characteristics1') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-indigo-50/30">
-                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="px-3 md:px-7 pb-3 md:pb-7 pt-3 md:pt-5 border-t-2 border-gray-100 bg-indigo-50/30">
+                                <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
                                     {genotype.characteristics1.map((char, index) => (
-                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-gray-100 hover:border-indigo-200 hover:shadow-md transition-all duration-200">
-                                            <div className="flex items-start space-x-4">
-                                                <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                                                    <char.icon className="w-6 h-6 text-white" />
+                                        <div key={index} className="bg-white rounded-lg md:rounded-xl p-3 md:p-5 border md:border-2 border-gray-100 hover:border-indigo-200 hover:shadow-md transition-all duration-200">
+                                            <div className="flex items-start space-x-3 md:space-x-4">
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                                    <char.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h5 className="font-bold text-gray-900 text-lg md:text-xl mb-2">{char.title}</h5>
-                                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
+                                                    <h5 className="font-bold text-gray-900 text-base md:text-xl mb-1 md:mb-2">{char.title}</h5>
+                                                    <p className="text-xs md:text-base text-gray-600 leading-relaxed">{char.description}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -262,17 +262,17 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('characteristics2') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-slate-50/30">
-                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="px-3 md:px-7 pb-3 md:pb-7 pt-3 md:pt-5 border-t-2 border-gray-100 bg-slate-50/30">
+                                <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
                                     {genotype.characteristics2.map((char, index) => (
-                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-gray-100 hover:border-slate-200 hover:shadow-md transition-all duration-200">
-                                            <div className="flex items-start space-x-4">
-                                                <div className="w-12 h-12 bg-gradient-to-br from-slate-400 to-slate-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                                                    <char.icon className="w-6 h-6 text-white" />
+                                        <div key={index} className="bg-white rounded-lg md:rounded-xl p-3 md:p-5 border md:border-2 border-gray-100 hover:border-slate-200 hover:shadow-md transition-all duration-200">
+                                            <div className="flex items-start space-x-3 md:space-x-4">
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-slate-400 to-slate-500 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                                    <char.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h5 className="font-bold text-gray-900 text-lg md:text-xl mb-2">{char.title}</h5>
-                                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">{char.description}</p>
+                                                    <h5 className="font-bold text-gray-900 text-base md:text-xl mb-1 md:mb-2">{char.title}</h5>
+                                                    <p className="text-xs md:text-base text-gray-600 leading-relaxed">{char.description}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -301,19 +301,19 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('physical') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-cyan-50/30">
-                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="px-3 md:px-7 pb-3 md:pb-7 pt-3 md:pt-5 border-t-2 border-gray-100 bg-cyan-50/30">
+                                <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
                                     {genotype.physicalAndMetabolic.map((section, index) => (
-                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-cyan-100 shadow-md">
-                                            <h5 className="font-bold text-gray-900 mb-4 text-lg md:text-xl flex items-center space-x-3">
-                                                <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
+                                        <div key={index} className="bg-white rounded-lg md:rounded-xl p-3 md:p-5 border md:border-2 border-cyan-100 shadow-md">
+                                            <h5 className="font-bold text-gray-900 mb-3 md:mb-4 text-base md:text-xl flex items-center space-x-2 md:space-x-3">
+                                                <div className="w-2 h-2 md:w-3 md:h-3 bg-cyan-500 rounded-full"></div>
                                                 <span>{section.title}</span>
                                             </h5>
-                                            <ul className="space-y-3">
+                                            <ul className="space-y-2 md:space-y-3">
                                                 {section.points.map((point, pointIndex) => (
-                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-cyan-50/50 rounded-lg p-3 border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
-                                                        <div className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0"></div>
-                                                        <span className="text-sm md:text-base text-gray-700 leading-relaxed">{point}</span>
+                                                    <li key={pointIndex} className="flex items-start space-x-2 md:space-x-3 bg-cyan-50/50 rounded-md md:rounded-lg p-2 md:p-3 border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                                                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-cyan-500 rounded-full mt-1.5 md:mt-2 flex-shrink-0"></div>
+                                                        <span className="text-xs md:text-base text-gray-700 leading-relaxed">{point}</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -343,20 +343,20 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('foodPlan') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-teal-50/30">
-                                <p className="text-gray-700 mb-6 text-base md:text-lg leading-relaxed bg-teal-50/50 p-5 rounded-xl border-l-4 border-teal-500 font-medium">{genotype.foodPlan.description}</p>
-                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="px-3 md:px-7 pb-3 md:pb-7 pt-3 md:pt-5 border-t-2 border-gray-100 bg-teal-50/30">
+                                <p className="text-gray-700 mb-4 md:mb-6 text-sm md:text-lg leading-relaxed bg-teal-50/50 p-3 md:p-5 rounded-lg md:rounded-xl border-l-4 border-teal-500 font-medium">{genotype.foodPlan.description}</p>
+                                <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
                                     {genotype.foodPlan.sections.map((section, index) => (
-                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-teal-100 shadow-md">
-                                            <h5 className="font-bold text-gray-800 mb-4 text-lg md:text-xl flex items-center space-x-3">
-                                                <CheckCircle className="w-5 h-5 text-teal-600" />
+                                        <div key={index} className="bg-white rounded-lg md:rounded-xl p-3 md:p-5 border md:border-2 border-teal-100 shadow-md">
+                                            <h5 className="font-bold text-gray-800 mb-3 md:mb-4 text-base md:text-xl flex items-center space-x-2 md:space-x-3">
+                                                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-teal-600" />
                                                 <span>{section.title}</span>
                                             </h5>
-                                            <ul className="space-y-3">
+                                            <ul className="space-y-2 md:space-y-3">
                                                 {section.points.map((point, pointIndex) => (
-                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-teal-50/50 rounded-lg p-3 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">
-                                                        <CheckCircle className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
-                                                        <span className="text-sm md:text-base text-gray-700 leading-relaxed">{point}</span>
+                                                    <li key={pointIndex} className="flex items-start space-x-2 md:space-x-3 bg-teal-50/50 rounded-md md:rounded-lg p-2 md:p-3 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">
+                                                        <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                                                        <span className="text-xs md:text-base text-gray-700 leading-relaxed">{point}</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -386,20 +386,20 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('foodsToAvoid') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-rose-50/30">
-                                <p className="text-gray-700 mb-6 text-base md:text-lg leading-relaxed bg-rose-50/50 p-5 rounded-xl border-l-4 border-rose-500 font-medium">{genotype.foodsToAvoid.description}</p>
-                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="px-3 md:px-7 pb-3 md:pb-7 pt-3 md:pt-5 border-t-2 border-gray-100 bg-rose-50/30">
+                                <p className="text-gray-700 mb-4 md:mb-6 text-sm md:text-lg leading-relaxed bg-rose-50/50 p-3 md:p-5 rounded-lg md:rounded-xl border-l-4 border-rose-500 font-medium">{genotype.foodsToAvoid.description}</p>
+                                <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
                                     {genotype.foodsToAvoid.sections.map((section, index) => (
-                                        <div key={index} className="bg-white rounded-xl p-5 border-2 border-rose-100 shadow-md">
-                                            <h5 className="font-bold text-gray-800 mb-4 text-lg md:text-xl flex items-center space-x-3">
-                                                <XCircle className="w-5 h-5 text-rose-600" />
+                                        <div key={index} className="bg-white rounded-lg md:rounded-xl p-3 md:p-5 border md:border-2 border-rose-100 shadow-md">
+                                            <h5 className="font-bold text-gray-800 mb-3 md:mb-4 text-base md:text-xl flex items-center space-x-2 md:space-x-3">
+                                                <XCircle className="w-4 h-4 md:w-5 md:h-5 text-rose-600" />
                                                 <span>{section.title}</span>
                                             </h5>
-                                            <ul className="space-y-3">
+                                            <ul className="space-y-2 md:space-y-3">
                                                 {section.points.map((point, pointIndex) => (
-                                                    <li key={pointIndex} className="flex items-start space-x-3 bg-rose-50/50 rounded-lg p-3 border border-rose-100 shadow-sm hover:shadow-md transition-shadow">
-                                                        <XCircle className="w-5 h-5 text-rose-500 mt-0.5 flex-shrink-0" />
-                                                        <span className="text-sm md:text-base text-gray-700 leading-relaxed">{point}</span>
+                                                    <li key={pointIndex} className="flex items-start space-x-2 md:space-x-3 bg-rose-50/50 rounded-md md:rounded-lg p-2 md:p-3 border border-rose-100 shadow-sm hover:shadow-md transition-shadow">
+                                                        <XCircle className="w-4 h-4 md:w-5 md:h-5 text-rose-500 mt-0.5 flex-shrink-0" />
+                                                        <span className="text-xs md:text-base text-gray-700 leading-relaxed">{point}</span>
                                                     </li>
                                                 ))}
                                             </ul>
