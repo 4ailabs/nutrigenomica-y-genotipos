@@ -21,13 +21,21 @@ export class ResearchValidator {
   }
 
   static validateSynthesis(synthesis: any): boolean {
-    return !!(
-      synthesis &&
-      synthesis.summary &&
-      synthesis.clinicalRecommendations &&
-      Array.isArray(synthesis.clinicalRecommendations) &&
-      synthesis.clinicalRecommendations.length > 0
+    if (!synthesis) return false;
+    
+    // Validar que tenga summary (puede ser string o array)
+    const hasSummary = synthesis.summary && (
+      (typeof synthesis.summary === 'string' && synthesis.summary.trim().length > 0) ||
+      (Array.isArray(synthesis.summary) && synthesis.summary.length > 0)
     );
+    
+    // Validar que tenga clinicalRecommendations (puede ser string o array)
+    const hasRecommendations = synthesis.clinicalRecommendations && (
+      (typeof synthesis.clinicalRecommendations === 'string' && synthesis.clinicalRecommendations.trim().length > 0) ||
+      (Array.isArray(synthesis.clinicalRecommendations) && synthesis.clinicalRecommendations.length > 0)
+    );
+    
+    return !!(hasSummary && hasRecommendations);
   }
 
   static canGenerateReport(

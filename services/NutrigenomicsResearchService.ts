@@ -734,53 +734,24 @@ REQUISITOS DE LA SÍNTESIS CLÍNICA:
    - Identifica áreas con evidencia limitada
    - Sugiere áreas que requieren más investigación
 
-FORMATO DE RESPUESTA (TEXTO LEGIBLE, NO JSON):
-Debes responder en formato de texto legible y organizado, NO en JSON. Estructura tu respuesta de la siguiente manera:
+FORMATO DE RESPUESTA (JSON ESTRUCTURADO):
+Debes responder ÚNICAMENTE con un objeto JSON válido. No agregues texto adicional, explicaciones o formato markdown.
+La respuesta debe ser SOLO el objeto JSON, sin código de bloques, sin backticks, sin prefijos.
 
-## Resumen Ejecutivo
-
-1. Punto clave 1: Resumen ejecutivo de hallazgo principal (máximo 2 líneas)
-2. Punto clave 2: Hallazgo secundario importante
-3. Punto clave 3: Recomendación principal
-4. Punto clave 4-6: Otros puntos críticos
-
-## Perfil Genético Integrado
-
-Escribe un perfil genético integrado completo (300-500 palabras). Debe resumir todas las variantes genéticas relevantes, sus interacciones, y el significado clínico integrado.
-
-## Análisis Metabólico Conjunto
-
-Escribe un análisis metabólico conjunto completo (300-500 palabras). Debe integrar todas las vías metabólicas, requerimientos nutricionales, y estado metabólico inferido.
-
-## Factores Epigenéticos
-
-Escribe sobre factores epigenéticos relevantes integrados (200-400 palabras). Debe resumir modificaciones epigenéticas, influencia nutricional, y potencial de modulación.
-
-## Recomendaciones Clínicas
-
-Escribe recomendaciones clínicas específicas y accionables (400-600 palabras). Debe incluir:
-- Dieta específica con alimentos prioritarios y a evitar
-- Protocolo de suplementación con dosis y formas activas
-- Timing nutricional si es relevante
-- Consideraciones de seguridad
-- Alineación con genotipo del sistema GenoTipos
-
-## Reporte Clínico Completo
-
-Escribe un reporte clínico completo en formato Markdown profesional (mínimo 1000 palabras). Debe incluir:
-- Resumen ejecutivo
-- Introducción al caso
-- Análisis genético integrado
-- Análisis metabólico integrado
-- Factores epigenéticos
-- Recomendaciones clínicas detalladas
-- Protocolo de intervención paso a paso
-- Monitoreo y seguimiento
-- Contraindicaciones y precauciones
-- Referencias y nivel de evidencia
-- Notas profesionales para el médico
-
-Nivel de Evidencia: Alto/Medio/Bajo basado en calidad de toda la evidencia integrada`;
+{
+  "summary": [
+    "Punto clave 1: Resumen ejecutivo de hallazgo principal (máximo 2 líneas)",
+    "Punto clave 2: Hallazgo secundario importante",
+    "Punto clave 3: Recomendación principal",
+    "Punto clave 4-6: Otros puntos críticos (MÍNIMO 4, MÁXIMO 7 puntos)"
+  ],
+  "geneticProfile": "Perfil genético integrado completo (300-500 palabras). Debe resumir todas las variantes genéticas relevantes, sus interacciones, y el significado clínico integrado.",
+  "metabolicAnalysis": "Análisis metabólico conjunto completo (300-500 palabras). Debe integrar todas las vías metabólicas, requerimientos nutricionales, y estado metabólico inferido.",
+  "epigeneticFactors": "Factores epigenéticos relevantes integrados (200-400 palabras). Debe resumir modificaciones epigenéticas, influencia nutricional, y potencial de modulación.",
+  "clinicalRecommendations": "Recomendaciones clínicas específicas y accionables (400-600 palabras). Debe incluir: Dieta específica con alimentos prioritarios y a evitar, Protocolo de suplementación con dosis y formas activas, Timing nutricional si es relevante, Consideraciones de seguridad, Alineación con genotipo del sistema GenoTipos.",
+  "report": "Reporte clínico completo en formato Markdown profesional (mínimo 1000 palabras). Incluye: Resumen ejecutivo, Introducción al caso, Análisis genético integrado, Análisis metabólico integrado, Factores epigenéticos, Recomendaciones clínicas detalladas, Protocolo de intervención paso a paso, Monitoreo y seguimiento, Contraindicaciones y precauciones, Referencias y nivel de evidencia, Notas profesionales para el médico.",
+  "confidenceScore": 0.90
+}`;
 
     case 'LITERATURE_REVIEW':
       const reviewTopic = typeof content === 'string' ? content : content.topic;

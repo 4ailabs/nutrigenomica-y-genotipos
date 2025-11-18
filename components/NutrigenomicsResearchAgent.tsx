@@ -101,7 +101,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
     // Agregar mensaje de sistema
     addMessage({
       type: 'system',
-      content: `🔄 Iniciando investigación **${researchType === 'depth-first' ? 'en profundidad' : 'amplia'}**\n\nAnalizando consulta y desplegando subagentes especializados...`,
+      content: `Iniciando investigación **${researchType === 'depth-first' ? 'en profundidad' : 'amplia'}**\n\nAnalizando consulta y desplegando subagentes especializados...`,
       status: 'processing',
       researchType,
     });
@@ -168,7 +168,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
       serviceErrorShownRef.current = true;
       addMessage({
         type: 'system',
-        content: `⚠️ **API Key No Configurada**\n\nPara usar la funcionalidad completa de IA:\n\n**En desarrollo local:** Crea un archivo .env.local con VITE_GEMINI_API_KEY=tu_api_key\n**En Vercel:** Configura la variable de entorno VITE_GEMINI_API_KEY\n\nSin la API configurada, no se pueden generar reportes de investigación personalizados.`,
+        content: `**ADVERTENCIA: API Key No Configurada**\n\nPara usar la funcionalidad completa de IA:\n\n**En desarrollo local:** Crea un archivo .env.local con VITE_GEMINI_API_KEY=tu_api_key\n**En Vercel:** Configura la variable de entorno VITE_GEMINI_API_KEY\n\nSin la API configurada, no se pueden generar reportes de investigación personalizados.`,
         status: 'error',
       });
     } else if (!serviceError) {
@@ -202,7 +202,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
       addMessage({
         type: 'agent',
-        content: `🎉 **Investigación Completada**\n\n✅ ${results.filter(r => r.status === 'completed').length} aspectos analizados con IA\n📊 Nivel de evidencia: ${researchResult.evidenceLevel}\n💡 ${researchResult.recommendations.length} recomendaciones clínicas personalizadas\n\nHaz clic en "Ver Reporte" para acceder a los resultados detallados.`,
+        content: `**Investigación Completada**\n\n${results.filter(r => r.status === 'completed').length} aspectos analizados con IA\nNivel de evidencia: ${researchResult.evidenceLevel}\n${researchResult.recommendations.length} recomendaciones clínicas personalizadas\n\nHaz clic en "Ver Reporte" para acceder a los resultados detallados.`,
         status: 'completed',
         researchType: currentPlan.researchType,
         subagents: currentPlan.subagents,
@@ -226,7 +226,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
       planMessageRef.current = planKey;
       addMessage({
         type: 'system',
-        content: `📋 **Plan de Investigación Creado**\n\nSe han identificado ${currentPlan.subagents.length} aspectos especializados para analizar:\n\n${currentPlan.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
+        content: `**Plan de Investigación Creado**\n\nSe han identificado ${currentPlan.subagents.length} aspectos especializados para analizar:\n\n${currentPlan.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n')}`,
         status: 'processing',
         researchType: currentPlan.researchType,
         subagents: currentPlan.subagents,
@@ -273,7 +273,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           {/* Estado del Servicio */}
           <div className="mt-4 bg-white/10 rounded-lg p-4">
             <div className="text-sm font-medium mb-2">
-              Estado del Servicio: {hasService ? '✅ Activo' : '❌ No Configurado'}
+              Estado del Servicio: {hasService ? 'Activo' : 'No Configurado'}
             </div>
             {!hasService && (
               <div className="text-xs text-yellow-200">
@@ -368,10 +368,10 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           </form>
           
           <div className="mt-3 text-sm text-gray-500">
-            💡 El agente determinará automáticamente si usar investigación en profundidad o amplitud según tu consulta
+            El agente determinará automáticamente si usar investigación en profundidad o amplitud según tu consulta
             {!hasService && (
               <span className="text-amber-600 ml-2">
-                ℹ️ Para funcionalidad completa, configura VITE_GEMINI_API_KEY
+                Para funcionalidad completa, configura VITE_GEMINI_API_KEY
               </span>
             )}
           </div>

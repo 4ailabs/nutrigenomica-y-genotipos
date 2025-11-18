@@ -36,7 +36,7 @@ export const ResearchResultsView: React.FC<ResearchResultsViewProps> = ({
       <div className="bg-gradient-to-r from-green-600 to-emerald-700 p-6 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold">📊 Reporte de Investigación</h2>
+            <h2 className="text-2xl font-bold">Reporte de Investigación</h2>
             <p className="text-green-100 mt-1">Resultados comprehensivos de la investigación nutrigenómica</p>
           </div>
           <div className="flex gap-2">

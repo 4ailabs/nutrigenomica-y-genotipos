@@ -9,7 +9,7 @@ export class ResearchErrorHandler {
     const isAuthError = errorMsg.includes('401') || errorMsg.includes('403') || errorMsg.includes('API key');
     const isNetworkError = errorMsg.includes('fetch') || errorMsg.includes('network') || errorMsg.includes('timeout');
 
-    let content = `❌ **Error: ${context}**\n\n`;
+    let content = `**ERROR: ${context}**\n\n`;
     
     if (isQuotaError) {
       content += `**Causa:** Cuota de API excedida.\n\n**Solución:**\n- Espera unos minutos\n- Verifica tu plan de Gemini API\n- Considera actualizar tu plan si es necesario\n\n`;
