@@ -24,9 +24,9 @@ const Section: React.FC<{ children: React.ReactNode; className?: string; id?: st
     </section>
 );
 
-const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
-    <MedicalCard 
-        className="p-8 text-center hover:scale-105 transition-transform duration-300" 
+const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; delay?: number }> = ({ icon, title, children }) => (
+    <MedicalCard
+        className="p-8 text-center hover:scale-105 transition-transform duration-300"
         animation="slideUp"
     >
         <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
@@ -37,9 +37,9 @@ const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: Re
     </MedicalCard>
 );
 
-const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode, iconBgColor: string }> = ({ icon, title, children, iconBgColor }) => (
-    <MedicalCard 
-        className="p-6 transition-colors duration-300" 
+const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; iconBgColor: string; style?: React.CSSProperties }> = ({ icon, title, children, iconBgColor }) => (
+    <MedicalCard
+        className="p-6 transition-colors duration-300"
         animation="slideUp"
     >
         <div className="flex justify-end mb-4">
@@ -52,9 +52,9 @@ const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: Re
     </MedicalCard>
 );
 
-const FocusCard: React.FC<{ number: string; title: string; items: string[] }> = ({ number, title, items }) => (
-     <MedicalCard 
-        className="p-8 h-full" 
+const FocusCard: React.FC<{ number: string; title: string; items: string[]; style?: React.CSSProperties }> = ({ number, title, items }) => (
+     <MedicalCard
+        className="p-8 h-full"
         animation="slideUp"
     >
         <div className="flex items-center mb-4">
