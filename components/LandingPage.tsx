@@ -26,47 +26,63 @@ const Section: React.FC<{ children: React.ReactNode; className?: string; id?: st
 
 const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; delay?: number }> = ({ icon, title, children }) => (
     <MedicalCard
-        className="p-8 text-center hover:scale-105 transition-transform duration-300"
+        className="p-8 text-center group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
         animation="slideUp"
     >
-        <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-            {icon}
+        {/* Efecto de brillo en hover */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+        
+        <div className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+            <div className="text-white scale-75">
+                {icon}
+            </div>
         </div>
-        <h3 className="font-bold text-xl mb-3 text-gray-900">{title}</h3>
+        <h3 className="font-bold text-xl mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">{title}</h3>
         <p className="text-gray-600 text-sm leading-relaxed">{children}</p>
     </MedicalCard>
 );
 
 const BenefitCard: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; iconBgColor: string; style?: React.CSSProperties }> = ({ icon, title, children, iconBgColor }) => (
     <MedicalCard
-        className="p-6 transition-colors duration-300"
+        className="p-6 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
         animation="slideUp"
     >
-        <div className="flex justify-end mb-4">
-            <div className={`w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center ${iconBgColor} shadow-lg`}>
+        {/* Línea decorativa superior */}
+        <div className={`absolute top-0 left-0 right-0 h-1 ${iconBgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+        
+        <div className="flex justify-between items-start mb-4">
+            <div className="flex-1"></div>
+            <div className={`w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center ${iconBgColor} shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
                 {icon}
             </div>
         </div>
-        <h3 className="font-bold text-lg mb-3 text-gray-900">{title}</h3>
+        <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">{title}</h3>
         <p className="text-gray-600 text-sm leading-relaxed flex-grow">{children}</p>
     </MedicalCard>
 );
 
 const FocusCard: React.FC<{ number: string; title: string; items: string[]; style?: React.CSSProperties }> = ({ number, title, items }) => (
      <MedicalCard
-        className="p-8 h-full"
+        className="p-8 h-full group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
         animation="slideUp"
     >
-        <div className="flex items-center mb-4">
-            <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 font-bold text-lg flex items-center justify-center mr-4">
+        {/* Número grande decorativo de fondo */}
+        <div className="absolute top-4 right-4 text-8xl font-black text-green-50 opacity-50 group-hover:opacity-70 transition-opacity">
+            {number}
+        </div>
+        
+        <div className="flex items-center mb-6 relative z-10">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white font-black text-xl flex items-center justify-center mr-4 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                 {number}
             </div>
-            <h3 className="font-bold text-xl text-gray-900">{title}</h3>
+            <h3 className="font-bold text-xl text-gray-900 group-hover:text-green-600 transition-colors">{title}</h3>
         </div>
-        <ul className="space-y-3">
+        <ul className="space-y-3 relative z-10">
             {items.map((item, i) => (
-                <li key={i} className="flex items-start text-sm text-gray-600">
-                    <span className="text-green-500 mr-3 mt-1 text-lg">•</span>
+                <li key={i} className="flex items-start text-sm text-gray-600 group-hover:text-gray-700 transition-colors">
+                    <div className="w-6 h-6 rounded-lg bg-green-100 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                        <span className="text-green-600 text-xs">✓</span>
+                    </div>
                     <span className="leading-relaxed">{item}</span>
                 </li>
             ))}
@@ -124,113 +140,117 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
         <div className="bg-white">
             <main>
                 {/* Hero Section Profesional Mejorado */}
-                <section className="relative text-center py-24 md:py-32 lg:py-40 bg-gradient-to-b from-white via-blue-50/30 to-white">
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                        {/* Badge de Programa de Salud Mejorado */}
-                        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-8 shadow-sm">
-                            <Shield className="w-4 h-4" />
-                            Programa de salud basado en GenoTipos
+                <section className="relative py-20 md:py-28 lg:py-36 bg-gradient-to-br from-blue-50/30 via-indigo-50/20 to-purple-50/20 overflow-hidden">
+                    {/* Decoración de fondo */}
+                    <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+                    {/* Elementos decorativos sutiles */}
+                    <div className="absolute top-20 right-10 w-72 h-72 bg-blue-400/5 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl"></div>
+                    
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                        {/* Badge de Programa - Más Prominente */}
+                        <div className="text-center mb-8 animate-fadeIn">
+                            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full text-sm font-bold shadow-lg shadow-blue-500/30 border-2 border-blue-400/30">
+                                <Shield className="w-5 h-5" />
+                                Programa de Salud Basado en GenoTipos
+                            </div>
                         </div>
                         
-                        {/* Título Principal Mejorado */}
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-                            Nutrigenomics <span className="text-blue-600">GenoType Algorithm</span>
-                        </h1>
+                        {/* Título Principal - Mejorado con Mejor Jerarquía */}
+                        <div className="text-center max-w-5xl mx-auto mb-10">
+                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 mb-6 leading-none tracking-tight">
+                                Nutrigenomics
+                            </h1>
+                            <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 mb-8">
+                                GenoType Algorithm
+                            </div>
+                        </div>
                         
-                        {/* Descripción Profesional Mejorada */}
-                        <p className="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto mb-12 leading-relaxed font-light">
-                            Sistema de evaluación nutrigenómica basado en evidencia científica para personalización nutricional en práctica clínica.
+                        {/* Descripción - Más Clara y Legible */}
+                        <p className="text-center text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
+                            Sistema de evaluación nutrigenómica basado en 
+                            <span className="font-semibold text-gray-900"> evidencia científica</span> para 
+                            <span className="font-semibold text-gray-900"> personalización nutricional</span> en práctica clínica profesional.
                         </p>
                         
-                        {/* Información Científica Mejorada */}
+                        {/* Stats Rápidos - Más Visual */}
+                        <div className="max-w-4xl mx-auto mb-16">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                                    <div className="text-4xl font-black text-blue-600 mb-2">6</div>
+                                    <div className="text-sm font-semibold text-gray-900">Genotipos</div>
+                                    <div className="text-xs text-gray-500 mt-1">Perfiles únicos</div>
+                                </div>
+                                <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                                    <div className="text-4xl font-black text-green-600 mb-2">100%</div>
+                                    <div className="text-sm font-semibold text-gray-900">Personalizado</div>
+                                    <div className="text-xs text-gray-500 mt-1">Basado en tu biología</div>
+                                </div>
+                                <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                                    <div className="text-4xl font-black text-indigo-600 mb-2">+500</div>
+                                    <div className="text-sm font-semibold text-gray-900">Alimentos</div>
+                                    <div className="text-xs text-gray-500 mt-1">Clasificados por genotipo</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Botones de Acción - Diseño Moderno y Compacto */}
                         <div className="max-w-3xl mx-auto mb-12">
-                            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 md:p-10 border border-gray-200 shadow-lg">
-                                <div className="text-center">
-                                    <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Shield className="w-8 h-8 text-white" />
+                            {/* Botones Principales */}
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                                {/* Botón Principal */}
+                                <button
+                                    onClick={onNavigateToCalculators}
+                                    className="group relative px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="relative flex items-center justify-center gap-3">
+                                        <Target className="w-6 h-6" />
+                                        <span>Acceder al Sistema</span>
                                     </div>
-                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                                        Evidencia Científica
-                                    </h3>
-                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                                        Metodología validada que integra mediciones antropométricas, análisis de laboratorio y algoritmos computacionales para determinar perfiles genotípicos nutricionales.
-                                    </p>
-                                </div>
+                                </button>
+
+                                {/* Botón Secundario */}
+                                <button
+                                    onClick={onNavigateToPatientView}
+                                    className="px-10 py-4 bg-white border-2 border-gray-300 text-gray-900 rounded-2xl font-bold text-lg hover:border-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
+                                >
+                                    <div className="flex items-center justify-center gap-3">
+                                        <Users className="w-6 h-6" />
+                                        <span>Mi Genotipo</span>
+                                    </div>
+                                </button>
+                            </div>
+
+                            {/* Link de WhatsApp - Secundario */}
+                            <div className="text-center">
+                                <p className="text-sm text-gray-600 mb-3">¿Necesitas asesoría médica?</p>
+                                <a 
+                                    href="https://wa.me/5211234567890?text=Hola,%20soy%20médico%20y%20me%20gustaría%20conocer%20más%20sobre%20el%20sistema%20GenoTipo."
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-6 py-3 bg-green-50 text-green-700 rounded-xl font-semibold hover:bg-green-100 transition-all duration-200 border border-green-200"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    <span>Contactar vía WhatsApp</span>
+                                </a>
                             </div>
                         </div>
                         
-                        {/* Botones de Acción Mejorados */}
-                        <div className="max-w-5xl mx-auto mb-16">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                                {/* Botón Principal - Acceder al Sistema */}
-                                <div className="group cursor-pointer h-full" onClick={onNavigateToCalculators}>
-                                    <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 md:p-10 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 border-2 border-blue-500/30 h-full flex flex-col justify-center">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-700/90 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                        <div className="relative z-10">
-                                            <div className="w-24 h-24 mx-auto mb-5 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
-                                                <Target className="w-12 h-12 text-white" />
-                                            </div>
-                                            <h3 className="text-2xl font-bold mb-3">Acceder al Sistema</h3>
-                                            <p className="text-blue-100 text-base opacity-95">
-                                                Evaluación nutrigenómica completa
-                                            </p>
-                                        </div>
-                                    </div>
+                        {/* Indicador de Scroll Mejorado con animación */}
+                        <div className="mt-16 animate-bounce">
+                            <a href="#nutricion" className="inline-flex flex-col items-center gap-3 text-gray-500 hover:text-blue-600 transition-all duration-300 group">
+                                <span className="text-sm font-semibold uppercase tracking-wider">Descubre más</span>
+                                <div className="w-8 h-12 rounded-full border-2 border-gray-300 group-hover:border-blue-600 flex items-start justify-center p-2 transition-colors">
+                                    <div className="w-1 h-3 bg-gray-400 group-hover:bg-blue-600 rounded-full transition-colors"></div>
                                 </div>
-
-                                {/* Botón Secundario - Mi Genotipo */}
-                                <div className="group cursor-pointer h-full" onClick={onNavigateToPatientView}>
-                                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl p-8 md:p-10 text-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/30 border-2 border-emerald-500/30 h-full flex flex-col justify-center">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/90 to-teal-600/90 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                        <div className="relative z-10">
-                                            <div className="w-24 h-24 mx-auto mb-5 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
-                                                <Users className="w-12 h-12 text-white" />
-                                            </div>
-                                            <h3 className="text-2xl font-bold mb-3">Mi Genotipo</h3>
-                                            <p className="text-emerald-100 text-base opacity-95">
-                                                Ver características y alimentos
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Botón de Consulta - WhatsApp */}
-                                <div className="group h-full">
-                                    <a 
-                                        href="https://wa.me/5211234567890?text=Hola,%20soy%20médico%20y%20me%20gustaría%20conocer%20más%20sobre%20el%20sistema%20GenoTipo."
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="block h-full"
-                                    >
-                                        <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-8 md:p-10 text-gray-700 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/30 border-2 border-gray-300/30 h-full flex flex-col justify-center">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-gray-100/90 to-gray-200/90 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                            <div className="relative z-10">
-                                                <div className="w-24 h-24 mx-auto mb-5 bg-green-500/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-green-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                                </div>
-                                                <h3 className="text-2xl font-bold mb-3">Consulta Médica</h3>
-                                                <p className="text-gray-600 text-base opacity-95">
-                                                    Contacto directo vía WhatsApp
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        {/* Indicador de Scroll Mejorado */}
-                        <div className="mt-16">
-                            <a href="#nutricion" className="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors group">
-                                <span className="text-base font-medium">Ver más información</span>
-                                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
                             </a>
                         </div>
                     </div>
                 </section>
 
                 {/* Nutrition Section Profesional Mejorada */}
-                <Section id="nutricion" className="bg-white">
+                <Section id="nutricion" className="bg-gradient-to-b from-white via-indigo-50/20 to-white">
                      <div className="text-center max-w-4xl mx-auto mb-20">
                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold mb-6">
                             Sistema de Evaluación Nutrigenómica
@@ -253,7 +273,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                 </Section>
 
                 {/* Why Choose Section Profesional Mejorada */}
-                <Section className="bg-gradient-to-b from-gray-50 to-white" id="mas-informacion">
+                <Section className="bg-gradient-to-b from-blue-50/30 via-cyan-50/20 to-blue-50/30" id="mas-informacion">
                     <div className="text-center max-w-4xl mx-auto mb-20">
                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6">
                             Beneficios Clínicos Documentados
@@ -278,7 +298,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                 </Section>
                 
                  {/* Our Focus Section Mejorado */}
-                <Section className="bg-white">
+                <Section className="bg-gradient-to-b from-white via-emerald-50/15 to-white">
                     <div className="text-center max-w-4xl mx-auto mb-20 animate-slideUp">
                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold mb-6">
                             Metodología Científica
@@ -295,133 +315,304 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToCalculators, onNa
                     </div>
                 </Section>
                 
-                {/* Diagnostics & Results Section Profesional */}
-                <Section className="bg-gray-50">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div>
-                             <div className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
-                                <Leaf className="w-4 h-4 mr-2" />
-                                Nutrición GenoTipo
-                             </div>
-                            <h2 className="text-3xl font-bold text-gray-900 mb-4">Diagnóstico nutrigenómico personalizado</h2>
-                            <p className="text-gray-700 text-lg leading-relaxed">A través de un estudio de tus genes, identificamos cómo metabolizas grasas, carbohidratos y proteínas, qué vitaminas necesitas más y tu sensibilidad a ciertos alimentos.</p>
+                {/* Diagnostics & Results Section - Rediseñada */}
+                <Section className="bg-gradient-to-b from-blue-50/40 via-indigo-50/25 to-purple-50/20">
+                    <div className="text-center max-w-4xl mx-auto mb-16">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6">
+                            <Leaf className="w-4 h-4" />
+                            Proceso de Evaluación
                         </div>
-                        <div>
-                           <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
-                                <div className="text-center">
-                                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Leaf className="w-8 h-8 text-blue-600" />
-                                    </div>
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Evaluación Integral</h3>
-                                    <p className="text-gray-600 text-sm">Análisis completo de perfil genotípico para optimización nutricional</p>
-                                </div>
-                           </div>
-                        </div>
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Del Diagnóstico a los Resultados</h2>
+                        <p className="text-gray-600 text-lg leading-relaxed">Sistema completo de evaluación y seguimiento nutrigenómico con resultados medibles</p>
                     </div>
-                    
-                    <div className="grid lg:grid-cols-2 gap-12 items-center mt-16">
-                         <div>
-                            <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
-                                <div className="text-center">
-                                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <ChartIcon />
+
+                    <div className="max-w-6xl mx-auto">
+                        <div className="grid md:grid-cols-2 gap-8">
+                            {/* Card 1 - Diagnóstico */}
+                            <MedicalCard variant="elevated" className="p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div className="flex items-start gap-4 mb-6">
+                                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                        <Leaf className="w-7 h-7 text-white" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Seguimiento Clínico</h3>
-                                    <p className="text-gray-600 text-sm">Monitoreo de parámetros y resultados medibles</p>
+                                    <div>
+                                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Diagnóstico Nutrigenómico</h3>
+                                        <p className="text-sm text-blue-600 font-semibold">Análisis de perfil genético</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div>
-                           <div className="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
-                                <ChartIcon />
-                                Resultados Medibles
-                             </div>
-                             <h2 className="text-3xl font-bold text-gray-900 mb-4">Resultados en tiempo real</h2>
-                            <p className="text-gray-700 text-lg leading-relaxed">Visualiza el impacto real de la intervención nutricional: menos peso, más energía, y menor inflamación. Logra resultados y avances sostenibles y visibles.</p>
+                                <div className="space-y-4">
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Clock className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <p className="text-gray-700 leading-relaxed">
+                                            Identificación de cómo metabolizas <span className="font-semibold text-gray-900">grasas, carbohidratos y proteínas</span>
+                                        </p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Target className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <p className="text-gray-700 leading-relaxed">
+                                            Determinación de necesidades de <span className="font-semibold text-gray-900">vitaminas y minerales</span> específicas
+                                        </p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Shield className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <p className="text-gray-700 leading-relaxed">
+                                            Detección de <span className="font-semibold text-gray-900">sensibilidades alimentarias</span> y toxinas genéticas
+                                        </p>
+                                    </div>
+                                </div>
+                            </MedicalCard>
+
+                            {/* Card 2 - Resultados */}
+                            <MedicalCard variant="elevated" className="p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div className="flex items-start gap-4 mb-6">
+                                    <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                        <Zap className="w-7 h-7 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Resultados Medibles</h3>
+                                        <p className="text-sm text-green-600 font-semibold">Seguimiento en tiempo real</p>
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Award className="w-4 h-4 text-green-600" />
+                                        </div>
+                                        <p className="text-gray-700 leading-relaxed">
+                                            Mejoras en <span className="font-semibold text-gray-900">composición corporal</span> y control de peso sostenible
+                                        </p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Zap className="w-4 h-4 text-green-600" />
+                                        </div>
+                                        <p className="text-gray-700 leading-relaxed">
+                                            Aumento de <span className="font-semibold text-gray-900">energía y vitalidad</span> diaria documentado
+                                        </p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Target className="w-4 h-4 text-green-600" />
+                                        </div>
+                                        <p className="text-gray-700 leading-relaxed">
+                                            Reducción de <span className="font-semibold text-gray-900">inflamación y biomarcadores</span> de riesgo
+                                        </p>
+                                    </div>
+                                </div>
+                            </MedicalCard>
                         </div>
                     </div>
                 </Section>
 
-                {/* Transform Section Final - Diseño Limpio */}
-                <Section className="bg-white">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <div className="inline-flex items-center px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
-                                Beneficios Clave
+                {/* Transform Section - Rediseñado */}
+                <Section className="bg-gradient-to-b from-teal-50/20 via-emerald-50/15 to-cyan-50/20">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-16">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 rounded-full text-sm font-semibold mb-6">
+                                <Zap className="w-4 h-4" />
+                                Transforma Tu Salud
                             </div>
-                            <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                                Transforma tu salud desde tu código biológico
+                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                                De tu código biológico a resultados reales
                             </h2>
-                            <p className="text-gray-600 text-lg leading-relaxed">
-                                Adapta tu alimentación, mejora tu bienestar y alcanza tus objetivos con un plan diseñado para ti desde el ADN.
+                            <p className="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
+                                Adapta tu alimentación, mejora tu bienestar y alcanza tus objetivos con un plan diseñado para ti desde el ADN
                             </p>
                         </div>
                         
-                        <div className="space-y-4">
-                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Mejora tu energía y enfoque diario</span>
-                                    <div className="text-gray-400">»</div>
-                                </div>
-                            </div>
-                            
-                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Planes flexibles con seguimiento inteligente</span>
-                                    <div className="text-gray-400">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                        </svg>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {/* Card 1 */}
+                            <MedicalCard variant="elevated" className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Zap className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2">Energía y Enfoque Diario</h3>
+                                        <p className="text-sm text-gray-600 leading-relaxed">
+                                            Mejora tu rendimiento mental y físico con nutrición optimizada para tu metabolismo único
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Recibe recomendaciones personalizadas</span>
-                                    <div className="text-gray-400">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                            </MedicalCard>
+
+                            {/* Card 2 */}
+                            <MedicalCard variant="elevated" className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Target className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2">Seguimiento Inteligente</h3>
+                                        <p className="text-sm text-gray-600 leading-relaxed">
+                                            Planes flexibles que se adaptan a tus resultados y necesidades en tiempo real
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-md transition-shadow duration-300">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Optimización metabólica personalizada</span>
-                                    <div className="text-gray-400">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                        </svg>
+                            </MedicalCard>
+
+                            {/* Card 3 */}
+                            <MedicalCard variant="elevated" className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Users className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2">Recomendaciones Personalizadas</h3>
+                                        <p className="text-sm text-gray-600 leading-relaxed">
+                                            Asesoría con IA y expertos basada en tu perfil genético y objetivos de salud
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
+                            </MedicalCard>
+
+                            {/* Card 4 */}
+                            <MedicalCard variant="elevated" className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Award className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2">Optimización Metabólica</h3>
+                                        <p className="text-sm text-gray-600 leading-relaxed">
+                                            Maximiza tu metabolismo y alcanza tu peso ideal con estrategias basadas en tu ADN
+                                        </p>
+                                    </div>
+                                </div>
+                            </MedicalCard>
+                        </div>
+
+                        {/* CTA Final */}
+                        <div className="mt-12 text-center">
+                            <MedicalButton
+                                variant="primary"
+                                size="lg"
+                                onClick={onNavigateToCalculators}
+                                className="shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40"
+                            >
+                                <Target className="w-5 h-5 mr-2" />
+                                Comienza Tu Evaluación
+                            </MedicalButton>
                         </div>
                     </div>
                 </Section>
 
             </main>
             
-            {/* Footer Limpio y Coherente */}
-            <footer className="bg-gray-50 border-t border-gray-200 text-gray-600 py-16">
-                <div className="container mx-auto px-4">
-                    <div className="grid md:grid-cols-3 gap-8 mb-8">
-                        <div className="text-left">
-                            <h3 className="text-gray-900 font-semibold mb-4">Dr. Miguel Ojeda Rios</h3>
-                            <p className="text-sm leading-relaxed text-gray-600">Especialista en nutrigenómica y medicina personalizada</p>
-                        </div>
-                        <div className="text-center">
-                            <h3 className="text-gray-900 font-semibold mb-4">Programa GenoTipo</h3>
-                            <p className="text-sm leading-relaxed text-gray-600">Nutrición basada en tu perfil genético único</p>
-                        </div>
-                        <div className="text-right">
-                            <h3 className="text-gray-900 font-semibold mb-4">Contacto</h3>
-                            <p className="text-sm leading-relaxed text-gray-600">Consulta personalizada disponible</p>
+            {/* Footer Profesional Mejorado */}
+            <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-gray-300">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Main Footer Content */}
+                    <div className="py-16 border-b border-gray-800">
+                        <div className="grid md:grid-cols-4 gap-12">
+                            {/* Column 1 - Brand */}
+                            <div className="md:col-span-2">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                                        <Shield className="w-7 h-7 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-white text-xl font-bold">GenoType Algorithm</h3>
+                                        <p className="text-gray-400 text-xs">Nutrigenómica Personalizada</p>
+                                    </div>
+                                </div>
+                                <p className="text-gray-400 leading-relaxed mb-6">
+                                    Sistema profesional de evaluación nutrigenómica para optimización de salud basado en perfil genético único. 
+                                    Desarrollado con evidencia científica para práctica clínica.
+                                </p>
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                        <span className="text-sm text-gray-400">Sistema Activo</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Column 2 - Programa */}
+                            <div>
+                                <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                                    <Leaf className="w-4 h-4 text-blue-400" />
+                                    Programa
+                                </h4>
+                                <ul className="space-y-3">
+                                    <li>
+                                        <a href="#nutricion" className="text-gray-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-blue-400 transition-colors"></span>
+                                            Metodología
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#mas-informacion" className="text-gray-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-blue-400 transition-colors"></span>
+                                            Beneficios
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <button onClick={onNavigateToCalculators} className="text-gray-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-blue-400 transition-colors"></span>
+                                            Calculadoras
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button onClick={onNavigateToPatientView} className="text-gray-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-blue-400 transition-colors"></span>
+                                            Genotipos
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            {/* Column 3 - Profesional */}
+                            <div>
+                                <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                                    <Users className="w-4 h-4 text-blue-400" />
+                                    Profesional
+                                </h4>
+                                <div className="space-y-3">
+                                    <div>
+                                        <p className="text-white font-semibold text-sm mb-1">Dr. Miguel Ojeda Rios</p>
+                                        <p className="text-gray-400 text-xs leading-relaxed">
+                                            Especialista en nutrigenómica y medicina personalizada
+                                        </p>
+                                    </div>
+                                    <div className="pt-3">
+                                        <a 
+                                            href="https://wa.me/5211234567890"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                            Contactar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="border-t border-gray-200 pt-8">
-                        <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Dr. Miguel Ojeda Rios. Todos los derechos reservados.</p>
+
+                    {/* Bottom Footer */}
+                    <div className="py-8">
+                        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                            <p className="text-gray-500 text-sm">
+                                © {new Date().getFullYear()} Dr. Miguel Ojeda Rios. Todos los derechos reservados.
+                            </p>
+                            <div className="flex items-center gap-6 text-xs text-gray-500">
+                                <span className="flex items-center gap-2">
+                                    <Shield className="w-3 h-3" />
+                                    Sistema Seguro
+                                </span>
+                                <span className="flex items-center gap-2">
+                                    <Award className="w-3 h-3" />
+                                    Evidencia Científica
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </footer>

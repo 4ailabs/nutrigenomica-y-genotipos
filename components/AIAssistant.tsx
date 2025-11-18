@@ -96,13 +96,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                 </div>
 
                 {/* Contenido del Formulario */}
-                <div className="p-4 md:p-6 lg:p-8">
+                <div className="p-3 md:p-4 lg:p-5">
                     {/* Grid de Campos - Datos Básicos */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Datos Básicos</h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 mb-5">
+                        <h3 className="sm:col-span-2 text-base font-semibold text-gray-800 mb-2">Datos Básicos</h3>
                         
-                        <div className="space-y-2">
-                            <label htmlFor="age" className="block text-sm font-semibold text-gray-700">
+                        <div className="space-y-1.5">
+                            <label htmlFor="age" className="block text-xs font-semibold text-gray-700">
                                 Edad *
                             </label>
                             <input 
@@ -111,14 +111,14 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="age" 
                                 value={personalData.age} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. 35" 
                                 required
                             />
                         </div>
                         
-                        <div className="space-y-2">
-                            <label htmlFor="sex" className="block text-sm font-semibold text-gray-700">
+                        <div className="space-y-1.5">
+                            <label htmlFor="sex" className="block text-xs font-semibold text-gray-700">
                                 Sexo *
                             </label>
                             <select 
@@ -126,7 +126,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="sex" 
                                 value={personalData.sex} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900"
                                 required
                             >
                                 <option value="femenino">Femenino</option>
@@ -135,8 +135,8 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                             </select>
                         </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="height" className="block text-sm font-semibold text-gray-700">
+                        <div className="space-y-1.5">
+                            <label htmlFor="height" className="block text-xs font-semibold text-gray-700">
                                 Altura (cm)
                             </label>
                             <input 
@@ -145,13 +145,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="height" 
                                 value={personalData.height} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. 165" 
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="weight" className="block text-sm font-semibold text-gray-700">
+                        <div className="space-y-1.5">
+                            <label htmlFor="weight" className="block text-xs font-semibold text-gray-700">
                                 Peso (kg)
                             </label>
                             <input 
@@ -160,13 +160,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="weight" 
                                 value={personalData.weight} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. 70" 
                             />
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="activityLevel" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="activityLevel" className="block text-xs font-semibold text-gray-700">
                                 Nivel de Actividad Física
                             </label>
                             <select 
@@ -174,7 +174,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="activityLevel" 
                                 value={personalData.activityLevel} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900"
                             >
                                 <option value="sedentario">Sedentario (poco o ningún ejercicio)</option>
                                 <option value="ligero">Ligero (1-3 días/semana)</option>
@@ -186,13 +186,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                     </div>
 
                     {/* Grid de Campos - Datos Clínicos */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Datos Clínicos</h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 mb-5">
+                        <h3 className="sm:col-span-2 text-base font-semibold text-gray-800 mb-2">Datos Clínicos</h3>
                         
 
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="healthConditions" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="healthConditions" className="block text-xs font-semibold text-gray-700">
                                 Condiciones de Salud <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -201,13 +201,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="healthConditions" 
                                 value={personalData.healthConditions} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. Diabetes tipo 2, hipertensión" 
                             />
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="allergies" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="allergies" className="block text-xs font-semibold text-gray-700">
                                 Alergias Alimentarias <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -216,13 +216,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="allergies" 
                                 value={personalData.allergies} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. Gluten, lactosa, frutos secos" 
                             />
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="medications" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="medications" className="block text-xs font-semibold text-gray-700">
                                 Medicamentos Actuales <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -231,18 +231,18 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="medications" 
                                 value={personalData.medications} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. Metformina, enalapril" 
                             />
                         </div>
                     </div>
 
                     {/* Grid de Campos - Historial Médico */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Historial Médico</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-4">
+                        <h3 className="sm:col-span-2 text-base font-semibold text-gray-800 mb-2">Historial Médico</h3>
                         
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="familyHistory" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="familyHistory" className="block text-xs font-semibold text-gray-700">
                                 Historial Familiar <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <textarea 
@@ -256,8 +256,8 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                             ></textarea>
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="chronicConditions" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="chronicConditions" className="block text-xs font-semibold text-gray-700">
                                 Condiciones Crónicas <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -266,18 +266,18 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="chronicConditions" 
                                 value={personalData.chronicConditions} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. Artritis, asma, enfermedad tiroidea" 
                             />
                         </div>
                     </div>
 
                     {/* Grid de Campos - Objetivos y Preferencias */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Objetivos y Preferencias</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-4">
+                        <h3 className="sm:col-span-2 text-base font-semibold text-gray-800 mb-2">Objetivos y Preferencias</h3>
                         
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="goals" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="goals" className="block text-xs font-semibold text-gray-700">
                                 Objetivos Principales *
                             </label>
                             <textarea 
@@ -292,8 +292,8 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                             ></textarea>
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="dietaryRestrictions" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="dietaryRestrictions" className="block text-xs font-semibold text-gray-700">
                                 Restricciones Dietéticas <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -302,13 +302,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="dietaryRestrictions" 
                                 value={personalData.dietaryRestrictions} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. Vegetariano, sin gluten, bajo en sodio" 
                             />
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="foodPreferences" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="foodPreferences" className="block text-xs font-semibold text-gray-700">
                                 Preferencias Alimentarias <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -317,18 +317,18 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="foodPreferences" 
                                 value={personalData.foodPreferences} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. Prefiero pescado, no me gustan las legumbres" 
                             />
                         </div>
                     </div>
 
                     {/* Grid de Campos - Estilo de Vida */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6">
-                        <h3 className="sm:col-span-2 text-lg font-semibold text-gray-800 mb-3">Estilo de Vida</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-4">
+                        <h3 className="sm:col-span-2 text-base font-semibold text-gray-800 mb-2">Estilo de Vida</h3>
                         
-                        <div className="space-y-2">
-                            <label htmlFor="sleepHours" className="block text-sm font-semibold text-gray-700">
+                        <div className="space-y-1.5">
+                            <label htmlFor="sleepHours" className="block text-xs font-semibold text-gray-700">
                                 Horas de Sueño
                             </label>
                             <input 
@@ -337,15 +337,15 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="sleepHours" 
                                 value={personalData.sleepHours} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. 7" 
                                 min="4"
                                 max="12"
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="stressLevel" className="block text-sm font-semibold text-gray-700">
+                        <div className="space-y-1.5">
+                            <label htmlFor="stressLevel" className="block text-xs font-semibold text-gray-700">
                                 Nivel de Estrés
                             </label>
                             <select 
@@ -353,7 +353,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="stressLevel" 
                                 value={personalData.stressLevel} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900"
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900"
                             >
                                 <option value="bajo">Bajo</option>
                                 <option value="moderado">Moderado</option>
@@ -362,8 +362,8 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                             </select>
                         </div>
 
-                        <div className="sm:col-span-2 space-y-2">
-                            <label htmlFor="exerciseFrequency" className="block text-sm font-semibold text-gray-700">
+                        <div className="sm:col-span-2 space-y-1.5">
+                            <label htmlFor="exerciseFrequency" className="block text-xs font-semibold text-gray-700">
                                 Frecuencia de Ejercicio <span className="text-gray-500 font-normal">(opcional)</span>
                             </label>
                             <input 
@@ -372,7 +372,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 id="exerciseFrequency" 
                                 value={personalData.exerciseFrequency} 
                                 onChange={handleInputChange} 
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-400" 
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm text-gray-900 placeholder-gray-400" 
                                 placeholder="Ej. 3 veces por semana, 30 minutos" 
                             />
                         </div>
@@ -386,17 +386,17 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                     )}
 
                     {/* Opciones Nutricionales Organizadas */}
-                    <div className="mb-8">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Selecciona tu Solicitud Nutricional</h3>
+                    <div className="mb-5">
+                        <h3 className="text-base font-semibold text-gray-800 mb-3 text-center">Selecciona tu Solicitud Nutricional</h3>
                         
                         {/* Categoría: Planes Principales */}
-                        <div className="mb-6">
-                            <h4 className="text-sm font-medium text-gray-600 mb-3">Planes Principales</h4>
+                        <div className="mb-4">
+                            <h4 className="text-xs font-medium text-gray-600 mb-2">Planes Principales</h4>
                             <div className="grid sm:grid-cols-3 gap-3">
                                 <button 
                                     onClick={() => handleSubmit('menu')} 
                                     disabled={!isFormValid || isLoading} 
-                                    className="group relative bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                    className="group relative bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-sm overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     <span className="relative flex items-center justify-center text-sm">Menú Semanal</span>
@@ -405,7 +405,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 <button 
                                     onClick={() => handleSubmit('mealPrep')} 
                                     disabled={!isFormValid || isLoading} 
-                                    className="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                    className="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-sm font-medium py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-sm overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     <span className="relative flex items-center justify-center text-sm">Preparación Semanal</span>
@@ -414,7 +414,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 <button 
                                     onClick={() => handleSubmit('recipes')} 
                                     disabled={!isFormValid || isLoading} 
-                                    className="group relative bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                    className="group relative bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-medium py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-sm overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     <span className="relative flex items-center justify-center text-sm">Recetas Creativas</span>
@@ -423,13 +423,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         </div>
 
                         {/* Categoría: Comidas por Tiempo */}
-                        <div className="mb-6">
-                            <h4 className="text-sm font-medium text-gray-600 mb-3">Comidas por Tiempo</h4>
+                        <div className="mb-4">
+                            <h4 className="text-xs font-medium text-gray-600 mb-2">Comidas por Tiempo</h4>
                             <div className="grid sm:grid-cols-3 gap-3">
                                 <button 
                                     onClick={() => handleSubmit('breakfast')} 
                                     disabled={!isFormValid || isLoading} 
-                                    className="group relative bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                    className="group relative bg-gradient-to-r from-amber-500 to-amber-600 text-white text-sm font-medium py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-sm overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     <span className="relative flex items-center justify-center text-sm">Desayunos</span>
@@ -456,8 +456,8 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                         </div>
 
                         {/* Categoría: Opciones Especiales */}
-                        <div className="mb-6">
-                            <h4 className="text-sm font-medium text-gray-600 mb-3">Opciones Especiales</h4>
+                        <div className="mb-4">
+                            <h4 className="text-xs font-medium text-gray-600 mb-2">Opciones Especiales</h4>
                             <div className="grid sm:grid-cols-4 gap-3">
                                 <button 
                                     onClick={() => handleSubmit('snacks')} 
@@ -489,7 +489,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                 <button 
                                     onClick={() => handleSubmit('supplements')} 
                                     disabled={!isFormValid || isLoading} 
-                                    className="group relative bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-md overflow-hidden"
+                                    className="group relative bg-gradient-to-r from-purple-500 to-purple-600 text-white text-sm font-medium py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-sm overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     <span className="relative flex items-center justify-center text-sm">Suplementos</span>
@@ -500,32 +500,32 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                     
                     {/* Área de Respuesta de IA */}
                     {(isLoading || aiResponse) && (
-                        <div className="mt-8 pt-8 border-t border-gray-200">
+                        <div className="mt-5 pt-5 border-t border-gray-200">
                             {isLoading && (
-                                <div className="flex flex-col items-center justify-center text-gray-600 py-12">
-                                    <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mb-4">
-                                        <LoaderCircle className="w-8 h-8 text-blue-600 animate-spin" />
+                                <div className="flex flex-col items-center justify-center text-gray-600 py-8">
+                                    <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mb-3">
+                                        <LoaderCircle className="w-7 h-7 text-blue-600 animate-spin" />
                                     </div>
-                                    <h3 className="font-bold text-lg mb-2">Generando recomendación...</h3>
-                                    <p className="text-gray-500 text-center">
+                                    <h3 className="font-bold text-base mb-2">Generando recomendación...</h3>
+                                    <p className="text-gray-500 text-sm text-center">
                                         Nuestra IA está analizando tu perfil para crear recomendaciones personalizadas.
                                     </p>
                                 </div>
                             )}
                             
                             {aiResponse && (
-                                <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl p-8 border border-blue-100 shadow-xl">
+                                <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-5 border border-blue-100 shadow-lg">
                                     {/* Header de la respuesta */}
-                                    <div className="flex items-center gap-4 mb-6">
+                                    <div className="flex items-center gap-3 mb-4">
                                         <div>
-                                            <h3 className="text-2xl font-bold text-gray-900">Recomendación Personalizada</h3>
-                                            <p className="text-gray-600 text-sm">Generada por IA basada en tu perfil</p>
+                                            <h3 className="text-xl font-bold text-gray-900">Recomendación Personalizada</h3>
+                                            <p className="text-gray-600 text-xs">Generada por IA basada en tu perfil</p>
                                         </div>
                                     </div>
                                     
                                     {/* Contenido de la respuesta con mejor tipografía */}
-                                    <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-                                        <div className="prose prose-lg max-w-none">
+                                    <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                                        <div className="prose prose-sm max-w-none">
                                             <div className="ai-response">
                                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
                                             </div>
@@ -533,9 +533,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ foodData }) => {
                                     </div>
                                     
                                     {/* Footer con información adicional */}
-                                    <div className="mt-6 pt-6 border-t border-gray-200">
+                                    <div className="mt-4 pt-4 border-t border-gray-200">
                                         <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                            <div className="flex items-center gap-2 text-xs text-gray-500">
                                                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                 <span>Generado con IA avanzada</span>
                                             </div>

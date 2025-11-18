@@ -7,6 +7,7 @@ import FoodGuide from './FoodGuide';
 import AIAssistant from './AIAssistant';
 import GenotypeMenus from './GenotypeMenus';
 import GenotypeRecipes from './GenotypeRecipes';
+import FloatingNav from './FloatingNav';
 import { generateGenotypePDF, type GenotypePDFData } from '../utils/pdfGenerator';
 
 interface GenotypeDetailProps {
@@ -15,12 +16,12 @@ interface GenotypeDetailProps {
 }
 
 const GENOTYPE_THEMES = {
-    1: { name: 'pink', textColor: 'text-pink-500', mainColor: '#EC4899', fromColor: 'from-pink-50', viaColor: 'via-pink-100', toColor: 'to-white', borderColor: 'border-pink-200' },
-    2: { name: 'lime', textColor: 'text-lime-500', mainColor: '#84CC16', fromColor: 'from-lime-50', viaColor: 'via-lime-100', toColor: 'to-white', borderColor: 'border-lime-200' },
-    3: { name: 'purple', textColor: 'text-purple-600', mainColor: '#9333EA', fromColor: 'from-purple-50', viaColor: 'via-purple-100', toColor: 'to-white', borderColor: 'border-purple-200' },
-    4: { name: 'blue', textColor: 'text-blue-500', mainColor: '#3B82F6', fromColor: 'from-blue-50', viaColor: 'via-blue-100', toColor: 'to-white', borderColor: 'border-blue-200' },
-    5: { name: 'red', textColor: 'text-red-500', mainColor: '#EF4444', fromColor: 'from-red-50', viaColor: 'via-red-100', toColor: 'to-white', borderColor: 'border-red-200' },
-    6: { name: 'orange', textColor: 'text-orange-500', mainColor: '#F97316', fromColor: 'from-orange-50', viaColor: 'via-orange-100', toColor: 'to-white', borderColor: 'border-orange-200' },
+    1: { name: 'pink', textColor: 'text-pink-500', mainColor: '#EC4899', fromColor: 'from-pink-50/30', viaColor: 'via-rose-50/20', toColor: 'to-purple-50/25', borderColor: 'border-pink-200', bgGradient: 'from-pink-50/30 via-rose-50/20 to-purple-50/25' },
+    2: { name: 'lime', textColor: 'text-lime-500', mainColor: '#84CC16', fromColor: 'from-lime-50/30', viaColor: 'via-green-50/20', toColor: 'to-emerald-50/25', borderColor: 'border-lime-200', bgGradient: 'from-lime-50/30 via-green-50/20 to-emerald-50/25' },
+    3: { name: 'purple', textColor: 'text-purple-600', mainColor: '#9333EA', fromColor: 'from-purple-50/35', viaColor: 'via-indigo-50/25', toColor: 'to-blue-50/30', borderColor: 'border-purple-200', bgGradient: 'from-purple-50/35 via-indigo-50/25 to-blue-50/30' },
+    4: { name: 'blue', textColor: 'text-blue-500', mainColor: '#3B82F6', fromColor: 'from-blue-50/35', viaColor: 'via-cyan-50/25', toColor: 'to-sky-50/30', borderColor: 'border-blue-200', bgGradient: 'from-blue-50/35 via-cyan-50/25 to-sky-50/30' },
+    5: { name: 'red', textColor: 'text-red-500', mainColor: '#EF4444', fromColor: 'from-red-50/30', viaColor: 'via-orange-50/20', toColor: 'to-amber-50/25', borderColor: 'border-red-200', bgGradient: 'from-red-50/30 via-orange-50/20 to-amber-50/25' },
+    6: { name: 'orange', textColor: 'text-orange-500', mainColor: '#F97316', fromColor: 'from-orange-50/30', viaColor: 'via-amber-50/20', toColor: 'to-yellow-50/25', borderColor: 'border-orange-200', bgGradient: 'from-orange-50/30 via-amber-50/20 to-yellow-50/25' },
 };
 
 const Section: React.FC<{ title: string; subtitle?: string; children: React.ReactNode; className?: string, titleClassName?: string, subtitleColor?: string }> = ({ title, subtitle, children, className = '', titleClassName = '', subtitleColor = 'text-pink-600' }) => (
@@ -44,7 +45,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
     if (!data) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center text-center p-4">
+            <div className="min-h-screen bg-gradient-to-br from-gray-50/50 via-blue-50/30 to-indigo-50/40 flex flex-col items-center justify-center text-center p-4">
                 <div className="bg-white p-8 rounded-xl shadow-lg max-w-md">
                     <h2 className="text-3xl font-bold mb-4 text-gray-800">Información Próximamente</h2>
                     <p className="text-gray-600 mb-8">Los detalles para el Genotipo {genotypeId} ({name}) estarán disponibles pronto.</p>
@@ -57,9 +58,9 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
     }
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+        <div className={`min-h-screen bg-gradient-to-br ${theme.bgGradient}`}>
             {/* Header Moderno para Pacientes */}
-            <header className="relative bg-gradient-to-br from-white to-gray-50 py-20 overflow-hidden">
+            <header className="relative bg-white/80 backdrop-blur-sm py-20 overflow-hidden">
                 {/* Decoración de fondo sutil */}
                 <div className="absolute inset-0 opacity-5">
                     <div className="absolute top-10 left-10 w-32 h-32 rounded-full" style={{backgroundColor: theme.mainColor}}></div>
@@ -68,6 +69,21 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 </div>
 
                 <div className="container mx-auto px-4 relative">
+                    {/* Botón de Volver - Fijo y Visible */}
+                    <div className="absolute top-0 left-4 flex gap-2">
+                        <button 
+                            onClick={onBack}
+                            className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-all duration-200 px-4 py-2.5 rounded-lg shadow-md hover:shadow-lg font-medium"
+                            title="Volver a Mis Genotipos"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            <span className="hidden sm:inline">Volver</span>
+                        </button>
+                    </div>
+                    
+                    {/* Botón de Descargar PDF */}
                     <button 
                         onClick={() => {
                             const pdfData: GenotypePDFData = {
@@ -84,10 +100,11 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                             };
                             generateGenotypePDF(pdfData);
                         }}
-                        className="absolute top-0 right-4 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 transition-all duration-200 p-3 rounded-full shadow-md hover:shadow-lg"
+                        className="absolute top-0 right-4 flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-all duration-200 px-4 py-2.5 rounded-lg shadow-md hover:shadow-lg font-medium"
                         title="Descargar Plan Nutricional en PDF"
                     >
-                        <Download className="h-5 w-5" />
+                        <Download className="w-5 h-5" />
+                        <span className="hidden sm:inline">Descargar PDF</span>
                     </button>
                     
                     <div className="text-center max-w-4xl mx-auto">
@@ -148,7 +165,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 </Section>
 
                 {/* Características Secundarias - Mejoradas */}
-                <Section title="Tu Perfil Personal" subtitle="Aspectos que te hacen único" className="bg-gradient-to-b from-gray-50 to-white" subtitleColor={theme.textColor}>
+                <Section title="Tu Perfil Personal" subtitle="Aspectos que te hacen único" className="bg-white/50" subtitleColor={theme.textColor}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto px-4">
                          {data.characteristics2.map((char, index) => (
                             <div key={index} className="group bg-white p-4 md:p-6 rounded-lg md:rounded-xl shadow-md border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300">
@@ -235,7 +252,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                   </Section>
 
                 {/* Alimentos a Evitar Mejorado */}
-                <Section title={data.foodsToAvoid.title} subtitle="Precauciones Nutricionales" subtitleColor={theme.textColor} className="bg-gray-50">
+                <Section title={data.foodsToAvoid.title} subtitle="Precauciones Nutricionales" subtitleColor={theme.textColor} className="bg-white/40">
                     <div className="max-w-6xl mx-auto">
                          <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-2xl p-8 mb-8">
                              <div className="text-center">
@@ -280,7 +297,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                 
                 {/* Menús Personalizados */}
                 {foodData && (
-                    <Section title="Menús Personalizados" subtitle="Planes de comidas basados en tus alimentos específicos" subtitleColor={theme.textColor} className="bg-gray-50">
+                    <Section title="Menús Personalizados" subtitle="Planes de comidas basados en tus alimentos específicos" subtitleColor={theme.textColor} className="bg-white/50">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <GenotypeMenus 
                                 genotypeId={genotypeId} 
@@ -294,7 +311,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
                 {/* Recetas Especializadas */}
                 {foodData && (
-                    <Section title="Recetas Especializadas" subtitle="Recetas curadas con tus superalimentos" subtitleColor={theme.textColor} className="bg-white">
+                    <Section title="Recetas Especializadas" subtitle="Recetas curadas con tus superalimentos" subtitleColor={theme.textColor} className="bg-white/30">
                         <GenotypeRecipes 
                             genotypeId={genotypeId} 
                             genotypeColor={theme.mainColor} 
@@ -323,7 +340,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
 
                 {/* Asistente IA */}
                 {foodData && (
-                    <Section title="Asistente IA" className="bg-white">
+                    <Section title="Asistente IA" className="bg-white/40">
                         <AIAssistant foodData={foodData} />
                     </Section>
                 )}
@@ -331,7 +348,7 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
             </main>
             
             {/* Footer mejorado para pacientes */}
-            <footer className="bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200 py-12">
+            <footer className="bg-white/60 backdrop-blur-sm border-t border-gray-200 py-12">
                 <div className="container mx-auto px-4 text-center">
                     <div className="max-w-2xl mx-auto mb-8">
                         <h3 className="text-2xl font-bold text-gray-800 mb-4">¿Tienes preguntas sobre tu GenoTipo?</h3>
@@ -347,6 +364,13 @@ const GenotypeDetail: React.FC<GenotypeDetailProps> = ({ genotypeId, onBack }) =
                     </div>
                 </div>
             </footer>
+            
+            {/* Navegación Flotante */}
+            <FloatingNav 
+                onBack={onBack}
+                showBackButton={true}
+                showHomeButton={false}
+            />
         </div>
     );
 };

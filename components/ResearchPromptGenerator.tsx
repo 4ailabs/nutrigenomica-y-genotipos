@@ -360,7 +360,7 @@ const ResearchPromptGenerator: React.FC<ResearchPromptGeneratorProps> = ({
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50/40 via-purple-50/20 to-blue-50/35">
             {/* Header */}
             <NavigationHeader
                 title="Generador de Prompts de Investigación"

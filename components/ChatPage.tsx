@@ -6,6 +6,7 @@ import { useChat } from '../contexts/ChatContext';
 import ChatHeader from './chat/ChatHeader';
 import ChatSidebar from './chat/ChatSidebar';
 import GenotypeSelector from './chat/GenotypeSelector';
+import FloatingNav from './FloatingNav';
 
 // Lazy load del panel de historial (solo cuando se necesita)
 const ChatStoragePanel = lazy(() => import('./chat/ChatStoragePanel'));
@@ -49,9 +50,9 @@ const ChatPage: React.FC<ChatPageProps> = ({
                         </MedicalButton>
                     </div>
 
-                    <div className="grid lg:grid-cols-6 gap-6">
+                    <div className="grid lg:grid-cols-12 gap-6">
                         {/* Selector de contexto móvil */}
-                        <div className="lg:hidden mb-4">
+                        <div className="lg:hidden mb-4 col-span-full">
                             <GenotypeSelector
                                 selectedGenotype={selectedGenotype}
                                 onSelectGenotype={setSelectedGenotype}
@@ -59,16 +60,16 @@ const ChatPage: React.FC<ChatPageProps> = ({
                             />
                         </div>
 
-                        {/* Sidebar - Desktop only - 1 columna */}
-                        <div className="hidden lg:block lg:col-span-1">
+                        {/* Sidebar - Desktop only - 3 columnas */}
+                        <div className="hidden lg:block lg:col-span-3">
                             <ChatSidebar
                                 selectedGenotype={selectedGenotype}
                                 onSelectGenotype={setSelectedGenotype}
                             />
                         </div>
 
-                        {/* Área principal del chat - 5 columnas */}
-                        <div className="lg:col-span-5">
+                        {/* Área principal del chat - 9 columnas */}
+                        <div className="col-span-full lg:col-span-9">
                             <MedicalCard variant="elevated" className="h-[calc(100vh-12rem)] flex flex-col overflow-hidden">
                                 <ChatHeader selectedGenotype={selectedGenotype} />
                                 
@@ -105,6 +106,14 @@ const ChatPage: React.FC<ChatPageProps> = ({
                     )}
                 </div>
             </div>
+            
+            {/* Navegación Flotante */}
+            <FloatingNav 
+                onBack={onBackToPortal}
+                onHome={onNavigateToMain}
+                showBackButton={true}
+                showHomeButton={true}
+            />
         </div>
     );
 };

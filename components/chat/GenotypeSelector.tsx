@@ -30,20 +30,20 @@ const GenotypeButton: React.FC<GenotypeButtonProps> = React.memo(({ option, isSe
     return (
         <button
             onClick={onClick}
-            className={`w-full p-3 rounded-lg border-2 transition-all duration-200 ${
+            className={`w-full p-3 rounded-xl border-2 transition-all duration-200 text-left ${
                 isSelected
-                    ? 'border-blue-500 bg-blue-50 shadow-md scale-105'
-                    : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50/30 hover:shadow-sm'
+                    ? 'border-blue-600 bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg'
+                    : 'border-gray-300 bg-white hover:border-blue-400 hover:bg-blue-50 hover:shadow-md'
             }`}
         >
-            <div className="flex flex-col items-center gap-2">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                    isSelected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'
+            <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    isSelected ? 'bg-white/20 backdrop-blur-sm' : 'bg-gradient-to-br from-gray-100 to-gray-200'
                 }`}>
-                    <Icon className="w-5 h-5" />
+                    <Icon className={`w-5 h-5 ${isSelected ? 'text-white' : 'text-gray-700'}`} />
                 </div>
-                <span className={`text-xs font-medium ${
-                    isSelected ? 'text-blue-900' : 'text-gray-700'
+                <span className={`text-sm font-bold ${
+                    isSelected ? 'text-white' : 'text-gray-900'
                 }`}>
                     {option.shortName}
                 </span>
@@ -82,9 +82,9 @@ const GenotypeSelector: React.FC<GenotypeSelectorProps> = React.memo(({
         );
     }
 
-    // Modo desktop: Grid de botones
+    // Modo desktop: Lista vertical de botones
     return (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-2">
             {GENOTYPE_OPTIONS.map((option) => (
                 <GenotypeButton
                     key={option.id ?? 'general'}

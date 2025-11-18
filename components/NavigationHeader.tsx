@@ -49,31 +49,39 @@ const NavigationHeader: React.FC<NavigationHeaderProps> = ({
   return (
     <header className={`${getVariantClasses()} py-6 px-4 sm:px-6 lg:px-8 ${className}`}>
       <div className="max-w-7xl mx-auto">
-        {/* Navegación superior */}
+        {/* Navegación superior - Mejorada */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             {showBackButton && onBack && (
               <button
                 onClick={onBack}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${getButtonClasses()}`}
-                title="Volver"
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 ${getButtonClasses()}`}
+                title="Volver a la página anterior"
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span className="hidden sm:inline">Volver</span>
+                <ArrowLeft className="w-5 h-5" />
+                <span>Volver</span>
               </button>
             )}
             
             {showHomeButton && onNavigateToMain && (
               <button
                 onClick={onNavigateToMain}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${getButtonClasses()}`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 ${getButtonClasses()}`}
                 title="Ir al Inicio"
               >
-                <Home className="w-4 h-4" />
-                <span className="hidden sm:inline">Inicio</span>
+                <Home className="w-5 h-5" />
+                <span>Inicio</span>
               </button>
             )}
           </div>
+          
+          {/* Indicador de ubicación */}
+          {breadcrumbs.length > 0 && (
+            <div className="hidden md:flex items-center gap-2 text-sm font-medium opacity-75">
+              <ChevronRight className="w-4 h-4" />
+              <span>{breadcrumbs[breadcrumbs.length - 1]}</span>
+            </div>
+          )}
         </div>
 
         {/* Breadcrumbs */}

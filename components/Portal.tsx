@@ -109,30 +109,33 @@ const ToolCard: React.FC<ToolCardProps> = ({ type, title, description, features,
     return (
         <button
             onClick={onClick}
-            className="group bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 p-6 text-left w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="group bg-white rounded-2xl border-2 border-gray-200 hover:border-gray-300 hover:shadow-xl transition-all duration-300 p-6 text-left w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:-translate-y-1 relative overflow-hidden"
         >
-            <div className="flex items-center gap-4 mb-3">
-                <div className={`w-12 h-12 ${colors.icon} rounded-lg flex items-center justify-center`}>
+            {/* Línea decorativa superior que cambia de color */}
+            <div className={`absolute top-0 left-0 right-0 h-1 ${colors.button} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+            
+            <div className="flex items-center gap-4 mb-4">
+                <div className={`w-14 h-14 ${colors.icon} rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
                     {getIcon()}
                 </div>
                 <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-gray-700 transition-colors">
                         {title}
                     </h3>
-                    <div className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${colors.badge} mt-1`}>
+                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${colors.badge} mt-1`}>
                         {category === 'evaluation' ? 'Evaluación' : 'Consulta'}
                     </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all duration-200" />
+                <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-2 transition-all duration-300" />
             </div>
             
-            <p className="text-sm text-gray-600 mb-3">{description}</p>
+            <p className="text-sm text-gray-600 mb-4 leading-relaxed">{description}</p>
             
             {features && (
                 <div className="flex gap-2 flex-wrap">
                     {features.map((feature, index) => (
-                        <span key={index} className="inline-flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
-                            <CheckCircle className="w-3 h-3 mr-1" />
+                        <span key={index} className="inline-flex items-center text-xs text-gray-600 bg-gray-50 group-hover:bg-gray-100 px-3 py-1.5 rounded-lg font-medium transition-colors">
+                            <CheckCircle className="w-3.5 h-3.5 mr-1.5 text-green-500" />
                             {feature}
                         </span>
                     ))}
@@ -233,7 +236,7 @@ const Portal: React.FC<PortalProps> = ({ onNavigateToCalculator, onNavigateToGen
     const allTools = [...evaluationTools, ...consultationTools];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-800">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50/50 via-blue-50/30 to-indigo-50/40 text-gray-800">
             {/* Botón de Regreso al Inicio */}
             {onNavigateToMain && (
                 <div className="absolute top-6 left-6 z-20">

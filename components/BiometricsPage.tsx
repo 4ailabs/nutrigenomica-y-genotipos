@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ClipboardList, BarChart3, Target, Clock, Zap, TestTube, Ruler, Fingerprint, Users, Activity, Brain } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import FloatingNav from './FloatingNav';
 
 interface BiometricsPageProps {
     onBackToPortal: () => void;
@@ -9,19 +10,19 @@ interface BiometricsPageProps {
 }
 
 const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen: boolean; onClick: () => void; }> = ({ title, children, isOpen, onClick }) => (
-    <div className="border-b border-slate-200 last:border-b-0">
-        <button onClick={onClick} className="w-full flex justify-between items-center text-left py-6 px-8 hover:bg-slate-50 transition-all duration-200">
-            <h3 className="font-bold text-slate-800 text-lg flex items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 transition-all duration-200 ${
-                    isOpen ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'
+    <div className="border-b border-slate-200 last:border-b-0 group">
+        <button onClick={onClick} className="w-full flex justify-between items-center text-left py-6 px-8 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-300 rounded-lg">
+            <h3 className="font-bold text-slate-800 text-lg flex items-center group-hover:text-blue-700 transition-colors">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 shadow-sm ${
+                    isOpen ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white scale-105' : 'bg-slate-100 text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600'
                 }`}>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 {title}
             </h3>
-            <ChevronDown className={`w-6 h-6 text-slate-500 transition-transform duration-300 ${isOpen ? 'transform rotate-180' : ''}`} />
+            <ChevronDown className={`w-6 h-6 text-slate-500 group-hover:text-blue-600 transition-all duration-300 ${isOpen ? 'transform rotate-180' : ''}`} />
         </button>
         <div style={{
             display: 'grid',
@@ -29,7 +30,7 @@ const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen
             transition: 'grid-template-rows 0.3s ease-out'
         }}>
             <div className="overflow-hidden">
-                 <div className="pb-8 px-8 text-slate-600 text-base space-y-4 leading-relaxed">
+                 <div className="pb-8 px-8 text-slate-600 text-base space-y-4 leading-relaxed bg-gradient-to-b from-blue-50/30 to-transparent">
                     {children}
                 </div>
             </div>
@@ -453,7 +454,7 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
     };
 
     return (
-        <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
+        <div className="bg-gradient-to-br from-blue-50/30 via-cyan-50/20 to-teal-50/25 min-h-screen">
              <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
                  {/* Header Mejorado */}
                  <header className="mb-12 text-center">
@@ -737,6 +738,14 @@ const BiometricsPage: React.FC<BiometricsPageProps> = ({ onBackToPortal, onNavig
                     </form>
                 </section>
              </div>
+             
+             {/* Navegación Flotante */}
+             <FloatingNav 
+                 onBack={onBackToPortal}
+                 onHome={onNavigateToMain}
+                 showBackButton={true}
+                 showHomeButton={true}
+             />
         </div>
     );
 };

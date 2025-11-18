@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import FloatingNav from './FloatingNav';
 import {
     ArrowLeft,
     Search,
@@ -659,9 +660,9 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 overflow-x-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50/40 via-indigo-50/20 to-purple-50/30 overflow-x-hidden">
             {/* Header */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
+            <div className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
                     <div className="flex flex-col sm:flex-row justify-between items-center py-3 sm:py-4 space-y-2 sm:space-y-0">
                         <button
@@ -696,16 +697,16 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                         </p>
                     </div>
 
-                    {/* Barra de búsqueda */}
+                    {/* Barra de búsqueda mejorada */}
                     <div className="max-w-md mx-auto mb-6 md:mb-8 px-4">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 md:w-5 md:h-5" />
+                        <div className="relative group">
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-green-600 w-5 h-5 transition-colors" />
                             <input
                                 type="text"
                                 placeholder="Buscar genotipo..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200 text-base md:text-base"
+                                className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-base shadow-sm focus:shadow-md"
                             />
                         </div>
                     </div>
@@ -725,21 +726,29 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                                 <div 
                                     key={id} 
                                     onClick={() => handleGenotypeSelect(id)}
-                                    className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 md:p-6 cursor-pointer hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
+                                    className="group bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-4 md:p-6 cursor-pointer hover:shadow-2xl hover:border-gray-200 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden"
                                 >
-                                    <div className={`bg-gradient-to-r ${gradient} rounded-xl p-4 mb-4 text-white`}>
-                                        <div className="flex items-center justify-between">
+                                    {/* Efecto de brillo en hover */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                                    
+                                    <div className={`bg-gradient-to-r ${gradient} rounded-2xl p-5 mb-4 text-white relative overflow-hidden`}>
+                                        {/* Orb decorativo */}
+                                        <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+                                        
+                                        <div className="flex items-center justify-between relative z-10">
                                             <div className="flex items-center space-x-3">
-                                                {getGenotypeIcon(id)}
+                                                <div className="transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                                                    {getGenotypeIcon(id)}
+                                                </div>
                                                 <div>
-                                                    <h3 className="text-xl md:text-xl font-bold">{genotypeData.name}</h3>
-                                                    <p className="text-sm md:text-sm opacity-90">Genotipo {id}</p>
+                                                    <h3 className="text-xl font-bold drop-shadow-sm">{genotypeData.name}</h3>
+                                                    <p className="text-sm opacity-90">Genotipo {id}</p>
                                                 </div>
                                             </div>
-                                            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 opacity-70" />
+                                            <ChevronRight className="w-6 h-6 opacity-70 group-hover:translate-x-1 transition-transform" />
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 text-sm md:text-sm leading-relaxed">
+                                    <p className="text-gray-600 text-sm leading-relaxed">
                                         {genotypeData.essence.description.substring(0, 120)}...
                                     </p>
                                 </div>
@@ -751,8 +760,8 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
 
             {/* Información del Genotipo Seleccionado */}
             {selectedGenotype && (
-                <div className="relative">
-                    {/* Sidebar de navegación para desktop */}
+                <>
+                    {/* Sidebar de navegación para desktop - FUERA del relative */}
                     <DesktopSidebar 
                         activeTab={activeTab}
                         onTabChange={(tab) => setActiveTab(tab as any)}
@@ -848,11 +857,19 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                     </div>
 
                 </div>
-                </div>
+                </>
             )}
             
             {/* Espacio adicional en la parte inferior para mejor navegación móvil */}
             <div className="h-16 md:h-24"></div>
+            
+            {/* Navegación Flotante */}
+            <FloatingNav 
+                onBack={selectedGenotype ? () => setSelectedGenotype(null) : undefined}
+                onHome={onBackToMain}
+                showBackButton={!!selectedGenotype}
+                showHomeButton={true}
+            />
         </div>
     );
 };

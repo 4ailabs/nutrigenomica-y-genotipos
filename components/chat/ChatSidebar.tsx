@@ -20,11 +20,16 @@ const ChatSidebar: React.FC<ChatSidebarProps> = React.memo(({
     onSelectGenotype 
 }) => {
     return (
-        <MedicalCard variant="elevated" className="p-4 h-fit sticky top-24">
-            <MedicalHeading level={6} variant="secondary" className="mb-3">
-                <MessageSquare className="w-4 h-4 inline mr-2" />
-                Contexto
-            </MedicalHeading>
+        <MedicalCard variant="elevated" className="p-5 h-fit sticky top-24">
+            <div className="mb-4 pb-4 border-b border-gray-200">
+                <MedicalHeading level={5} variant="secondary" className="mb-1 text-gray-900">
+                    <MessageSquare className="w-5 h-5 inline mr-2" />
+                    Contexto
+                </MedicalHeading>
+                <p className="text-xs text-gray-600 mt-1">
+                    Selecciona un genotipo
+                </p>
+            </div>
             
             <GenotypeSelector
                 selectedGenotype={selectedGenotype}
@@ -32,18 +37,20 @@ const ChatSidebar: React.FC<ChatSidebarProps> = React.memo(({
             />
 
             {/* Tips de uso */}
-            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                <div className="flex items-start gap-2">
-                    <Lightbulb className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+            <div className="mt-5 p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-xl shadow-sm">
+                <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Lightbulb className="w-5 h-5 text-white" />
+                    </div>
                     <div className="flex-1">
-                        <MedicalText variant="label" size="xs" className="text-amber-800 mb-2">
-                            Sugerencias:
+                        <MedicalText variant="label" size="sm" className="text-amber-900 mb-2 font-bold">
+                            Sugerencias
                         </MedicalText>
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                             {USAGE_TIPS.map((tip, index) => (
                                 <div key={index} className="flex items-start gap-2">
-                                    <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                                    <MedicalText variant="caption" size="xs" className="text-amber-700">
+                                    <div className="w-2 h-2 bg-amber-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                                    <MedicalText variant="caption" size="xs" className="text-amber-800 leading-relaxed">
                                         {tip}
                                     </MedicalText>
                                 </div>
