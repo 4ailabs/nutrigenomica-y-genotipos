@@ -195,7 +195,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('essence') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-blue-50/30">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-blue-50/30">
                                 <blockquote className="text-xl md:text-2xl italic text-gray-800 mb-5 border-l-4 border-blue-500 pl-5 py-2 font-medium">
                                     "{genotype.essence.quote}"
                                 </blockquote>
@@ -223,7 +223,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('characteristics1') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-indigo-50/30">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-indigo-50/30">
                                 <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.characteristics1.map((char, index) => (
                                         <div key={index} className="bg-white rounded-xl p-5 border-2 border-gray-100 hover:border-indigo-200 hover:shadow-md transition-all duration-200">
@@ -262,7 +262,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('characteristics2') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-slate-50/30">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-slate-50/30">
                                 <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.characteristics2.map((char, index) => (
                                         <div key={index} className="bg-white rounded-xl p-5 border-2 border-gray-100 hover:border-slate-200 hover:shadow-md transition-all duration-200">
@@ -301,7 +301,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('physical') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-cyan-50/30">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-cyan-50/30">
                                 <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.physicalAndMetabolic.map((section, index) => (
                                         <div key={index} className="bg-white rounded-xl p-5 border-2 border-cyan-100 shadow-md">
@@ -343,7 +343,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('foodPlan') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-teal-50/30">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-teal-50/30">
                                 <p className="text-gray-700 mb-6 text-base md:text-lg leading-relaxed bg-teal-50/50 p-5 rounded-xl border-l-4 border-teal-500 font-medium">{genotype.foodPlan.description}</p>
                                 <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.foodPlan.sections.map((section, index) => (
@@ -386,7 +386,7 @@ const PatientView: React.FC<PatientViewProps> = ({ onBackToMain }) => {
                             />
                         </button>
                         {openSections.has('foodsToAvoid') && (
-                            <div className="px-5 md:px-7 pb-5 md:pb-7 border-t-2 border-gray-100 bg-rose-50/30">
+                            <div className="px-5 md:px-7 pb-5 md:pb-7 pt-5 border-t-2 border-gray-100 bg-rose-50/30">
                                 <p className="text-gray-700 mb-6 text-base md:text-lg leading-relaxed bg-rose-50/50 p-5 rounded-xl border-l-4 border-rose-500 font-medium">{genotype.foodsToAvoid.description}</p>
                                 <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     {genotype.foodsToAvoid.sections.map((section, index) => (
