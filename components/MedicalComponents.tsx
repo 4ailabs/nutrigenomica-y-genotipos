@@ -234,24 +234,25 @@ export const MedicalCard: React.FC<{
   delay = 0,
   onClick
 }) => {
-  // Usar las clases profesionales del sistema de diseño
+  const baseClasses = 'bg-white rounded-xl border border-gray-200 shadow-md transition-all duration-300';
+  
   const variantClasses = {
-    default: 'card-pro',
-    elevated: 'card-pro elevation-3',
-    interactive: 'card-pro hover-lift cursor-pointer',
-    highlighted: 'card-pro-gradient',
-    outline: 'card-pro border-2 border-gray-200'
+    default: 'bg-white',
+    elevated: 'shadow-lg',
+    interactive: 'cursor-pointer hover:shadow-xl hover:-translate-y-1',
+    highlighted: 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200',
+    outline: 'border-2 border-gray-300'
   };
 
-  const hoverClass = hover ? 'hover-lift' : '';
-
+  const hoverClasses = hover ? 'hover:shadow-lg hover:-translate-y-0.5' : '';
+  
   const animationClasses = {
     fadeIn: 'animate-fadeIn',
     slideUp: 'animate-slideUp',
     slideIn: 'animate-slideIn',
   };
 
-  const classes = `${variantClasses[variant]} ${hoverClass} ${animationClasses[animation]} ${className}`;
+  const classes = `${baseClasses} ${variantClasses[variant]} ${hoverClasses} ${animationClasses[animation]} ${className}`;
 
   return (
     <div
@@ -262,13 +263,7 @@ export const MedicalCard: React.FC<{
         animationFillMode: 'both'
       }}
     >
-      {variant === 'highlighted' ? (
-        <div className="card-pro-gradient-content">
-          {children}
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </div>
   );
 };
