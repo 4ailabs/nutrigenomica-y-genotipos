@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Atom, BookOpen, Users, Target, TrendingUp, Lightbulb, ChevronRight, ChevronDown, Microscope, ArrowRight } from 'lucide-react';
-import { FOOD_GUIDE_DATA } from '../foodData';
-import { GENOTYPE_NAMES } from '../constants';
+import { Atom, BookOpen, Target, TrendingUp, Lightbulb, ChevronRight, ChevronDown, Microscope } from 'lucide-react';
 import NutrigenomicsResearchAgent from './NutrigenomicsResearchAgent';
 import NavigationHeader from './NavigationHeader';
 
@@ -11,37 +9,11 @@ interface NutrigenomicsPageProps {
 }
 
 const NutrigenomicsPage: React.FC<NutrigenomicsPageProps> = ({ onBackToPortal, onNavigateToMain }) => {
-  const [selectedGenotype, setSelectedGenotype] = useState<number | null>(null);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const toggleSection = (sectionId: string) => {
     setExpandedSection(expandedSection === sectionId ? null : sectionId);
   };
-
-  const genotypeOptions = [1, 2, 3, 4, 5, 6].map(id => ({
-    id,
-    name: GENOTYPE_NAMES[id] || `Genotipo ${id}`,
-    available: !!FOOD_GUIDE_DATA[id]
-  }));
-
-  const foodData = selectedGenotype ? FOOD_GUIDE_DATA[selectedGenotype] : null;
-
-  // Contar alimentos por categoría si hay datos
-  const foodCounts = foodData ? {
-    superfoods: 0,
-    toxins: 0,
-    neutral: 0
-  } : null;
-
-  if (foodData && foodCounts) {
-    Object.values(foodData.categorias_alimentos).forEach(category => {
-      category.forEach(food => {
-        if (food.estado === 'Superalimento') foodCounts.superfoods++;
-        else if (food.estado === 'Toxina') foodCounts.toxins++;
-        else foodCounts.neutral++;
-      });
-    });
-  }
 
   const geneticInsights = [
     {
@@ -136,76 +108,6 @@ const NutrigenomicsPage: React.FC<NutrigenomicsPageProps> = ({ onBackToPortal, o
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-12">
-        {/* Selector de Genotipo */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Selecciona tu Genotipo</h2>
-            <p className="text-gray-600 text-lg">
-              Elige tu genotipo para ver información nutrigenómica personalizada
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {genotypeOptions.map((genotype) => (
-              <button
-                key={genotype.id}
-                onClick={() => setSelectedGenotype(genotype.id)}
-                disabled={!genotype.available}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                  selectedGenotype === genotype.id
-                    ? 'border-purple-500 bg-purple-50 shadow-lg'
-                    : genotype.available
-                    ? 'border-gray-200 hover:border-purple-300 hover:shadow-md'
-                    : 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed'
-                }`}
-              >
-                <div className={`w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-bold ${
-                  selectedGenotype === genotype.id ? 'bg-purple-500' : 'bg-gray-400'
-                }`}>
-                  {genotype.id}
-                </div>
-                <div className="text-sm font-medium text-gray-800">{genotype.name}</div>
-                {!genotype.available && (
-                  <div className="text-xs text-gray-500 mt-1">Próximamente</div>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Información específica del genotipo seleccionado */}
-        {selectedGenotype && foodData && foodCounts && (
-          <>
-            {/* Estadísticas del genotipo */}
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl p-8 text-white">
-              <h3 className="text-2xl font-bold mb-6">
-                Perfil Nutrigenómico: {foodData.genotipo_info.nombre}
-              </h3>
-              <p className="text-purple-100 mb-6 text-lg leading-relaxed">
-                {foodData.genotipo_info.descripcion}
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">{foodCounts.superfoods}</div>
-                  <div className="text-purple-100">Superalimentos</div>
-                  <div className="text-sm text-purple-200 mt-2">Optimizan tu expresión génica</div>
-                </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">{foodCounts.toxins}</div>
-                  <div className="text-purple-100">Alimentos a Evitar</div>
-                  <div className="text-sm text-purple-200 mt-2">Pueden generar respuestas adversas</div>
-                </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">{foodCounts.neutral}</div>
-                  <div className="text-purple-100">Alimentos Neutros</div>
-                  <div className="text-sm text-purple-200 mt-2">Consumo moderado recomendado</div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
         {/* Fundamentos de la Nutrigenómica */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <div className="flex items-center gap-3 mb-8">
@@ -277,7 +179,7 @@ const NutrigenomicsPage: React.FC<NutrigenomicsPageProps> = ({ onBackToPortal, o
           </div>
           
           <NutrigenomicsResearchAgent
-            genotypeId={selectedGenotype || undefined}
+            genotypeId={undefined}
             genotypeColor="#9333EA"
           />
         </div>
