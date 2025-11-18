@@ -14,6 +14,7 @@ import {
     MedicalBadge 
 } from './MedicalComponents';
 import { Info } from 'lucide-react';
+import Breadcrumbs from './Breadcrumbs';
 
 interface AdvancedCalculatorProps {
     onBackToPortal: () => void;
@@ -33,6 +34,9 @@ const TabButton: React.FC<{ label: string; isActive: boolean; onClick: () => voi
         className={`flex-1 py-3 px-2 text-sm font-semibold transition-colors duration-300 rounded-lg ${
             isActive ? 'bg-[#2D31FA] text-white shadow' : 'text-gray-500 hover:bg-gray-200'
         } disabled:opacity-50 disabled:cursor-not-allowed`}
+        aria-label={`${label} tab`}
+        aria-selected={isActive}
+        role="tab"
     >
         {label}
     </button>
@@ -73,12 +77,68 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
     const [proportions, setProportions] = useState<CalculatedProportions | null>(null);
     const [results, setResults] = useState<{line: string, genotypes: number[] } | null>(null);
     const [selectedGenotype, setSelectedGenotype] = useState<number | null>(null);
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+    const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
 
+    // Validación en tiempo real
+    const validateField = (name: string, value: string | number | undefined): string => {
+        if (!value && value !== 0) {
+            return 'Este campo es requerido';
+        }
+        
+        const numValue = typeof value === 'string' ? parseFloat(value) : value;
+        
+        if (isNaN(numValue) || numValue <= 0) {
+            return 'Debe ser un número positivo';
+        }
+        
+        // Validaciones específicas por campo
+        switch (name) {
+            case 'heightStanding':
+                if (numValue < 100 || numValue > 250) {
+                    return 'La altura debe estar entre 100 y 250 cm';
+                }
+                break;
+            case 'heightSitting':
+                if (numValue < 50 || numValue > 150) {
+                    return 'La altura sentado debe estar entre 50 y 150 cm';
+                }
+                break;
+            case 'chairHeight':
+                if (numValue < 30 || numValue > 80) {
+                    return 'La altura de la silla debe estar entre 30 y 80 cm';
+                }
+                break;
+            case 'upperLegLength':
+            case 'lowerLegLength':
+                if (numValue < 20 || numValue > 100) {
+                    return 'La longitud debe estar entre 20 y 100 cm';
+                }
+                break;
+            case 'indexFingerLeft':
+            case 'ringFingerLeft':
+            case 'indexFingerRight':
+            case 'ringFingerRight':
+                if (numValue < 3 || numValue > 15) {
+                    return 'La longitud del dedo debe estar entre 3 y 15 cm';
+                }
+                break;
+        }
+        
+        return '';
+    };
 
     const handleMeasurementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        const newMeasurements = { ...measurements, [name]: value ? parseFloat(value) : undefined };
+        const numValue = value ? parseFloat(value) : undefined;
+        const newMeasurements = { ...measurements, [name]: numValue };
         setMeasurements(newMeasurements);
+        
+        // Validación en tiempo real
+        setTouchedFields(prev => new Set(prev).add(name));
+        const error = validateField(name, numValue);
+        setFieldErrors(prev => ({ ...prev, [name]: error }));
+        
         // Guardar automáticamente en localStorage
         calculatorStorage.updateMeasurements(newMeasurements);
     };
@@ -105,8 +165,32 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
 
     const calculateProportions = useCallback(() => {
         const m = measurements;
+        
+        // Validar todos los campos antes de calcular
+        const requiredFields = ['heightStanding', 'heightSitting', 'chairHeight', 'upperLegLength', 'lowerLegLength', 'indexFingerLeft', 'ringFingerLeft', 'indexFingerRight', 'ringFingerRight'];
+        const missingFields: string[] = [];
+        const newErrors: Record<string, string> = {};
+        
+        requiredFields.forEach(fieldName => {
+            const value = m[fieldName as keyof BodyMeasurements];
+            const error = validateField(fieldName, value);
+            if (error) {
+                missingFields.push(fieldName);
+                newErrors[fieldName] = error;
+            }
+        });
+        
+        if (missingFields.length > 0) {
+            setFieldErrors(newErrors);
+            setTouchedFields(prev => {
+                const newSet = new Set(prev);
+                requiredFields.forEach(f => newSet.add(f));
+                return newSet;
+            });
+            return;
+        }
+        
         if (!m.heightStanding || !m.heightSitting || !m.chairHeight || !m.upperLegLength || !m.lowerLegLength || !m.indexFingerLeft || !m.ringFingerLeft || !m.indexFingerRight || !m.ringFingerRight) {
-            alert("Por favor, completa todas las mediciones.");
             return;
         }
 
@@ -205,17 +289,31 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                     { name: "ringFingerLeft", label: "Dedo anular (izquierdo)", placeholder: "Ej. 8.0" },
                     { name: "indexFingerRight", label: "Dedo índice (derecho)", placeholder: "Ej. 7.5" },
                     { name: "ringFingerRight", label: "Dedo anular (derecho)", placeholder: "Ej. 8.0" }
-                ].map(field => (
-                    <MedicalInput
-                        key={field.name}
-                        label={field.label}
-                        name={field.name}
-                        type="number"
-                        value={measurements[field.name as keyof BodyMeasurements]?.toString() || ''}
-                        onChange={handleMeasurementChange}
-                        placeholder={field.placeholder}
-                    />
-                ))}
+                ].map(field => {
+                    const fieldName = field.name as keyof BodyMeasurements;
+                    const isTouched = touchedFields.has(field.name);
+                    const error = isTouched ? fieldErrors[field.name] : '';
+                    const value = measurements[fieldName];
+                    const isValid = isTouched && !error && value !== undefined;
+                    
+                    return (
+                        <MedicalInput
+                            key={field.name}
+                            label={field.label}
+                            name={field.name}
+                            type="number"
+                            value={value?.toString() || ''}
+                            onChange={handleMeasurementChange}
+                            placeholder={field.placeholder}
+                            error={error}
+                            success={isValid ? '✓ Campo válido' : undefined}
+                            required
+                            aria-label={`${field.label}, campo requerido`}
+                            aria-invalid={error ? true : false}
+                            aria-describedby={error ? `${field.name}-error` : undefined}
+                        />
+                    );
+                })}
             </div>
             
             <MedicalButton
@@ -223,6 +321,8 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 size="sm"
                 onClick={calculateProportions}
                 className="w-full mt-4"
+                aria-label="Calcular proporciones corporales basadas en las mediciones ingresadas"
+                disabled={Object.keys(fieldErrors).some(key => fieldErrors[key] !== '') || Object.keys(measurements).length < 9}
             >
                 Calcular Proporciones
             </MedicalButton>
@@ -247,6 +347,8 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                                 onClick={() => handleBloodTypeChange(type)}
                                 size="sm"
                                 className="w-full"
+                                aria-label={`Seleccionar grupo sanguíneo ${type}`}
+                                aria-pressed={bloodType === type}
                             >
                                 {type}
                             </MedicalButton>
@@ -264,6 +366,8 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                                 onClick={() => handleRhFactorChange(rh)}
                                 size="sm"
                                 className="w-full"
+                                aria-label={`Seleccionar factor Rh ${rh === '+' ? 'positivo' : 'negativo'}`}
+                                aria-pressed={rhFactor === rh}
                             >
                                 {rh === '+' ? 'Positivo (+)' : 'Negativo (-)'}
                             </MedicalButton>
@@ -281,6 +385,8 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                                 onClick={() => handleSecretorStatusChange(status)}
                                 size="sm"
                                 className="w-full"
+                                aria-label={`Seleccionar estado secretor ${status === 'secretor' ? 'secretor' : 'no secretor'}`}
+                                aria-pressed={secretorStatus === status}
                             >
                                 {status === 'secretor' ? 'Secretor' : 'No Secretor'}
                             </MedicalButton>
@@ -295,6 +401,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 onClick={() => setActiveTab('summary')}
                 disabled={!isBloodComplete}
                 className="w-full mt-4"
+                aria-label={isBloodComplete ? "Continuar al resumen" : "Completa todos los campos de información sanguínea para continuar"}
             >
                 Continuar
             </MedicalButton>
@@ -339,6 +446,8 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                             onClick={() => handleSexChange(s)}
                             size="sm"
                             className="w-full"
+                            aria-label={`Seleccionar sexo ${s}`}
+                            aria-pressed={sex === s}
                         >
                             {s.charAt(0).toUpperCase() + s.slice(1)}
                         </MedicalButton>
@@ -352,6 +461,7 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
                 onClick={calculateGenotype}
                 disabled={!sex}
                 className="w-full mt-4"
+                aria-label={sex ? "Calcular genotipo basado en los datos ingresados" : "Selecciona el sexo para calcular el genotipo"}
             >
                 Calcular Genotipo
             </MedicalButton>
@@ -425,6 +535,14 @@ const AdvancedCalculator: React.FC<AdvancedCalculatorProps> = ({ onBackToPortal,
     return (
         <div className="p-4 sm:p-6 md:p-8 min-h-screen">
             <div className="max-w-2xl mx-auto">
+                <Breadcrumbs 
+                    items={[
+                        { label: 'Inicio', onClick: onNavigateToMain || onBackToPortal },
+                        { label: 'Portal', onClick: onBackToPortal },
+                        { label: 'Calculadora Avanzada' }
+                    ]}
+                    className="mb-6"
+                />
                 <header className="text-center mb-6">
                     <MedicalHeading level={3} variant="primary" align="center" className="mb-2">
                         Calculadora Avanzada

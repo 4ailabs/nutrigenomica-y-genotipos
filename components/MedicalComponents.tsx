@@ -350,6 +350,9 @@ export const MedicalInput: React.FC<{
   required?: boolean;
   className?: string;
   icon?: React.ReactNode;
+  'aria-label'?: string;
+  'aria-invalid'?: boolean | 'true' | 'false' | 'grammar' | 'spelling';
+  'aria-describedby'?: string;
 }> = ({ 
   label, 
   name, 
@@ -361,7 +364,10 @@ export const MedicalInput: React.FC<{
   success, 
   required = false,
   className = '',
-  icon 
+  icon,
+  'aria-label': ariaLabel,
+  'aria-invalid': ariaInvalid,
+  'aria-describedby': ariaDescribedBy
 }) => {
   const baseClasses = 'w-full px-4 py-3 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
   
@@ -373,12 +379,12 @@ export const MedicalInput: React.FC<{
     <div className={`space-y-2 ${className}`}>
       <label htmlFor={name} className="block text-sm font-medium text-gray-700">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-500 ml-1" aria-label="requerido">*</span>}
       </label>
       
       <div className="relative">
         {icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none" aria-hidden="true">
             <span className="text-gray-400">{icon}</span>
           </div>
         )}
@@ -392,15 +398,22 @@ export const MedicalInput: React.FC<{
           placeholder={placeholder}
           className={`${inputClasses} ${icon ? 'pl-10' : ''}`}
           required={required}
+          aria-label={ariaLabel || label}
+          aria-invalid={ariaInvalid}
+          aria-describedby={ariaDescribedBy || (error ? `${name}-error` : undefined)}
         />
       </div>
       
       {error && (
-        <p className="text-sm text-red-600 animate-fadeIn">{error}</p>
+        <p id={`${name}-error`} className="text-sm text-red-600 animate-fadeIn" role="alert">
+          {error}
+        </p>
       )}
       
       {success && (
-        <p className="text-sm text-green-600 animate-fadeIn">{success}</p>
+        <p className="text-sm text-green-600 animate-fadeIn" role="status">
+          {success}
+        </p>
       )}
     </div>
   );
