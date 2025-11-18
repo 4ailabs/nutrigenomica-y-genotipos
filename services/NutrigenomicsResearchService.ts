@@ -101,10 +101,10 @@ export const NUTRIGENOMICS_STRATEGY: Record<NutrigenomicsTask, NutrigenomicsStra
 
 // Cache especializado para nutrigenómica
 export class NutrigenomicsCache {
-  private cache = new Map<string, { 
-    response: any; 
-    timestamp: number; 
-    model: string; 
+  private cache = new Map<string, {
+    response: any;
+    timestamp: number;
+    model: string;
     confidence: number;
     genotypeSpecific: boolean;
   }>();
@@ -120,12 +120,12 @@ export class NutrigenomicsCache {
   }
 
   setCachedResponse(key: string, response: any, model: string, confidence: number = 0.8, genotypeSpecific: boolean = false): void {
-    this.cache.set(key, { 
-      response, 
-      timestamp: Date.now(), 
-      model, 
+    this.cache.set(key, {
+      response,
+      timestamp: Date.now(),
+      model,
       confidence,
-      genotypeSpecific 
+      genotypeSpecific
     });
     console.log(`🧬 Cache nutrigenómico actualizado: ${key} (confianza: ${confidence})`);
   }
@@ -138,6 +138,67 @@ export class NutrigenomicsCache {
       }
     }
     return results;
+  }
+
+  // Método para obtener estadísticas del cache
+  getCacheStats() {
+    const now = Date.now();
+    let activeEntries = 0;
+    let expiredEntries = 0;
+    let totalConfidence = 0;
+    let genotypeSpecificCount = 0;
+    const modelCounts: Record<string, number> = {};
+
+    for (const [key, value] of this.cache.entries()) {
+      if (now - value.timestamp < this.TTL) {
+        activeEntries++;
+        totalConfidence += value.confidence;
+
+        if (value.genotypeSpecific) {
+          genotypeSpecificCount++;
+        }
+
+        modelCounts[value.model] = (modelCounts[value.model] || 0) + 1;
+      } else {
+        expiredEntries++;
+      }
+    }
+
+    return {
+      totalEntries: this.cache.size,
+      activeEntries,
+      expiredEntries,
+      genotypeSpecificCount,
+      averageConfidence: activeEntries > 0 ? totalConfidence / activeEntries : 0,
+      modelDistribution: modelCounts,
+      hitRate: activeEntries / Math.max(this.cache.size, 1)
+    };
+  }
+
+  // Limpiar entradas expiradas
+  cleanExpiredEntries(): number {
+    const now = Date.now();
+    let cleanedCount = 0;
+
+    for (const [key, value] of this.cache.entries()) {
+      if (now - value.timestamp >= this.TTL) {
+        this.cache.delete(key);
+        cleanedCount++;
+      }
+    }
+
+    if (cleanedCount > 0) {
+      console.log(`🧬 Cache limpiado: ${cleanedCount} entradas expiradas eliminadas`);
+    }
+
+    return cleanedCount;
+  }
+
+  // Limpiar todo el cache
+  clearCache(): void {
+    const size = this.cache.size;
+    this.cache.clear();
+    console.log(`🧬 Cache completamente limpiado: ${size} entradas eliminadas`);
   }
 }
 
@@ -185,25 +246,65 @@ export class NutrigenomicsPerformanceMonitor {
 
   getBestModelForNutrigenomicsTask(task: NutrigenomicsTask): string {
     const taskModels = [NUTRIGENOMICS_STRATEGY[task].primary, NUTRIGENOMICS_STRATEGY[task].fallback];
-    
+
     return taskModels.reduce((best, current) => {
       const bestMetrics = this.metrics.get(best);
       const currentMetrics = this.metrics.get(current);
-      
+
       if (!bestMetrics) return current;
       if (!currentMetrics) return best;
-      
+
       // Score específico para nutrigenómica: éxito + confianza + especialización
-      const bestScore = (bestMetrics.successCount / Math.max(bestMetrics.totalRequests, 1)) * 
-                       bestMetrics.avgConfidence * 
+      const bestScore = (bestMetrics.successCount / Math.max(bestMetrics.totalRequests, 1)) *
+                       bestMetrics.avgConfidence *
                        (bestMetrics.taskSpecialty.includes(task) ? 1.2 : 1.0);
-      
-      const currentScore = (currentMetrics.successCount / Math.max(currentMetrics.totalRequests, 1)) * 
-                          currentMetrics.avgConfidence * 
+
+      const currentScore = (currentMetrics.successCount / Math.max(currentMetrics.totalRequests, 1)) *
+                          currentMetrics.avgConfidence *
                           (currentMetrics.taskSpecialty.includes(task) ? 1.2 : 1.0);
-      
+
       return currentScore > bestScore ? current : best;
     });
+  }
+
+  // Obtener estadísticas de todos los modelos
+  getAllModelStats() {
+    const stats: Record<string, any> = {};
+
+    for (const [model, metrics] of this.metrics.entries()) {
+      const successRate = metrics.totalRequests > 0
+        ? (metrics.successCount / metrics.totalRequests) * 100
+        : 0;
+
+      stats[model] = {
+        successCount: metrics.successCount,
+        errorCount: metrics.errorCount,
+        totalRequests: metrics.totalRequests,
+        successRate: successRate.toFixed(2) + '%',
+        avgResponseTime: Math.round(metrics.avgResponseTime),
+        avgConfidence: metrics.avgConfidence.toFixed(2),
+        lastUsed: new Date(metrics.lastUsed).toISOString(),
+        taskSpecialties: metrics.taskSpecialty,
+        performance: this.calculatePerformanceScore(metrics)
+      };
+    }
+
+    return stats;
+  }
+
+  // Calcular score de rendimiento general
+  private calculatePerformanceScore(metrics: any): string {
+    const successRate = metrics.totalRequests > 0
+      ? metrics.successCount / metrics.totalRequests
+      : 0;
+
+    const score = (successRate * 0.4) + (metrics.avgConfidence * 0.4) +
+                  (Math.min(metrics.avgResponseTime / 1000, 1) * 0.2);
+
+    if (score >= 0.8) return 'Excelente';
+    if (score >= 0.6) return 'Bueno';
+    if (score >= 0.4) return 'Aceptable';
+    return 'Necesita mejorar';
   }
 }
 

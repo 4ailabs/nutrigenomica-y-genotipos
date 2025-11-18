@@ -278,7 +278,11 @@ ${subagents.map(aspect => `### ${aspect}\n${generateAspectContent(aspect, query,
                 className="text-left p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="flex items-start gap-3">
-                  <example.type === 'depth-first' ? Microscope : Brain className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                  {example.type === 'depth-first' ? (
+                    <Microscope className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                  ) : (
+                    <Brain className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                  )}
                   <div>
                     <h5 className="font-semibold text-gray-800 mb-1">{example.title}</h5>
                     <p className="text-sm text-gray-600 leading-relaxed">{example.query}</p>

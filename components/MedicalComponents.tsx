@@ -50,9 +50,9 @@ export const MedicalHeading: React.FC<{
   };
 
   const classes = `${baseClasses} ${levelClasses[level]} ${variantClasses[variant]} ${weightClasses[weight]} ${alignClasses[align]} ${className}`;
-  
-  const Component = `h${level}` as keyof JSX.IntrinsicElements;
-  
+
+  const Component = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
   return React.createElement(Component, { className: classes }, children);
 };
 

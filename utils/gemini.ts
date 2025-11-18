@@ -1,17 +1,13 @@
 import { GoogleGenAI } from "@google/genai";
 import type { FoodGuideData, AIPersonalData, ChatMessage } from '../types';
 import { FOOD_GUIDE_DATA } from '../foodData';
+import { getGeminiApiKey } from './env';
 
-// Obtener API Key de forma segura para Vite (cliente) o Node
-const apiKey = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY)
-  || process.env.VITE_GEMINI_API_KEY
-  || process.env.GEMINI_API_KEY
-  || process.env.API_KEY;
+// Obtener API Key de forma segura y centralizada
+const apiKey = getGeminiApiKey();
 
 if (!apiKey) {
-  // Lanzar error claro en desarrollo; en prod devolvemos mensajes de error amigables
-  // eslint-disable-next-line no-console
-  console.warn("[Gemini] Falta la API key. Define VITE_GEMINI_API_KEY en Vercel (y .env.local para dev).");
+  console.warn("[Gemini] Falta la API key. Define VITE_GEMINI_API_KEY en .env.local (desarrollo) o en Vercel (producción).");
 }
 
 const ai = new GoogleGenAI({ apiKey: apiKey || '' });
