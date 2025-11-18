@@ -16,6 +16,7 @@ const genAI = new GoogleGenerativeAI(apiKey || '');
 function getFoodLists(foodData: FoodGuideData) {
     const superfoods: string[] = [];
     const toxins: string[] = [];
+    const neutrals: string[] = [];
 
     for (const category in foodData.categorias_alimentos) {
         for (const food of (foodData.categorias_alimentos as any)[category]) {
@@ -23,10 +24,68 @@ function getFoodLists(foodData: FoodGuideData) {
                 superfoods.push(food.nombre);
             } else if (food.estado === "Toxina") {
                 toxins.push(food.nombre);
+            } else {
+                neutrals.push(food.nombre);
             }
         }
     }
-    return { superfoods: [...new Set(superfoods)], toxins: [...new Set(toxins)] };
+    return { 
+        superfoods: [...new Set(superfoods)], 
+        toxins: [...new Set(toxins)],
+        neutrals: [...new Set(neutrals)]
+    };
+}
+
+// Calcular TMB (Tasa Metabólica Basal) usando ecuación de Mifflin-St Jeor
+function calculateBMR(personalData: AIPersonalData): number | null {
+    if (!personalData.age || !personalData.height || !personalData.weight || !personalData.sex) {
+        return null;
+    }
+    
+    const age = parseFloat(personalData.age);
+    const height = parseFloat(personalData.height);
+    const weight = parseFloat(personalData.weight);
+    
+    if (isNaN(age) || isNaN(height) || isNaN(weight)) {
+        return null;
+    }
+    
+    // Fórmula de Mifflin-St Jeor
+    const baseBMR = 10 * weight + 6.25 * height - 5 * age;
+    return personalData.sex === 'masculino' ? baseBMR + 5 : baseBMR - 161;
+}
+
+// Calcular TDEE (Total Daily Energy Expenditure) considerando nivel de actividad
+function calculateTDEE(personalData: AIPersonalData): number | null {
+    const bmr = calculateBMR(personalData);
+    if (!bmr) return null;
+    
+    const activityMultipliers: { [key: string]: number } = {
+        'sedentario': 1.2,
+        'ligero': 1.375,
+        'moderado': 1.55,
+        'activo': 1.725,
+        'muy_activo': 1.9
+    };
+    
+    const multiplier = activityMultipliers[personalData.activityLevel || 'moderado'] || 1.55;
+    return Math.round(bmr * multiplier);
+}
+
+// Calcular IMC
+function calculateBMI(personalData: AIPersonalData): number | null {
+    if (!personalData.height || !personalData.weight) {
+        return null;
+    }
+    
+    const height = parseFloat(personalData.height);
+    const weight = parseFloat(personalData.weight);
+    
+    if (isNaN(height) || isNaN(weight) || height === 0) {
+        return null;
+    }
+    
+    return parseFloat((weight / Math.pow(height / 100, 2)).toFixed(1));
 }
 
 function extractText(resp: any): string {
@@ -54,8 +113,18 @@ export async function generateAiResponse(
       return "Lo siento, la IA no está disponible por falta de credenciales. Por favor, configura VITE_GEMINI_API_KEY en el entorno.";
     }
 
-    const { superfoods, toxins } = getFoodLists(foodData);
+    const { superfoods, toxins, neutrals } = getFoodLists(foodData);
     const genotypeName = foodData.genotipo_info.nombre;
+    
+    // Calcular métricas nutricionales
+    const bmr = calculateBMR(personalData);
+    const tdee = calculateTDEE(personalData);
+    const bmi = calculateBMI(personalData);
+    const bmiCategory = bmi ? (
+        bmi < 18.5 ? 'Bajo peso' :
+        bmi < 25 ? 'Normal' :
+        bmi < 30 ? 'Sobrepeso' : 'Obesidad'
+    ) : null;
 
     const role = `Eres un experto en nutrigenómica especializado en el sistema de GenoTipos, diseñando recomendaciones para que médicos profesionales las presenten a sus pacientes.
 
@@ -64,78 +133,315 @@ CONTEXTO MÉDICO PROFESIONAL:
 - Las recomendaciones deben ser precisas y fundamentadas científicamente
 - El formato debe ser fácil de presentar y explicar a pacientes
 - Incluye justificación basada en el genotipo específico del paciente
+- Considera TODOS los datos del paciente para personalización completa
 
 REGLAS DIETÉTICAS ESTRICTAS:
-- NUNCA incluir alimentos de la lista de TOXINAS
-- PRIORIZAR alimentos de la lista de SUPERALIMENTOS
-- Complementar con alimentos 'Neutros' cuando sea necesario
+- NUNCA incluir alimentos de la lista de TOXINAS (prohibidos estrictamente)
+- PRIORIZAR alimentos de la lista de SUPERALIMENTOS (60-70% de la dieta)
+- USAR alimentos NEUTROS para complementar y variar (30-40% de la dieta)
 - Explicar el fundamento genotípico de cada recomendación
+- Considerar alergias y restricciones dietéticas del paciente
+- Evitar interacciones con medicamentos cuando sea relevante
 
 FORMATO PROFESIONAL:
 - Usar Markdown con estructura clara y directa
 - Incluir sección "Fundamento Científico" de forma objetiva
 - Incluir sección "Para Explicar al Paciente" en lenguaje accesible
 - Proporcionar listas prácticas y organizadas
+- Incluir información nutricional cuando sea relevante (calorías, macronutrientes)
 - NO usar fórmulas de cortesía ni tratamientos
 
 DISCLAIMER MÉDICO:
 Al final de cada respuesta incluir: "**Nota Profesional:** Esta información nutrigenómica está basada en el análisis del genotipo específico del paciente y debe ser integrada dentro del contexto clínico completo del mismo."`;
 
     const userInfo = `
-      - Genotipo: ${genotypeName}
-      - Edad: ${personalData.age}
-      - Sexo: ${personalData.sex}
-      - Condiciones de Salud: ${personalData.healthConditions || 'Ninguna especificada'}
-      - Objetivos: ${personalData.goals || 'Bienestar general'}
+PERFIL COMPLETO DEL PACIENTE:
+- Genotipo: ${genotypeName}
+- Edad: ${personalData.age} años
+- Sexo: ${personalData.sex}
+${personalData.height ? `- Altura: ${personalData.height} cm` : ''}
+${personalData.weight ? `- Peso: ${personalData.weight} kg` : ''}
+${bmi ? `- IMC: ${bmi} (${bmiCategory})` : ''}
+${bmr ? `- TMB (Tasa Metabólica Basal): ${Math.round(bmr)} kcal/día` : ''}
+${tdee ? `- Calorías diarias estimadas (TDEE): ${tdee} kcal/día (considerando nivel de actividad)` : ''}
+- Nivel de actividad física: ${personalData.activityLevel || 'No especificado'}
+${personalData.sleepHours ? `- Horas de sueño: ${personalData.sleepHours} horas/día` : ''}
+${personalData.stressLevel ? `- Nivel de estrés: ${personalData.stressLevel}` : ''}
+${personalData.exerciseFrequency ? `- Frecuencia de ejercicio: ${personalData.exerciseFrequency}` : ''}
+
+CONDICIONES CLÍNICAS Y RESTRICCIONES:
+${personalData.healthConditions ? `- Condiciones de salud: ${personalData.healthConditions}` : '- Condiciones de salud: Ninguna especificada'}
+${personalData.allergies ? `- ⚠️ ALERGIAS ALIMENTARIAS (CRÍTICO): ${personalData.allergies} - NUNCA incluir estos alimentos` : '- Alergias alimentarias: Ninguna'}
+${personalData.medications ? `- Medicamentos actuales: ${personalData.medications} (considerar interacciones)` : '- Medicamentos actuales: Ninguno'}
+${personalData.bloodType ? `- Grupo sanguíneo: ${personalData.bloodType}${personalData.rhFactor ? ` ${personalData.rhFactor}` : ''}` : ''}
+${personalData.familyHistory ? `- Historial familiar: ${personalData.familyHistory}` : ''}
+${personalData.chronicConditions ? `- Condiciones crónicas: ${personalData.chronicConditions}` : ''}
+${personalData.previousSurgeries ? `- Cirugías previas: ${personalData.previousSurgeries}` : ''}
+
+OBJETIVOS Y PREFERENCIAS:
+- Objetivos principales: ${personalData.goals || 'Bienestar general'}
+${personalData.dietaryRestrictions ? `- Restricciones dietéticas: ${personalData.dietaryRestrictions}` : ''}
+${personalData.foodPreferences ? `- Preferencias alimentarias: ${personalData.foodPreferences}` : ''}
     `;
 
     const foodRules = `
-      - Lista de Superalimentos permitidos: ${superfoods.join(', ')}.
-      - Lista de Toxinas ESTRICTAMENTE PROHIBIDAS: ${toxins.join(', ')}.
+CLASIFICACIÓN DE ALIMENTOS PARA ESTE GENOTIPO:
+
+1. SUPERALIMENTOS (PRIORITARIOS - 60-70% de la dieta):
+   ${superfoods.length > 0 ? superfoods.join(', ') : 'Ninguno especificado'}
+   
+   - Usar principalmente en todas las comidas
+   - Máximo beneficio nutrigenómico para este genotipo
+   - Optimizan expresión génica y metabolismo
+
+2. ALIMENTOS NEUTROS (COMPLEMENTARIOS - 30-40% de la dieta):
+   ${neutrals.length > 0 ? neutrals.slice(0, 30).join(', ') + (neutrals.length > 30 ? '...' : '') : 'Ninguno especificado'}
+   
+   - Permitidos con moderación
+   - Usar para variar y complementar superalimentos
+   - No generan respuesta adversa pero tampoco beneficio específico
+
+3. TOXINAS (PROHIBIDOS ESTRICTAMENTE - 0% de la dieta):
+   ${toxins.length > 0 ? toxins.join(', ') : 'Ninguno especificado'}
+   
+   - NUNCA incluir en ninguna recomendación
+   - Pueden generar respuestas adversas en este genotipo
+   - Evitar completamente
     `;
 
     let userRequest: string = '';
     switch (requestType) {
         case 'menu':
-            userRequest = `Crea un plan de menú semanal detallado (Lunes a Domingo) para desayuno, comida y cena usando ÚNICAMENTE los superalimentos permitidos para este genotipo. Estructura la respuesta así:
-            
+            userRequest = `Crea un plan de menú semanal detallado (Lunes a Domingo) para desayuno, comida y cena personalizado para este paciente. 
+
+REQUISITOS ESPECÍFICOS:
+- Usar PRINCIPALMENTE superalimentos (60-70% de cada comida)
+- Complementar con alimentos neutros (30-40% de cada comida)
+- NUNCA incluir alimentos de la lista de toxinas
+${tdee ? `- Distribuir aproximadamente ${Math.round(tdee / 7)} kcal por día` : ''}
+${tdee ? `- Desayuno: ~${Math.round(tdee * 0.25)} kcal, Almuerzo: ~${Math.round(tdee * 0.40)} kcal, Cena: ~${Math.round(tdee * 0.35)} kcal` : ''}
+- Incluir porciones específicas (ej: 150g de proteína, 200g de vegetales)
+- Variar alimentos cada día para evitar monotonía
+- Considerar ${personalData.activityLevel || 'nivel de actividad moderado'}
+${personalData.allergies ? `- ⚠️ EXCLUIR completamente: ${personalData.allergies}` : ''}
+
+Estructura la respuesta así:
+
 **MENÚ SEMANAL PERSONALIZADO**
 
 **LUNES**
-- 🌅 Desayuno: [usar superalimentos de la lista]
-- 🍽️ Almuerzo: [usar superalimentos de la lista]
-- 🌙 Cena: [usar superalimentos de la lista]
+- 🌅 Desayuno: [descripción con ingredientes específicos y porciones]
+  - Calorías aproximadas: [valor]
+  - Macronutrientes: Proteínas [X]g, Carbohidratos [X]g, Grasas [X]g
+  
+- 🍽️ Almuerzo: [descripción con ingredientes específicos y porciones]
+  - Calorías aproximadas: [valor]
+  - Macronutrientes: Proteínas [X]g, Carbohidratos [X]g, Grasas [X]g
+  
+- 🌙 Cena: [descripción con ingredientes específicos y porciones]
+  - Calorías aproximadas: [valor]
+  - Macronutrientes: Proteínas [X]g, Carbohidratos [X]g, Grasas [X]g
 
-[Continuar para cada día]
+[Continuar para cada día de la semana]
 
-Asegúrate de que cada comida use SOLO alimentos de la lista de superalimentos y que sea nutricionalmente completa y variada.`;
+**RESUMEN NUTRICIONAL SEMANAL**
+- Calorías promedio diarias: [valor]
+- Distribución de macronutrientes: [% proteínas, % carbohidratos, % grasas]
+- Alimentos superalimentos utilizados: [lista]
+- Variedad y rotación de alimentos: [nota]`;
             break;
         case 'recipes':
-            userRequest = "Genera 3 recetas creativas y fáciles de preparar (un desayuno, una comida y una cena) que sean adecuadas para este perfil. Incluye ingredientes y pasos de preparación.";
+            userRequest = `Genera 3 recetas creativas y prácticas (un desayuno, una comida y una cena) personalizadas para este paciente.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70% de ingredientes)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Incluir porciones exactas para 2-4 personas (especificar cantidad)
+- Tiempos de preparación y cocción específicos
+- Dificultad de preparación (Fácil/Intermedio/Avanzado)
+- Beneficios específicos para este genotipo
+- Información nutricional aproximada por porción
+
+Para cada receta incluir:
+1. Nombre atractivo
+2. Tiempo total de preparación
+3. Dificultad
+4. Ingredientes con cantidades exactas
+5. Pasos de preparación detallados
+6. Información nutricional (calorías, macronutrientes)
+7. Por qué es ideal para este genotipo específico`;
             break;
         case 'supplements':
-            userRequest = "Basado en el genotipo y los objetivos del usuario, recomienda 3 a 5 suplementos clave. Explica brevemente por qué cada uno es beneficioso para este perfil específico.";
+            userRequest = `Recomienda 3 a 5 suplementos clave personalizados para este paciente.
+
+CONSIDERACIONES CRÍTICAS:
+- Basado en el genotipo ${genotypeName} y objetivos: ${personalData.goals || 'bienestar general'}
+${personalData.medications ? `- ⚠️ VERIFICAR interacciones con: ${personalData.medications}` : ''}
+${personalData.healthConditions ? `- Considerar condiciones: ${personalData.healthConditions}` : ''}
+${personalData.allergies ? `- ⚠️ Evitar alérgenos: ${personalData.allergies}` : ''}
+- Priorizar suplementos con evidencia científica para este genotipo
+- Considerar deficiencias comunes del genotipo
+
+Para cada suplemento incluir:
+1. Nombre del suplemento
+2. Dosis recomendada diaria
+3. Momento de ingesta (mañana/tarde/noche, con/sin comida)
+4. Beneficio específico para este genotipo
+5. Evidencia científica breve
+6. Precauciones o contraindicaciones (si aplica)
+7. Interacciones con medicamentos (si aplica)
+
+IMPORTANTE: Si hay medicamentos, mencionar posibles interacciones y recomendar consulta médica antes de suplementar.`;
             break;
         case 'breakfast':
-            userRequest = "Crea 5 opciones de desayunos nutritivos y energéticos para este perfil genotípico. Incluye ingredientes, preparación y beneficios específicos.";
+            userRequest = `Crea 5 opciones de desayunos nutritivos y energéticos personalizados.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${tdee ? `- Calorías objetivo: ~${Math.round(tdee * 0.25)} kcal por desayuno` : ''}
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Considerar ${personalData.activityLevel || 'nivel de actividad'} y objetivos: ${personalData.goals || 'bienestar'}
+
+Para cada opción incluir:
+- Ingredientes con porciones específicas
+- Tiempo de preparación
+- Pasos de preparación
+- Información nutricional aproximada
+- Beneficios específicos para genotipo ${genotypeName}
+- Momento ideal de consumo`;
             break;
         case 'lunch':
-            userRequest = "Genera 5 opciones de almuerzos equilibrados y nutritivos para este perfil. Incluye platos principales, guarniciones y bebidas recomendadas.";
+            userRequest = `Genera 5 opciones de almuerzos equilibrados y nutritivos personalizados.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${tdee ? `- Calorías objetivo: ~${Math.round(tdee * 0.40)} kcal por almuerzo` : ''}
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Incluir proteína completa, carbohidratos complejos y vegetales
+
+Para cada opción incluir:
+- Plato principal con ingredientes y porciones
+- Guarniciones recomendadas
+- Bebidas recomendadas (agua, infusiones, etc.)
+- Información nutricional aproximada
+- Beneficios específicos para genotipo ${genotypeName}
+- Tiempo de preparación`;
             break;
         case 'dinner':
-            userRequest = "Crea 5 opciones de cenas ligeras pero nutritivas para este perfil. Enfócate en proteínas magras y vegetales de fácil digestión.";
+            userRequest = `Crea 5 opciones de cenas ligeras pero nutritivas personalizadas.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${tdee ? `- Calorías objetivo: ~${Math.round(tdee * 0.35)} kcal por cena` : ''}
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Enfocarse en proteínas magras y vegetales de fácil digestión
+- Considerar que la cena debe ser más ligera para facilitar el sueño
+${personalData.sleepHours ? `- Considerar ${personalData.sleepHours} horas de sueño del paciente` : ''}
+
+Para cada opción incluir:
+- Ingredientes con porciones específicas
+- Técnicas de cocción ligeras (al vapor, a la plancha, horneado)
+- Información nutricional aproximada
+- Beneficios para digestión nocturna
+- Tiempo de preparación`;
             break;
         case 'snacks':
-            userRequest = "Genera 8 opciones de snacks saludables entre comidas para este perfil. Incluye opciones dulces y saladas, con horarios recomendados.";
+            userRequest = `Genera 8 opciones de snacks saludables entre comidas personalizados.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+- Incluir opciones dulces y saladas
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Calorías por snack: 100-200 kcal aproximadamente
+
+Para cada snack incluir:
+- Ingredientes y porciones específicas
+- Horario recomendado (media mañana, media tarde, pre/post ejercicio)
+- Información nutricional aproximada
+- Beneficios específicos para genotipo ${genotypeName}
+- Facilidad de preparación/portabilidad`;
             break;
         case 'salads':
-            userRequest = "Crea 6 ensaladas nutritivas y variadas para este perfil genotípico. Incluye diferentes tipos de hojas, proteínas y aderezos saludables.";
+            userRequest = `Crea 6 ensaladas nutritivas y variadas personalizadas.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Variar tipos de hojas, proteínas y aderezos
+- Hacer cada ensalada completa nutricionalmente
+
+Para cada ensalada incluir:
+- Base de hojas/vegetales (especificar tipos y cantidades)
+- Proteína recomendada (con cantidad)
+- Aderezo saludable (receta completa)
+- Ingredientes adicionales (frutos secos, semillas, etc.)
+- Información nutricional aproximada
+- Beneficios específicos para genotipo ${genotypeName}
+- Momento ideal de consumo (almuerzo, cena, acompañamiento)`;
             break;
         case 'smoothies':
-            userRequest = "Genera 5 recetas de smoothies y batidos nutritivos para este perfil. Incluye opciones para diferentes momentos del día y objetivos.";
+            userRequest = `Genera 5 recetas de smoothies y batidos nutritivos personalizados.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Variar para diferentes momentos del día y objetivos
+
+Para cada smoothie incluir:
+- Ingredientes con cantidades exactas
+- Técnica de preparación
+- Información nutricional aproximada
+- Momento ideal de consumo (desayuno, post-ejercicio, merienda)
+- Beneficios específicos para genotipo ${genotypeName}
+- Opciones de personalización (proteína en polvo, superalimentos adicionales)`;
             break;
         case 'mealPrep':
-            userRequest = "Crea un plan de preparación de comidas para 5 días que sea eficiente y nutritivo para este perfil. Incluye lista de compras y planificación semanal.";
+            userRequest = `Crea un plan de preparación de comidas para 5 días personalizado.
+
+REQUISITOS:
+- Usar principalmente superalimentos (60-70%)
+- Complementar con alimentos neutros (30-40%)
+- NUNCA incluir toxinas
+${tdee ? `- Distribuir ${Math.round(tdee)} kcal diarias aproximadamente` : ''}
+${personalData.allergies ? `- ⚠️ EXCLUIR: ${personalData.allergies}` : ''}
+- Optimizar para preparación eficiente (batch cooking)
+- Considerar conservación y almacenamiento
+
+Incluir:
+1. PLAN DE COMIDAS (5 días):
+   - Desayuno, almuerzo y cena para cada día
+   - Ingredientes y porciones específicas
+   - Información nutricional diaria
+
+2. LISTA DE COMPRAS ORGANIZADA:
+   - Por categorías (proteínas, vegetales, frutas, etc.)
+   - Cantidades totales necesarias
+   - Notas sobre frescura y conservación
+
+3. PLANIFICACIÓN DE PREPARACIÓN:
+   - Orden de preparación recomendado
+   - Tiempos estimados
+   - Técnicas de batch cooking
+   - Instrucciones de almacenamiento y recalentado
+
+4. CONSEJOS DE CONSERVACIÓN:
+   - Cómo almacenar cada tipo de comida
+   - Tiempo máximo de conservación
+   - Mejores prácticas de seguridad alimentaria`;
             break;
     }
 
@@ -254,16 +560,30 @@ export async function generateChatResponse(
     let specificGenotypeInfo = "";
     if (genotypeId && (FOOD_GUIDE_DATA as any)[genotypeId]) {
         const foodData = (FOOD_GUIDE_DATA as any)[genotypeId];
-        const { superfoods, toxins } = getFoodLists(foodData);
+        const { superfoods, toxins, neutrals } = getFoodLists(foodData);
         specificGenotypeInfo = `
           
           CONTEXTO ESPECÍFICO - ${foodData.genotipo_info.nombre}:
           El usuario tiene contexto del ${foodData.genotipo_info.nombre}.
           
-          SUPERALIMENTOS PERMITIDOS para este genotipo: ${superfoods.slice(0, 15).join(', ')}${superfoods.length > 15 ? '...' : ''}
-          TOXINAS PROHIBIDAS para este genotipo: ${toxins.slice(0, 15).join(', ')}${toxins.length > 15 ? '...' : ''}
+          CLASIFICACIÓN DE ALIMENTOS:
           
-          Si preguntan específicamente sobre alimentos para este genotipo, usa estas listas.
+          1. SUPERALIMENTOS (PRIORITARIOS - 60-70% de la dieta):
+             ${superfoods.slice(0, 15).join(', ')}${superfoods.length > 15 ? '...' : ''}
+             - Usar principalmente en todas las comidas
+             - Máximo beneficio nutrigenómico
+          
+          2. ALIMENTOS NEUTROS (COMPLEMENTARIOS - 30-40% de la dieta):
+             ${neutrals.slice(0, 15).join(', ')}${neutrals.length > 15 ? '...' : ''}
+             - Permitidos con moderación
+             - Usar para variar y complementar
+          
+          3. TOXINAS (PROHIBIDAS - 0% de la dieta):
+             ${toxins.slice(0, 15).join(', ')}${toxins.length > 15 ? '...' : ''}
+             - NUNCA recomendar
+             - Pueden generar respuestas adversas
+          
+          Si preguntan específicamente sobre alimentos para este genotipo, usa estas clasificaciones.
         `;
     }
 

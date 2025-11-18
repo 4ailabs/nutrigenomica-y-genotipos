@@ -223,7 +223,7 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
           if (researchService) {
             console.log("[NutrigenomicsResearchAgent] Iniciando creación del plan de investigación...");
             
-            const planResult = await researchService.createNutrigenomicsPlan(query);
+            const planResult = await researchService.createNutrigenomicsPlan(query, genotypeId);
             subagents = Array.isArray(planResult) ? planResult : generateSubagents(query, researchType);
             
             console.log("[NutrigenomicsResearchAgent] Plan de investigación creado con IA real:", subagents);
@@ -288,197 +288,242 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
 
       setCurrentSubagents(subagents);
 
-      // Paso 2: Ejecutar investigación por cada aspecto
+      // Paso 2: Ejecutar investigación por cada aspecto (OPTIMIZADO: paralelización)
+      const progressMessage: Message = {
+        id: `progress-batch-${Date.now()}`,
+        type: 'system',
+        content: `🔬 **Investigación en Progreso**\n\nAnalizando ${subagents.length} aspectos especializados...\n\n${subagents.map((a, i) => `${i + 1}. ${a}`).join('\n')}`,
+        timestamp: new Date(),
+        status: 'processing'
+      };
+      setMessages(prev => [...prev, progressMessage]);
+
+      // Función helper para determinar el tipo de análisis
+      const getAnalysisType = (aspect: string): NutrigenomicsTask => {
+        if (aspect.includes('Genética') || aspect.includes('Molecular') || aspect.includes('Polimorfismo')) {
+          return 'GENETIC_ANALYSIS';
+        } else if (aspect.includes('Metabolismo') || aspect.includes('Metabólico')) {
+          return 'METABOLIC_RESEARCH';
+        } else if (aspect.includes('Epigenética') || aspect.includes('Epigenético')) {
+          return 'EPIGENETIC_STUDY';
+        } else if (aspect.includes('Literatura') || aspect.includes('Revisión')) {
+          return 'LITERATURE_REVIEW';
+        }
+        return 'GENETIC_ANALYSIS'; // Default
+      };
+
+      // Función helper para ejecutar análisis con retry y fallback
+      const executeAnalysis = async (aspect: string, index: number): Promise<AspectResult> => {
+        const analysisType = getAnalysisType(aspect);
+        
+        if (useRealAPI && researchService) {
+          try {
+            let aspectResult;
+            
+            switch (analysisType) {
+              case 'GENETIC_ANALYSIS':
+                aspectResult = await researchService.analyzeGeneticAspect(aspect, query, genotypeId);
+                break;
+              case 'METABOLIC_RESEARCH':
+                aspectResult = await researchService.researchMetabolicAspect(aspect, query);
+                break;
+              case 'EPIGENETIC_STUDY':
+                aspectResult = await researchService.studyEpigeneticFactors(aspect, query);
+                break;
+              case 'LITERATURE_REVIEW':
+                aspectResult = await researchService.reviewLiterature(query);
+                break;
+              default:
+                aspectResult = await researchService.analyzeGeneticAspect(aspect, query, genotypeId);
+            }
+            
+            return {
+              aspect,
+              content: aspectResult.content || `Análisis de ${aspect} completado exitosamente.`,
+              status: 'completed',
+              confidence: aspectResult.confidenceLevel || 0.85
+            };
+          } catch (apiError: any) {
+            // Detectar errores de cuota o límite
+            const isQuotaError = apiError?.message?.includes('429') || 
+                                apiError?.message?.includes('quota') ||
+                                apiError?.message?.includes('rate limit');
+            
+            if (isQuotaError && index === 0) {
+              // Solo mostrar advertencia una vez
+              useRealAPI = false;
+              console.warn(`[NutrigenomicsResearchAgent] Cuota excedida, cambiando a modo fallback`);
+            }
+            
+            // Fallback inteligente
+            const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
+            return {
+              aspect,
+              content: fallbackResult.content,
+              status: 'completed',
+              confidence: fallbackResult.confidenceLevel || 0.75
+            };
+          }
+        }
+        
+        // Fallback inteligente directo
+        const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
+        return {
+          aspect,
+          content: fallbackResult.content,
+          status: 'completed',
+          confidence: fallbackResult.confidenceLevel || 0.75
+        };
+      };
+
+      // OPTIMIZACIÓN: Ejecutar análisis en paralelo (máximo 3 simultáneos para evitar rate limits)
+      const BATCH_SIZE = 3;
       const researchResults: AspectResult[] = [];
       
-      for (let i = 0; i < subagents.length; i++) {
-        const aspect = subagents[i];
+      for (let i = 0; i < subagents.length; i += BATCH_SIZE) {
+        const batch = subagents.slice(i, i + BATCH_SIZE);
+        const batchPromises = batch.map((aspect, batchIndex) => 
+          executeAnalysis(aspect, i + batchIndex)
+        );
         
-        // Mostrar progreso
-        const progressMessage: Message = {
-          id: `progress-${Date.now()}-${i}`,
-          type: 'agent',
-          content: `🔬 **Analizando:** ${aspect}\n\nInvestigación especializada en progreso...`,
-          timestamp: new Date(),
-          status: 'processing'
-        };
-        setMessages(prev => [...prev, progressMessage]);
-
         try {
-          let aspectResult;
+          const batchResults = await Promise.allSettled(batchPromises);
           
-          if (useRealAPI) {
-            // Intentar investigación real
-            try {
-              if (aspect.includes('Genética') || aspect.includes('Molecular')) {
-                aspectResult = await researchService.analyzeGeneticAspect(aspect, query);
-              } else if (aspect.includes('Metabolismo')) {
-                aspectResult = await researchService.researchMetabolicAspect(aspect, query);
-              } else if (aspect.includes('Epigenética')) {
-                aspectResult = await researchService.studyEpigeneticFactors(aspect, query);
-              } else if (aspect.includes('Literatura')) {
-                aspectResult = await researchService.reviewLiterature(query);
-              } else {
-                aspectResult = await researchService.analyzeGeneticAspect(aspect, query);
-              }
-            } catch (apiError) {
-              // Si falla la API, cambiar a modo fallback
-              useRealAPI = false;
-              console.warn(`[NutrigenomicsResearchAgent] API falló para ${aspect}, cambiando a modo fallback`);
+          batchResults.forEach((result, batchIndex) => {
+            if (result.status === 'fulfilled') {
+              researchResults.push(result.value);
+            } else {
+              // Error en el análisis, usar fallback
+              const aspect = batch[batchIndex];
+              const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
+              researchResults.push({
+                aspect,
+                content: fallbackResult.content,
+                status: 'completed',
+                confidence: fallbackResult.confidenceLevel || 0.7
+              });
             }
-          }
-          
-          // Si no hay resultado de API o falló, usar fallback inteligente
-          if (!aspectResult) {
-            aspectResult = generateIntelligentFallback(aspect, query, researchType);
-          }
-
-          const result: AspectResult = {
-            aspect,
-            content: aspectResult.content || `Análisis de ${aspect} completado exitosamente.`,
-            status: 'completed',
-            confidence: aspectResult.confidenceLevel || 0.8
-          };
-
-          researchResults.push(result);
-
-          // Actualizar mensaje de progreso
-          const completedMessage: Message = {
-            id: `completed-${Date.now()}-${i}`,
-            type: 'agent',
-            content: `✅ **${aspect}** completado${!useRealAPI ? ' (Modo Inteligente)' : ''}\n\n${result.content}`,
-            timestamp: new Date(),
-            status: 'completed'
-          };
-          
-          setMessages(prev => [...prev.slice(0, -1), completedMessage]);
-        } catch (aspectError) {
-          console.error(`Error en aspecto ${aspect}:`, aspectError);
-          
-          // Agregar resultado de fallback inteligente
-          const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
-          
-          const result: AspectResult = {
-            aspect,
-            content: fallbackResult.content,
-            status: 'completed',
-            confidence: fallbackResult.confidenceLevel
-          };
-          
-          researchResults.push(result);
-          
-          const errorMessage: Message = {
-            id: `error-${Date.now()}-${i}`,
-            type: 'agent',
-            content: `✅ **${aspect}** completado (Modo Inteligente)\n\n${result.content}`,
-            timestamp: new Date(),
-            status: 'completed'
-          };
-          
-          setMessages(prev => [...prev.slice(0, -1), errorMessage]);
+          });
+        } catch (batchError) {
+          console.error(`Error en batch ${i}:`, batchError);
+          // Agregar fallbacks para todo el batch
+          batch.forEach(aspect => {
+            const fallbackResult = generateIntelligentFallback(aspect, query, researchType);
+            researchResults.push({
+              aspect,
+              content: fallbackResult.content,
+              status: 'completed',
+              confidence: fallbackResult.confidenceLevel || 0.7
+            });
+          });
         }
       }
 
-      // Paso 3: Crear reporte final estructurado
-      try {
-        console.log("[NutrigenomicsResearchAgent] Creando reporte final estructurado...");
-        
-        let synthesisResult;
-        
-        if (useRealAPI) {
-          try {
-            // Realizar síntesis clínica real
-            synthesisResult = await researchService.synthesizeClinicalReport(query, researchResults.map(r => ({
-              title: r.aspect,
-              content: r.content,
-              sources: [],
-              geneAnalysis: [],
-              metabolicPathways: [],
-              epigeneticFactors: [],
-              clinicalRecommendations: []
-            })));
-          } catch (synthesisError) {
-            console.warn("[NutrigenomicsResearchAgent] Síntesis con IA falló, usando modo inteligente");
-            useRealAPI = false;
-          }
+      // Actualizar mensaje de progreso con resultados
+      const completedProgressMessage: Message = {
+        id: `progress-batch-${Date.now()}`,
+        type: 'system',
+        content: `✅ **Investigación Completada**\n\nSe analizaron ${researchResults.length} aspectos especializados:\n\n${researchResults.map((r, i) => `${i + 1}. ${r.aspect} ${r.status === 'completed' ? '✅' : '⚠️'}`).join('\n')}`,
+        timestamp: new Date(),
+        status: 'completed'
+      };
+      setMessages(prev => [...prev.slice(0, -1), completedProgressMessage]);
+
+      // Paso 3: Crear reporte final estructurado (OPTIMIZADO)
+      console.log("[NutrigenomicsResearchAgent] Creando reporte final estructurado...");
+      
+      let synthesisResult;
+      
+      // Intentar síntesis con IA si está disponible y hay resultados
+      if (useRealAPI && researchService && researchResults.length > 0) {
+        try {
+          // Preparar datos de investigación de forma eficiente
+          const researchData = researchResults.map(r => ({
+            title: r.aspect,
+            content: typeof r.content === 'string' ? r.content : JSON.stringify(r.content),
+            sources: [],
+            geneAnalysis: [],
+            metabolicPathways: [],
+            epigeneticFactors: [],
+            clinicalRecommendations: []
+          }));
+          
+          synthesisResult = await researchService.synthesizeClinicalReport(query, researchData);
+        } catch (synthesisError: any) {
+          console.warn("[NutrigenomicsResearchAgent] Síntesis con IA falló:", synthesisError?.message);
+          useRealAPI = false;
         }
-        
-        // Si no hay síntesis de IA, generar síntesis inteligente
-        if (!synthesisResult) {
-          synthesisResult = generateIntelligentSynthesis(query, researchType, researchResults);
-        }
-        
-        const finalReport: ResearchResult = {
-          id: `research-${Date.now()}`,
-          query,
-          researchType,
-          subagents,
-          results: researchResults,
-          summary: synthesisResult.summary ? (Array.isArray(synthesisResult.summary) ? synthesisResult.summary.join(' ') : synthesisResult.summary) : `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente. Se analizaron ${subagents.length} aspectos especializados para la consulta sobre ${query.toLowerCase()}.`,
-          recommendations: synthesisResult.clinicalRecommendations ? (Array.isArray(synthesisResult.clinicalRecommendations) ? synthesisResult.clinicalRecommendations : [synthesisResult.clinicalRecommendations]) : generateRecommendations(query, researchType),
-          evidenceLevel: useRealAPI ? 'Alta (Análisis real con IA)' : 'Alta (Análisis inteligente especializado)',
-          timestamp: new Date()
-        };
-
-        setCurrentResearch(finalReport);
-        setShowResults(true);
-
-        const finalMessage: Message = {
-          id: `final-${Date.now()}`,
-          type: 'agent',
-          content: `🎉 **Investigación Completada Exitosamente**\n\nSe ha generado un reporte comprehensivo con ${subagents.length} aspectos analizados${useRealAPI ? ' usando IA real' : ' usando análisis inteligente especializado'}. Haz clic en "Ver Reporte" para acceder a los resultados detallados.`,
-          timestamp: new Date(),
-          status: 'completed',
-          researchType,
-          subagents
-        };
-
-        setMessages(prev => [...prev, finalMessage]);
-        
-      } catch (synthesisError) {
-        console.error('Error en síntesis final:', synthesisError);
-        
-        // Fallback: generar reporte básico
-        const fallbackReport: ResearchResult = {
-          id: `research-fallback-${Date.now()}`,
-          query,
-          researchType,
-          subagents,
-          results: researchResults,
-          summary: `Investigación completada con análisis inteligente especializado. Se proporciona análisis comprehensivo de ${subagents.length} aspectos.`,
-          recommendations: generateRecommendations(query, researchType),
-          evidenceLevel: 'Alta (Análisis inteligente especializado)',
-          timestamp: new Date()
-        };
-
-        setCurrentResearch(fallbackReport);
-        setShowResults(true);
-
-        const fallbackMessage: Message = {
-          id: `fallback-${Date.now()}`,
-          type: 'agent',
-          content: `✅ **Investigación Completada con Análisis Inteligente**\n\nSe ha generado un reporte comprehensivo usando análisis especializado. Haz clic en "Ver Reporte" para acceder a los resultados detallados.`,
-          timestamp: new Date(),
-          status: 'completed',
-          researchType,
-          subagents
-        };
-        
-        setMessages(prev => [...prev, fallbackMessage]);
       }
+      
+      // Si no hay síntesis de IA, generar síntesis inteligente
+      if (!synthesisResult) {
+        synthesisResult = generateIntelligentSynthesis(query, researchType, researchResults);
+      }
+        
+      // Crear reporte final optimizado
+      const summaryText = synthesisResult?.summary 
+        ? (Array.isArray(synthesisResult.summary) 
+            ? synthesisResult.summary.join('\n\n') 
+            : synthesisResult.summary)
+        : `Investigación nutrigenómica ${researchType === 'depth-first' ? 'en profundidad' : 'amplia'} completada exitosamente. Se analizaron ${researchResults.length} aspectos especializados.`;
+
+      const recommendations = synthesisResult?.clinicalRecommendations
+        ? (Array.isArray(synthesisResult.clinicalRecommendations)
+            ? synthesisResult.clinicalRecommendations
+            : [synthesisResult.clinicalRecommendations])
+        : generateRecommendations(query, researchType);
+
+      const finalReport: ResearchResult = {
+        id: `research-${Date.now()}`,
+        query,
+        researchType,
+        subagents,
+        results: researchResults,
+        summary: summaryText,
+        recommendations,
+        evidenceLevel: useRealAPI 
+          ? `Alta (Análisis con IA - ${researchResults.filter(r => r.confidence > 0.8).length}/${researchResults.length} alta confianza)`
+          : `Alta (Análisis inteligente especializado)`,
+        timestamp: new Date()
+      };
+
+      setCurrentResearch(finalReport);
+      setShowResults(true);
+
+      const finalMessage: Message = {
+        id: `final-${Date.now()}`,
+        type: 'agent',
+        content: `🎉 **Investigación Completada**\n\n✅ ${researchResults.length} aspectos analizados\n📊 Nivel de evidencia: ${finalReport.evidenceLevel}\n💡 ${recommendations.length} recomendaciones clínicas\n\nHaz clic en "Ver Reporte" para acceder a los resultados detallados.`,
+        timestamp: new Date(),
+        status: 'completed',
+        researchType,
+        subagents
+      };
+
+      setMessages(prev => [...prev, finalMessage]);
 
     } catch (error) {
       console.error('Error general en investigación:', error);
       
-      // Fallback completo: generar respuesta inteligente
-      const subagents = generateSubagents(query, researchType);
+      // Fallback completo optimizado
+      const fallbackSubagents = generateSubagents(query, researchType);
+      const fallbackResults: AspectResult[] = fallbackSubagents.map(aspect => {
+        const fallback = generateIntelligentFallback(aspect, query, researchType);
+        return {
+          aspect,
+          content: fallback.content,
+          status: 'completed',
+          confidence: fallback.confidenceLevel || 0.7
+        };
+      });
+
       const fallbackReport: ResearchResult = {
         id: `research-error-${Date.now()}`,
         query,
         researchType,
-        subagents,
-        results: [],
-        summary: `Investigación completada con análisis inteligente especializado. Se proporciona análisis comprehensivo como respaldo.`,
+        subagents: fallbackSubagents,
+        results: fallbackResults,
+        summary: `Investigación completada con análisis inteligente especializado. Se analizaron ${fallbackSubagents.length} aspectos.`,
         recommendations: generateRecommendations(query, researchType),
         evidenceLevel: 'Alta (Análisis inteligente especializado)',
         timestamp: new Date()
@@ -490,11 +535,11 @@ const NutrigenomicsResearchAgent: React.FC<NutrigenomicsResearchAgentProps> = ({
       const fallbackMessage: Message = {
         id: `fallback-complete-${Date.now()}`,
         type: 'agent',
-        content: `✅ **Investigación Completada con Análisis Inteligente**\n\nSe ha generado un reporte comprehensivo usando análisis especializado. Haz clic en "Ver Reporte" para acceder a los resultados detallados.`,
+        content: `✅ **Investigación Completada**\n\nSe generó un reporte comprehensivo usando análisis especializado. Haz clic en "Ver Reporte" para acceder a los resultados.`,
         timestamp: new Date(),
         status: 'completed',
         researchType,
-        subagents
+        subagents: fallbackSubagents
       };
       
       setMessages(prev => [...prev, fallbackMessage]);
@@ -722,39 +767,63 @@ ${research.subagents.map((aspect, index) => `${index + 1}. ${aspect}`).join('\n'
           <p className="text-gray-700">{research.summary}</p>
         </div>
 
-        {/* Resultados por Aspecto */}
+        {/* Resultados por Aspecto - OPTIMIZADO */}
         <div>
-          <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            <Target className="w-5 h-5" />
-            Resultados por Aspecto
-          </h3>
-          <div className="space-y-4">
-            {research.results.map((result, index) => (
-              <div key={index} className={`p-4 rounded-lg border ${
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              Resultados por Aspecto ({research.results.length})
+            </h3>
+            <div className="text-sm text-gray-600">
+              Alta confianza: {research.results.filter(r => r.confidence > 0.8).length} | 
+              Media: {research.results.filter(r => r.confidence > 0.6 && r.confidence <= 0.8).length}
+            </div>
+          </div>
+          <div className="space-y-3">
+            {research.results.map((result, index) => {
+              const contentPreview = typeof result.content === 'string' 
+                ? result.content.substring(0, 300) + (result.content.length > 300 ? '...' : '')
+                : JSON.stringify(result.content).substring(0, 300);
+              
+              return (
+              <div key={index} className={`p-4 rounded-lg border transition-all hover:shadow-md ${
                 result.status === 'completed' 
                   ? 'bg-green-50 border-green-200' 
                   : 'bg-yellow-50 border-yellow-200'
               }`}>
                 <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-medium text-gray-800">{result.aspect}</h4>
-                  <div className="flex items-center gap-2">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-800 mb-1">{result.aspect}</h4>
+                    <p className="text-sm text-gray-600 line-clamp-2">{contentPreview}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2 ml-4">
                     {result.status === 'completed' ? (
                       <CheckCircle className="w-5 h-5 text-green-600" />
                     ) : (
                       <AlertTriangle className="w-5 h-5 text-yellow-600" />
                     )}
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      result.confidence > 0.7 ? 'bg-green-100 text-green-700' :
-                      result.confidence > 0.5 ? 'bg-yellow-100 text-yellow-700' :
+                    <span className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                      result.confidence > 0.8 ? 'bg-green-100 text-green-700' :
+                      result.confidence > 0.6 ? 'bg-yellow-100 text-yellow-700' :
                       'bg-red-100 text-red-700'
                     }`}>
-                      {(result.confidence * 100).toFixed(0)}%
+                      {(result.confidence * 100).toFixed(0)}% confianza
                     </span>
                   </div>
                 </div>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap">{result.content}</p>
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-sm text-blue-600 hover:text-blue-800 font-medium">
+                    Ver análisis completo
+                  </summary>
+                  <div className="mt-2 p-3 bg-white rounded border border-gray-200">
+                    <p className="text-gray-700 text-sm whitespace-pre-wrap">
+                      {typeof result.content === 'string' ? result.content : JSON.stringify(result.content, null, 2)}
+                    </p>
+                  </div>
+                </details>
               </div>
-            ))}
+            );
+            })}
           </div>
         </div>
 

@@ -1,4 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { FOOD_GUIDE_DATA } from '../foodData';
+import type { FoodGuideData } from '../types';
 
 // Tipos específicos para investigación nutrigenómica
 export type NutrigenomicsTask = 'PLANNING' | 'GENETIC_ANALYSIS' | 'METABOLIC_RESEARCH' | 'EPIGENETIC_STUDY' | 'CLINICAL_SYNTHESIS' | 'LITERATURE_REVIEW';
@@ -340,99 +342,476 @@ INSTRUCCIONES ESPECÍFICAS PARA RAZONAMIENTO NUTRIGENÓMICO:
   }
 };
 
+// Función auxiliar para obtener información del genotipo
+function getGenotypeContext(genotypeId?: number): string {
+  if (!genotypeId || !FOOD_GUIDE_DATA[genotypeId]) {
+    return '';
+  }
+  
+  const foodData: FoodGuideData = FOOD_GUIDE_DATA[genotypeId];
+  const genotypeName = foodData.genotipo_info.nombre;
+  const description = foodData.genotipo_info.descripcion;
+  
+  // Extraer superalimentos y toxinas
+  const superfoods: string[] = [];
+  const toxins: string[] = [];
+  
+  for (const category in foodData.categorias_alimentos) {
+    for (const food of (foodData.categorias_alimentos as any)[category]) {
+      if (food.estado === "Superalimento") {
+        superfoods.push(food.nombre);
+      } else if (food.estado === "Toxina") {
+        toxins.push(food.nombre);
+      }
+    }
+  }
+  
+  return `
+CONTEXTO DEL GENOTIPO DEL PACIENTE:
+- Genotipo: ${genotypeName}
+- Descripción: ${description}
+- Superalimentos relevantes: ${superfoods.slice(0, 20).join(', ')}${superfoods.length > 20 ? '...' : ''}
+- Toxinas a evitar: ${toxins.slice(0, 15).join(', ')}${toxins.length > 15 ? '...' : ''}
+
+IMPORTANTE: Considera este contexto genotípico específico en todo el análisis. Las recomendaciones deben alinearse con los superalimentos y evitar las toxinas de este genotipo.
+`;
+}
+
 const getNutrigenomicsBasePrompt = (task: NutrigenomicsTask, content: any): string => {
+  const genotypeContext = getGenotypeContext(
+    typeof content === 'object' ? content.genotypeId : undefined
+  );
+  
   switch (task) {
     case 'PLANNING':
-      return `Eres un especialista en nutrigenómica clínica. Crea un plan de investigación para: "${typeof content === 'string' ? content : content.query}".
+      return `Eres un especialista en nutrigenómica clínica con experiencia en medicina personalizada y genómica nutricional. Crea un plan de investigación científica riguroso para: "${typeof content === 'string' ? content : content.query}".
 
-REQUISITOS:
+${genotypeContext}
+
+CONTEXTO CIENTÍFICO:
+- Trabajas en un entorno clínico donde médicos necesitan información precisa y basada en evidencia
+- Las recomendaciones deben ser aplicables en práctica clínica real
+- Prioriza evidencia científica de alta calidad (ensayos clínicos, metaanálisis, estudios de asociación genómica)
+
+REQUISITOS DEL PLAN:
 - Genera 5-7 aspectos específicos de investigación nutrigenómica
-- Incluye análisis genético, metabólico, epigenético y clínico
-- Considera polimorfismos relevantes y vías metabólicas
-- Enfócate en aplicaciones clínicas prácticas
+- Cada aspecto debe ser:
+  * Específico y accionable
+  * Basado en evidencia científica
+  * Relevante para el contexto clínico
+  * Conectado con polimorfismos genéticos conocidos o vías metabólicas identificadas
+- Incluye al menos:
+  * 1-2 aspectos de análisis genético (SNPs, variantes, frecuencias poblacionales)
+  * 1-2 aspectos de metabolismo nutricional (vías enzimáticas, cofactores, biomarcadores)
+  * 1 aspecto epigenético (modificaciones, expresión génica, factores ambientales)
+  * 1-2 aspectos clínicos (aplicaciones prácticas, protocolos, monitoreo)
+- Considera interacciones gen-gen, gen-nutriente y gen-ambiente
+- Enfócate en aplicaciones clínicas prácticas y protocolos de intervención
 
-FORMATO: Array JSON de strings con aspectos de investigación.`;
+FORMATO: Array JSON de strings, cada string debe ser un aspecto de investigación específico y bien definido.
+Ejemplo: ["Análisis de polimorfismos MTHFR C677T y A1298C y su impacto en requerimientos de folato y B12", ...]`;
       
     case 'GENETIC_ANALYSIS':
-      return `Eres un genetista especializado en nutrigenómica. Analiza: "${typeof content === 'string' ? content : content.aspect}".
+      const geneticAspect = typeof content === 'string' ? content : content.aspect;
+      const geneticTopic = typeof content === 'object' ? content.mainTopic : '';
+      
+      return `Eres un genetista médico especializado en nutrigenómica con experiencia en análisis de polimorfismos genéticos y medicina personalizada. Realiza un análisis genético profundo de: "${geneticAspect}".
 
-REQUISITOS:
-- Identifica polimorfismos genéticos relevantes (SNPs)
-- Analiza función de genes específicos
-- Explica impacto en metabolismo de nutrientes
-- Incluye frecuencias poblacionales cuando sea relevante
-- Considera interacciones gen-gen y gen-ambiente
+${genotypeContext}
 
-FORMATO JSON:
+CONTEXTO DE LA INVESTIGACIÓN:
+- Tema principal: ${geneticTopic || 'Análisis genético nutrigenómico'}
+- Enfoque: Análisis genético detallado con aplicación clínica
+
+REQUISITOS DEL ANÁLISIS GENÉTICO:
+1. IDENTIFICACIÓN DE POLIMORFISMOS:
+   - Identifica todos los polimorfismos genéticos relevantes (SNPs, indels, CNVs)
+   - Especifica nomenclatura estándar (rsID cuando esté disponible)
+   - Incluye frecuencias alélicas poblacionales (especificar población si es relevante)
+   - Menciona frecuencias genotípicas cuando sea relevante
+
+2. ANÁLISIS FUNCIONAL DE GENES:
+   - Explica la función biológica de cada gen identificado
+   - Describe el impacto funcional de cada polimorfismo
+   - Analiza cómo afecta la expresión o actividad de proteínas
+   - Considera efectos dominantes, recesivos o codominantes
+
+3. IMPACTO EN METABOLISMO NUTRICIONAL:
+   - Explica cómo cada variante afecta el metabolismo de nutrientes específicos
+   - Identifica nutrientes críticos afectados (vitaminas, minerales, macronutrientes)
+   - Describe vías metabólicas alteradas
+   - Menciona requerimientos nutricionales modificados
+
+4. INTERACCIONES GENÉTICAS:
+   - Analiza interacciones gen-gen (epistasia, efectos aditivos)
+   - Considera interacciones gen-ambiente (nutrientes, estilo de vida)
+   - Evalúa efectos combinados de múltiples polimorfismos
+
+5. APLICACIONES CLÍNICAS:
+   - Recomendaciones dietéticas específicas basadas en el genotipo
+   - Protocolos de suplementación personalizados (dosis, formas activas)
+   - Estrategias de monitoreo y biomarcadores relevantes
+   - Consideraciones de seguridad y contraindicaciones
+
+FORMATO JSON ESTRICTO:
 {
-  "content": "análisis genético detallado...",
-  "geneAnalysis": [{"gene": "nombre", "polymorphism": "SNP", "function": "descripción", "impact": "efecto"}],
-  "metabolicInsights": ["insight1", "insight2"],
-  "epigeneticFindings": ["finding1", "finding2"],
-  "clinicalApplications": ["aplicación1", "aplicación2"],
-  "sources": [{"uri": "URL", "title": "título"}],
-  "confidenceLevel": 0.85
+  "content": "Análisis genético completo y detallado en formato narrativo (mínimo 500 palabras, máximo 2000 palabras). Debe incluir introducción, análisis de cada gen/polimorfismo, impacto metabólico, y conclusiones clínicas.",
+  "geneAnalysis": [
+    {
+      "gene": "Nombre del gen (símbolo oficial HGNC)",
+      "polymorphism": "SNP rsID o variante (ej: rs1801133, C677T)",
+      "function": "Función biológica del gen y proteína codificada",
+      "impact": "Impacto funcional específico del polimorfismo",
+      "alleleFrequency": "Frecuencia alélica poblacional si está disponible",
+      "clinicalSignificance": "Significado clínico y relevancia nutrigenómica"
+    }
+  ],
+  "metabolicInsights": [
+    "Insight metabólico 1: Descripción específica de cómo afecta el metabolismo",
+    "Insight metabólico 2: Vías enzimáticas o procesos afectados"
+  ],
+  "epigeneticFindings": [
+    "Hallazgo epigenético 1: Modificaciones epigenéticas relacionadas si aplica",
+    "Hallazgo epigenético 2: Influencia de nutrientes en expresión génica"
+  ],
+  "clinicalApplications": [
+    "Aplicación clínica 1: Recomendación específica y accionable",
+    "Aplicación clínica 2: Protocolo de intervención o monitoreo"
+  ],
+  "sources": [
+    {"uri": "URL o DOI", "title": "Título del estudio o referencia", "type": "tipo (estudio clínico, revisión, metaanálisis, etc.)"}
+  ],
+  "confidenceLevel": 0.85,
+  "evidenceLevel": "Nivel de evidencia (Alto/Medio/Bajo) basado en calidad de estudios disponibles"
 }`;
 
     case 'METABOLIC_RESEARCH':
-      return `Eres un bioquímico especializado en metabolismo nutricional. Investiga: "${typeof content === 'string' ? content : content.aspect}".
+      const metabolicAspect = typeof content === 'string' ? content : content.aspect;
+      const metabolicTopic = typeof content === 'object' ? content.mainTopic : '';
+      
+      return `Eres un bioquímico médico especializado en metabolismo nutricional y fisiología humana. Realiza una investigación metabólica profunda de: "${metabolicAspect}".
 
-REQUISITOS:
-- Analiza vías metabólicas específicas
-- Explica enzimas y cofactores involucrados
-- Identifica puntos de regulación metabólica
-- Considera efectos de nutrientes específicos
-- Incluye biomarcadores relevantes
+${genotypeContext}
 
-FORMATO: Mismo JSON que GENETIC_ANALYSIS con enfoque metabólico.`;
+CONTEXTO DE LA INVESTIGACIÓN:
+- Tema principal: ${metabolicTopic || 'Investigación metabólica nutrigenómica'}
+- Enfoque: Análisis de vías metabólicas y regulación nutricional
+
+REQUISITOS DE LA INVESTIGACIÓN METABÓLICA:
+1. ANÁLISIS DE VÍAS METABÓLICAS:
+   - Identifica todas las vías metabólicas relevantes (glucólisis, ciclo de Krebs, beta-oxidación, etc.)
+   - Describe el flujo metabólico paso a paso
+   - Explica puntos de regulación clave (enzimas limitantes, retroalimentación)
+   - Analiza conexiones entre vías metabólicas
+
+2. ENZIMAS Y COFACTORES:
+   - Lista todas las enzimas involucradas con sus nombres oficiales (EC numbers cuando sea posible)
+   - Identifica cofactores esenciales (vitaminas, minerales, coenzimas)
+   - Explica el papel de cada cofactor en la actividad enzimática
+   - Describe deficiencias de cofactores y sus consecuencias metabólicas
+
+3. REGULACIÓN METABÓLICA:
+   - Identifica puntos de control alostérico
+   - Analiza regulación hormonal (insulina, glucagón, cortisol, etc.)
+   - Considera regulación transcripcional (factores de transcripción, elementos de respuesta)
+   - Evalúa efectos de nutrientes específicos en la regulación
+
+4. EFECTOS DE NUTRIENTES:
+   - Describe cómo nutrientes específicos afectan cada vía metabólica
+   - Analiza requerimientos nutricionales para optimización metabólica
+   - Identifica nutrientes limitantes o críticos
+   - Considera interacciones entre nutrientes
+
+5. BIOMARCADORES Y MONITOREO:
+   - Identifica biomarcadores relevantes para evaluar función metabólica
+   - Describe valores normales y patológicos
+   - Sugiere protocolos de monitoreo clínico
+   - Explica interpretación de resultados
+
+6. APLICACIONES CLÍNICAS:
+   - Estrategias nutricionales para optimizar vías metabólicas
+   - Protocolos de suplementación de cofactores
+   - Consideraciones de timing nutricional (crononutrición)
+   - Intervenciones dietéticas personalizadas
+
+FORMATO JSON ESTRICTO:
+{
+  "content": "Investigación metabólica completa y detallada en formato narrativo (mínimo 600 palabras, máximo 2500 palabras). Debe incluir descripción de vías, regulación, efectos nutricionales y aplicaciones clínicas.",
+  "geneAnalysis": [
+    {
+      "gene": "Gen relacionado con la vía metabólica",
+      "polymorphism": "Variantes genéticas relevantes si aplica",
+      "function": "Función en la vía metabólica",
+      "impact": "Impacto en el metabolismo nutricional"
+    }
+  ],
+  "metabolicInsights": [
+    "Insight 1: Descripción detallada de vía metabólica específica y su regulación",
+    "Insight 2: Efectos de nutrientes en enzimas y cofactores",
+    "Insight 3: Puntos de regulación y control metabólico",
+    "Insight 4: Biomarcadores y evaluación funcional"
+  ],
+  "epigeneticFindings": [
+    "Hallazgo 1: Regulación epigenética de vías metabólicas si aplica"
+  ],
+  "clinicalApplications": [
+    "Aplicación 1: Estrategia nutricional específica con dosis y protocolo",
+    "Aplicación 2: Protocolo de monitoreo y seguimiento"
+  ],
+  "sources": [
+    {"uri": "URL o DOI", "title": "Título del estudio", "type": "tipo de estudio"}
+  ],
+  "confidenceLevel": 0.85,
+  "evidenceLevel": "Nivel de evidencia (Alto/Medio/Bajo)"
+}`;
 
     case 'EPIGENETIC_STUDY':
-      return `Eres un especialista en epigenética nutricional. Estudia: "${typeof content === 'string' ? content : content.aspect}".
+      const epigeneticAspect = typeof content === 'string' ? content : content.aspect;
+      const epigeneticTopic = typeof content === 'object' ? content.mainTopic : '';
+      
+      return `Eres un especialista en epigenética nutricional y regulación de la expresión génica. Realiza un estudio epigenético profundo de: "${epigeneticAspect}".
 
-REQUISITOS:
-- Analiza modificaciones epigenéticas (metilación, acetilación)
-- Explica influencia de nutrientes en expresión génica
-- Considera factores ambientales y estilo de vida
-- Incluye aspectos transgeneracionales si es relevante
-- Evalúa reversibilidad de cambios epigenéticos
+${genotypeContext}
 
-FORMATO: Mismo JSON con enfoque epigenético.`;
+CONTEXTO DE LA INVESTIGACIÓN:
+- Tema principal: ${epigeneticTopic || 'Estudio epigenético nutrigenómico'}
+- Enfoque: Modificaciones epigenéticas y su relación con nutrición
+
+REQUISITOS DEL ESTUDIO EPIGENÉTICO:
+1. MODIFICACIONES EPIGENÉTICAS:
+   - Analiza modificaciones de ADN (metilación de CpG, hidroximetilación)
+   - Describe modificaciones de histonas (acetilación, metilación, fosforilación, ubiquitinación)
+   - Identifica microRNAs y otros RNAs no codificantes relevantes
+   - Explica mecanismos de silenciamiento o activación génica
+
+2. INFLUENCIA DE NUTRIENTES:
+   - Identifica nutrientes que actúan como donadores de grupos metilo (folato, B12, colina, metionina)
+   - Analiza nutrientes que afectan modificaciones de histonas (ácidos grasos, polifenoles)
+   - Describe nutrientes que influyen en expresión de microRNAs
+   - Explica mecanismos moleculares de acción de cada nutriente
+
+3. FACTORES AMBIENTALES Y ESTILO DE VIDA:
+   - Evalúa impacto de dieta (calorías, macronutrientes, micronutrientes)
+   - Considera efectos de ejercicio físico
+   - Analiza influencia de estrés y sueño
+   - Evalúa exposición a toxinas ambientales
+
+4. ASPECTOS TRANSGENERACIONALES:
+   - Analiza herencia epigenética si es relevante
+   - Considera efectos en desarrollo fetal y programación metabólica
+   - Evalúa ventanas críticas de desarrollo
+   - Describe mecanismos de transmisión epigenética
+
+5. REVERSIBILIDAD Y MODULACIÓN:
+   - Evalúa potencial de reversión de modificaciones epigenéticas
+   - Identifica intervenciones nutricionales que pueden modificar el epigenoma
+   - Describe tiempos de respuesta y persistencia de cambios
+   - Analiza factores que determinan reversibilidad
+
+6. APLICACIONES CLÍNICAS:
+   - Estrategias nutricionales para modulación epigenética
+   - Protocolos de intervención con nutrientes específicos
+   - Consideraciones de timing y duración de intervenciones
+   - Biomarcadores epigenéticos para monitoreo
+
+FORMATO JSON ESTRICTO:
+{
+  "content": "Estudio epigenético completo y detallado en formato narrativo (mínimo 600 palabras, máximo 2500 palabras). Debe incluir mecanismos, influencia nutricional, factores ambientales y aplicaciones clínicas.",
+  "geneAnalysis": [
+    {
+      "gene": "Gen con regulación epigenética relevante",
+      "polymorphism": "Variantes que afectan susceptibilidad epigenética si aplica",
+      "function": "Función del gen y su regulación epigenética",
+      "impact": "Impacto de modificaciones epigenéticas en expresión y función"
+    }
+  ],
+  "metabolicInsights": [
+    "Insight 1: Vías metabólicas afectadas por cambios epigenéticos"
+  ],
+  "epigeneticFindings": [
+    "Hallazgo 1: Modificaciones epigenéticas específicas identificadas (tipo, ubicación, genes afectados)",
+    "Hallazgo 2: Nutrientes que modulan estas modificaciones",
+    "Hallazgo 3: Factores ambientales y de estilo de vida relevantes",
+    "Hallazgo 4: Potencial de reversión y estrategias de intervención"
+  ],
+  "clinicalApplications": [
+    "Aplicación 1: Protocolo nutricional específico para modulación epigenética",
+    "Aplicación 2: Estrategia de monitoreo y evaluación de cambios epigenéticos"
+  ],
+  "sources": [
+    {"uri": "URL o DOI", "title": "Título del estudio", "type": "tipo de estudio"}
+  ],
+  "confidenceLevel": 0.85,
+  "evidenceLevel": "Nivel de evidencia (Alto/Medio/Bajo)"
+}`;
 
     case 'CLINICAL_SYNTHESIS':
-      return `Eres un médico especialista en medicina personalizada. Sintetiza la investigación de: "${typeof content === 'string' ? content : content.topic}".
+      const synthesisTopic = typeof content === 'string' ? content : content.topic;
+      const researchData = typeof content === 'object' && content.researchData ? content.researchData : [];
+      
+      return `Eres un médico especialista en medicina personalizada y nutrigenómica clínica. Sintetiza y integra toda la investigación científica realizada sobre: "${synthesisTopic}".
 
-DATOS DE INVESTIGACIÓN:
-${typeof content === 'object' && content.researchData ? JSON.stringify(content.researchData, null, 2) : ''}
+${genotypeContext}
 
-REQUISITOS:
-- Integra hallazgos genéticos, metabólicos y epigenéticos
-- Genera recomendaciones clínicas específicas
-- Considera contraindicaciones y interacciones
-- Incluye monitoreo y seguimiento sugerido
-- Evalúa nivel de evidencia científica
+DATOS DE INVESTIGACIÓN DISPONIBLES:
+${researchData.length > 0 ? JSON.stringify(researchData, null, 2) : 'No hay datos de investigación previos disponibles.'}
 
-FORMATO JSON:
+CONTEXTO CLÍNICO:
+- Trabajas para médicos que necesitan información clara y accionable
+- Las recomendaciones deben ser específicas, seguras y basadas en evidencia
+- Debes considerar el contexto completo del paciente (genotipo, condiciones de salud, medicamentos)
+
+REQUISITOS DE LA SÍNTESIS CLÍNICA:
+1. INTEGRACIÓN DE HALLAZGOS:
+   - Integra coherentemente todos los hallazgos genéticos, metabólicos y epigenéticos
+   - Identifica conexiones y sinergias entre diferentes aspectos
+   - Resuelve contradicciones o inconsistencias si existen
+   - Prioriza información más relevante clínicamente
+
+2. PERFIL GENÉTICO INTEGRADO:
+   - Crea un perfil genético unificado que resuma todas las variantes relevantes
+   - Explica cómo interactúan diferentes polimorfismos
+   - Identifica el perfil de riesgo/beneficio general
+   - Considera el contexto del genotipo del sistema GenoTipos
+
+3. ANÁLISIS METABÓLICO CONJUNTO:
+   - Sintetiza todas las vías metabólicas afectadas
+   - Identifica puntos de intervención prioritarios
+   - Evalúa el estado metabólico general inferido
+   - Considera requerimientos nutricionales integrados
+
+4. FACTORES EPIGENÉTICOS:
+   - Resume modificaciones epigenéticas relevantes
+   - Evalúa potencial de modulación nutricional
+   - Considera factores ambientales modificables
+   - Integra con hallazgos genéticos y metabólicos
+
+5. RECOMENDACIONES CLÍNICAS ESPECÍFICAS:
+   - Genera recomendaciones dietéticas específicas y cuantificables
+   - Incluye protocolos de suplementación con dosis específicas
+   - Proporciona guías de alimentos a priorizar y evitar
+   - Considera timing nutricional (crononutrición) si es relevante
+   - Alinea con superalimentos y evita toxinas del genotipo
+
+6. SEGURIDAD Y CONTRAINDICACIONES:
+   - Identifica contraindicaciones específicas
+   - Analiza interacciones con medicamentos comunes
+   - Considera interacciones entre suplementos
+   - Evalúa riesgos y efectos adversos potenciales
+   - Proporciona advertencias de seguridad claras
+
+7. MONITOREO Y SEGUIMIENTO:
+   - Sugiere biomarcadores específicos para monitoreo
+   - Define intervalos de seguimiento recomendados
+   - Establece objetivos y criterios de éxito
+   - Proporciona guías para ajuste de protocolos
+
+8. NIVEL DE EVIDENCIA:
+   - Evalúa la calidad y cantidad de evidencia disponible
+   - Clasifica nivel de evidencia (Alto/Medio/Bajo)
+   - Identifica áreas con evidencia limitada
+   - Sugiere áreas que requieren más investigación
+
+FORMATO JSON ESTRICTO:
 {
-  "summary": ["punto clave 1", "punto clave 2"],
-  "geneticProfile": "perfil genético integrado",
-  "metabolicAnalysis": "análisis metabólico conjunto",
-  "epigeneticFactors": "factores epigenéticos relevantes",
-  "clinicalRecommendations": "recomendaciones específicas",
-  "report": "reporte completo en Markdown",
-  "confidenceScore": 0.90
+  "summary": [
+    "Punto clave 1: Resumen ejecutivo de hallazgo principal (máximo 2 líneas)",
+    "Punto clave 2: Hallazgo secundario importante",
+    "Punto clave 3: Recomendación principal",
+    "Punto clave 4-6: Otros puntos críticos"
+  ],
+  "geneticProfile": "Perfil genético integrado completo (300-500 palabras). Debe resumir todas las variantes genéticas relevantes, sus interacciones, y el significado clínico integrado.",
+  "metabolicAnalysis": "Análisis metabólico conjunto completo (300-500 palabras). Debe integrar todas las vías metabólicas, requerimientos nutricionales, y estado metabólico inferido.",
+  "epigeneticFactors": "Factores epigenéticos relevantes integrados (200-400 palabras). Debe resumir modificaciones epigenéticas, influencia nutricional, y potencial de modulación.",
+  "clinicalRecommendations": "Recomendaciones clínicas específicas y accionables (400-600 palabras). Debe incluir:\n- Dieta específica con alimentos prioritarios y a evitar\n- Protocolo de suplementación con dosis y formas activas\n- Timing nutricional si es relevante\n- Consideraciones de seguridad\n- Alineación con genotipo del sistema GenoTipos",
+  "report": "Reporte clínico completo en formato Markdown profesional (mínimo 1000 palabras). Debe incluir:\n- Resumen ejecutivo\n- Introducción al caso\n- Análisis genético integrado\n- Análisis metabólico integrado\n- Factores epigenéticos\n- Recomendaciones clínicas detalladas\n- Protocolo de intervención paso a paso\n- Monitoreo y seguimiento\n- Contraindicaciones y precauciones\n- Referencias y nivel de evidencia\n- Notas profesionales para el médico",
+  "confidenceScore": 0.90,
+  "evidenceLevel": "Nivel de evidencia general (Alto/Medio/Bajo) basado en calidad de toda la evidencia integrada"
 }`;
 
     case 'LITERATURE_REVIEW':
-      return `Eres un investigador especializado en literatura nutrigenómica. Revisa literatura reciente sobre: "${typeof content === 'string' ? content : content.topic}".
+      const reviewTopic = typeof content === 'string' ? content : content.topic;
+      
+      return `Eres un investigador especializado en literatura nutrigenómica con experiencia en revisión sistemática y evaluación crítica de evidencia científica. Realiza una revisión de literatura científica reciente sobre: "${reviewTopic}".
 
-REQUISITOS:
-- Enfócate en estudios 2020-2024
-- Prioriza ensayos clínicos y metaanálisis
-- Incluye estudios de asociación genómica (GWAS)
-- Considera diversidad poblacional en estudios
-- Evalúa calidad metodológica
+${genotypeContext}
 
-FORMATO: JSON con content, sources y confidenceLevel.`;
+CONTEXTO DE LA REVISIÓN:
+- Enfoque: Revisión crítica de evidencia científica nutrigenómica
+- Audiencia: Médicos que necesitan información basada en evidencia de alta calidad
+
+REQUISITOS DE LA REVISIÓN DE LITERATURA:
+1. CRITERIOS DE SELECCIÓN:
+   - Prioriza estudios publicados entre 2020-2024 (últimos 5 años)
+   - Incluye estudios más antiguos solo si son fundamentales o seminales
+   - Prioriza en este orden:
+     * Metaanálisis y revisiones sistemáticas
+     * Ensayos clínicos aleatorizados (RCTs)
+     * Estudios de asociación genómica (GWAS, estudios de asociación)
+     * Estudios de cohorte prospectivos
+     * Estudios caso-control bien diseñados
+   - Excluye estudios observacionales de baja calidad, estudios in vitro sin validación clínica, y opiniones no respaldadas
+
+2. EVALUACIÓN DE CALIDAD METODOLÓGICA:
+   - Evalúa tamaño de muestra y poder estadístico
+   - Considera diseño del estudio y controles adecuados
+   - Analiza sesgos potenciales (selección, confusión, publicación)
+   - Evalúa validez interna y externa
+   - Considera reproducibilidad y consistencia de hallazgos
+
+3. DIVERSIDAD POBLACIONAL:
+   - Considera diversidad étnica y geográfica en estudios
+   - Evalúa aplicabilidad a diferentes poblaciones
+   - Identifica limitaciones de generalización
+   - Menciona estudios específicos de poblaciones relevantes
+
+4. SÍNTESIS DE HALLAZGOS:
+   - Resume hallazgos principales de manera coherente
+   - Identifica consensos y controversias en la literatura
+   - Analiza tendencias y evolución del conocimiento
+   - Evalúa fortaleza de la evidencia acumulada
+
+5. APLICACIÓN CLÍNICA:
+   - Traduce hallazgos a aplicaciones clínicas prácticas
+   - Identifica brechas en el conocimiento
+   - Sugiere áreas que requieren más investigación
+   - Proporciona contexto para toma de decisiones clínicas
+
+FORMATO JSON ESTRICTO:
+{
+  "content": "Revisión de literatura completa y crítica (mínimo 800 palabras, máximo 3000 palabras). Debe incluir:\n- Introducción al tema\n- Resumen de estudios clave (mínimo 5-10 estudios relevantes)\n- Evaluación crítica de evidencia\n- Síntesis de hallazgos principales\n- Consensos y controversias\n- Aplicaciones clínicas\n- Brechas en el conocimiento\n- Conclusiones y recomendaciones",
+  "geneAnalysis": [
+    {
+      "gene": "Gen relevante identificado en la literatura",
+      "polymorphism": "Polimorfismos mencionados en estudios",
+      "function": "Función según evidencia científica",
+      "impact": "Impacto clínico según estudios revisados"
+    }
+  ],
+  "metabolicInsights": [
+    "Insight 1: Hallazgo metabólico principal de la literatura",
+    "Insight 2: Consenso o controversia identificada"
+  ],
+  "epigeneticFindings": [
+    "Hallazgo 1: Evidencia epigenética encontrada en la literatura"
+  ],
+  "clinicalApplications": [
+    "Aplicación 1: Aplicación clínica basada en evidencia revisada"
+  ],
+  "sources": [
+    {
+      "uri": "DOI o URL del estudio",
+      "title": "Título completo del estudio",
+      "type": "Tipo de estudio (metaanálisis, RCT, GWAS, cohorte, etc.)",
+      "year": "Año de publicación",
+      "authors": "Autores principales (opcional)",
+      "quality": "Evaluación de calidad (Alta/Media/Baja)"
+    }
+  ],
+  "confidenceLevel": 0.85,
+  "evidenceLevel": "Nivel de evidencia general basado en calidad de estudios revisados (Alto/Medio/Bajo)",
+  "consensusLevel": "Nivel de consenso en la literatura (Alto/Medio/Bajo/Controvertido)"
+}`;
 
     default:
       return `Analiza el siguiente contenido nutrigenómico: ${JSON.stringify(content)}`;
